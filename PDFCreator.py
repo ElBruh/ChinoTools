@@ -46,8 +46,42 @@ def formatInput(profile_dict):
                         profile_dict['patientPCPPhone'] + " \n" +
                         profile_dict['patientPCPNPI']
                         ),
+                        'MANUFRow2' : profile_dict['itemRow2CPT'],
+            'ITEMLOTRow2' : profile_dict['itemRow2CPT'],
+            'DESCRIPTIONRow2' : profile_dict['itemRow2Description'].upper(),
+            'BILLING CODERow2' : profile_dict['itemRow2CPT'].upper(),
+            'QTYRow2' : profile_dict['itemRow2Qty'],
+            'UnitPriceRow2' : profile_dict['itemRow2Price'],
+
+            'MANUFRow3' : profile_dict['itemRow3CPT'],
+            'ITEMLOTRow3' : profile_dict['itemRow3CPT'],
+            'DESCRIPTIONRow3' : profile_dict['itemRow3Description'].upper(),
+            'BILLING CODERow3' : profile_dict['itemRow3CPT'].upper(),
+            'QTYRow3' : profile_dict['itemRow3Qty'],
+            'UnitPriceRow3' : profile_dict['itemRow3Price'],
+
+            'MANUFRow4' : profile_dict['itemRow4CPT'],
+            'ITEMLOTRow4' : profile_dict['itemRow4CPT'],
+            'DESCRIPTIONRow4' : profile_dict['itemRow4Description'].upper(),
+            'BILLING CODERow4' : profile_dict['itemRow4CPT'].upper(),
+            'QTYRow4' : profile_dict['itemRow4Qty'],
+            'UnitPriceRow4' : profile_dict['itemRow4Price'],
+
+            'MANUFRow5' : profile_dict['itemRow5CPT'],
+            'ITEMLOTRow5' : profile_dict['itemRow5CPT'],
+            'DESCRIPTIONRow5' : profile_dict['itemRow5Description'].upper(),
+            'BILLING CODERow5' : profile_dict['itemRow5CPT'].upper(),
+            'QTYRow5' : profile_dict['itemRow5Qty'],
+            'UnitPriceRow5' : profile_dict['itemRow5Price'],
+
+            'MANUFRow6' : profile_dict['itemRow6CPT'],
+            'ITEMLOTRow6' : profile_dict['itemRow6CPT'],
+            'DESCRIPTIONRow6' : profile_dict['itemRow6Description'].upper(),
+            'BILLING CODERow6' : profile_dict['itemRow6CPT'].upper(),
+            'QTYRow6' : profile_dict['itemRow6Qty'],
+            'UnitPriceRow6' : profile_dict['itemRow6Price'],
         }
-        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "." + profile_dict['patientLastName']))
+        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date)))
     elif(profile_dict['make_intake'] == 1):
         data_dictForIntake = {
             'Date' : some_date,
