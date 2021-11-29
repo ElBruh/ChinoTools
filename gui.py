@@ -2,7 +2,7 @@ from tkinter import *
 from typing import Counter
 import os
 from PDFCreator import formatInput
-from DatabaseTest import searchMedicalCPT
+from DatabaseTest import searchMedicalCPT, searchMedicareCPT
 default_input_width = 20
 default_item_input_width = 10
 default_modifier_width = 5
@@ -90,11 +90,21 @@ patientFrame = LabelFrame(root, text='Patient',  bd=2, relief=RIDGE)
 doctorFrame = LabelFrame(root, text='Doctor', bd=2, relief=RIDGE)
 submitFrame = Frame(root, relief=RIDGE)
 itemsFrame = LabelFrame(root, text='Items', relief=RIDGE)
+insuranceFrame = LabelFrame(root, text="Insurance Type", relief=RIDGE)
 
 cptRatesFile = open("MEDI-CALRATES.CSV", "r")
 
 def getCPTInfo():
     query = []
+    options = []
+    
+    options.append(rentalCheckRow1.get())
+    options.append(rentalCheckRow2.get())
+    options.append(rentalCheckRow3.get())
+    options.append(rentalCheckRow4.get())
+    options.append(rentalCheckRow5.get())
+    options.append(rentalCheckRow6.get())
+    
 
     query.append(itemRow1Cpt.get())
     query.append(itemRow2Cpt.get())
@@ -103,7 +113,179 @@ def getCPTInfo():
     query.append(itemRow5Cpt.get())
     query.append(itemRow6Cpt.get())
 
-    details = searchMedicalCPT(query)
+    if(InsuranceType.get() == 1):
+        details = searchMedicalCPT(query, options)
+    elif(InsuranceType.get() == 0):
+        details = searchMedicareCPT(query, options)
+
+    #IF Medicare NU
+    if(InsuranceType.get() == 0 and rentalCheckRow1.get() == 1 and itemRow1Cpt.get() != ""):
+        itemRow1Modifier1.delete(0,END)
+        itemRow1Modifier1.insert(0,"NU")
+        itemRow1Modifier2.delete(0,END)
+        itemRow1Modifier2.insert(0,"KX")
+        itemRow1Modifier3.delete(0,END)
+        itemRow1Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow2.get() == 1 and itemRow2Cpt.get() != ""):
+        itemRow2Modifier1.delete(0,END)
+        itemRow2Modifier1.insert(0,"NU")
+        itemRow2Modifier2.delete(0,END)
+        itemRow2Modifier2.insert(0,"KX")
+        itemRow2Modifier3.delete(0,END)
+        itemRow2Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow3.get() == 1 and itemRow3Cpt.get() != ""):
+        itemRow3Modifier1.delete(0,END)
+        itemRow3Modifier1.insert(0,"NU")
+        itemRow3Modifier2.delete(0,END)
+        itemRow3Modifier2.insert(0,"KX")
+        itemRow3Modifier3.delete(0,END)
+        itemRow3Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow4.get() == 1 and itemRow4Cpt.get() != ""):
+        itemRow4Modifier1.delete(0,END)
+        itemRow4Modifier1.insert(0,"NU")
+        itemRow4Modifier2.delete(0,END)
+        itemRow4Modifier2.insert(0,"KX")
+        itemRow4Modifier3.delete(0,END)
+        itemRow4Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow5.get() == 1 and itemRow5Cpt.get() != ""):
+        itemRow5Modifier1.delete(0,END)
+        itemRow5Modifier1.insert(0,"NU")
+        itemRow5Modifier2.delete(0,END)
+        itemRow5Modifier2.insert(0,"KX")
+        itemRow5Modifier3.delete(0,END)
+        itemRow5Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow6.get() == 1 and itemRow6Cpt.get() != ""):
+        itemRow6Modifier1.delete(0,END)
+        itemRow6Modifier1.insert(0,"NU")
+        itemRow6Modifier2.delete(0,END)
+        itemRow6Modifier2.insert(0,"KX")
+        itemRow6Modifier3.delete(0,END)
+        itemRow6Modifier4.delete(0,END)
+    #IF Medicare RR
+    if(InsuranceType.get() == 0 and rentalCheckRow1.get() == 0 and itemRow1Cpt.get() != ""):
+        itemRow1Modifier1.delete(0,END)
+        itemRow1Modifier1.insert(0,"RR")
+        itemRow1Modifier2.delete(0,END)
+        itemRow1Modifier2.insert(0,"KH")
+        itemRow1Modifier3.delete(0,END)
+        itemRow1Modifier3.insert(0,"KX")
+        itemRow1Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow2.get() == 0 and itemRow2Cpt.get() != ""):
+        itemRow2Modifier1.delete(0,END)
+        itemRow2Modifier1.insert(0,"RR")
+        itemRow2Modifier2.delete(0,END)
+        itemRow2Modifier2.insert(0,"KH")
+        itemRow2Modifier3.delete(0,END)
+        itemRow2Modifier3.insert(0,"KX")
+        itemRow2Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow3.get() == 0 and itemRow3Cpt.get() != ""):
+        itemRow3Modifier1.delete(0,END)
+        itemRow3Modifier1.insert(0,"RR")
+        itemRow3Modifier2.delete(0,END)
+        itemRow3Modifier2.insert(0,"KH")
+        itemRow3Modifier3.delete(0,END)
+        itemRow3Modifier3.insert(0,"KX")
+        itemRow3Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow4.get() == 0 and itemRow4Cpt.get() != ""):
+        itemRow4Modifier1.delete(0,END)
+        itemRow4Modifier1.insert(0,"RR")
+        itemRow4Modifier2.delete(0,END)
+        itemRow4Modifier2.insert(0,"KH")
+        itemRow4Modifier3.delete(0,END)
+        itemRow4Modifier3.insert(0,"KX")
+        itemRow4Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow5.get() == 0 and itemRow5Cpt.get() != ""):
+        itemRow5Modifier1.delete(0,END)
+        itemRow5Modifier1.insert(0,"RR")
+        itemRow5Modifier2.delete(0,END)
+        itemRow5Modifier2.insert(0,"KH")
+        itemRow5Modifier3.delete(0,END)
+        itemRow5Modifier3.insert(0,"KX")
+        itemRow5Modifier4.delete(0,END)
+    if(InsuranceType.get() == 0 and rentalCheckRow6.get() == 0 and itemRow6Cpt.get() != ""):
+        itemRow6Modifier1.delete(0,END)
+        itemRow6Modifier1.insert(0,"RR")
+        itemRow6Modifier2.delete(0,END)
+        itemRow6Modifier2.insert(0,"KH")
+        itemRow6Modifier3.delete(0,END)
+        itemRow6Modifier3.insert(0,"KX")
+        itemRow6Modifier4.delete(0,END)
+
+    #IF Medical NU
+    if(InsuranceType.get() == 1 and rentalCheckRow1.get() == 1 and itemRow1Cpt.get() != ""):
+        itemRow1Modifier1.delete(0,END)
+        itemRow1Modifier1.insert(0,"NU")
+        itemRow1Modifier2.delete(0,END)
+        itemRow1Modifier3.delete(0,END)
+        itemRow1Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow2.get() == 1 and itemRow2Cpt.get() != ""):
+        itemRow2Modifier1.delete(0,END)
+        itemRow2Modifier1.insert(0,"NU")
+        itemRow2Modifier2.delete(0,END)
+        itemRow2Modifier3.delete(0,END)
+        itemRow2Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow3.get() == 1 and itemRow3Cpt.get() != ""):
+        itemRow3Modifier1.delete(0,END)
+        itemRow3Modifier1.insert(0,"NU")
+        itemRow3Modifier2.delete(0,END)
+        itemRow3Modifier3.delete(0,END)
+        itemRow3Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow4.get() == 1 and itemRow4Cpt.get() != ""):
+        itemRow4Modifier1.delete(0,END)
+        itemRow4Modifier1.insert(0,"NU")
+        itemRow4Modifier2.delete(0,END)
+        itemRow4Modifier3.delete(0,END)
+        itemRow4Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow5.get() == 1 and itemRow5Cpt.get() != ""):
+        itemRow5Modifier1.delete(0,END)
+        itemRow5Modifier1.insert(0,"NU")
+        itemRow5Modifier2.delete(0,END)
+        itemRow5Modifier3.delete(0,END)
+        itemRow5Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow6.get() == 1 and itemRow6Cpt.get() != ""):
+        itemRow6Modifier1.delete(0,END)
+        itemRow6Modifier1.insert(0,"NU")
+        itemRow6Modifier2.delete(0,END)
+        itemRow6Modifier3.delete(0,END)
+        itemRow6Modifier4.delete(0,END)
+
+    #IF Medical RR
+    if(InsuranceType.get() == 1 and rentalCheckRow1.get() == 0 and itemRow1Cpt.get() != ""):
+        itemRow1Modifier1.delete(0,END)
+        itemRow1Modifier1.insert(0,"RR")
+        itemRow1Modifier2.delete(0,END)
+        itemRow1Modifier3.delete(0,END)
+        itemRow1Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow2.get() == 0 and itemRow2Cpt.get() != ""):
+        itemRow2Modifier1.delete(0,END)
+        itemRow2Modifier1.insert(0,"RR")
+        itemRow2Modifier2.delete(0,END)
+        itemRow2Modifier3.delete(0,END)
+        itemRow2Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow3.get() == 0 and itemRow3Cpt.get() != ""):
+        itemRow3Modifier1.delete(0,END)
+        itemRow3Modifier1.insert(0,"RR")
+        itemRow3Modifier2.delete(0,END)
+        itemRow3Modifier3.delete(0,END)
+        itemRow3Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow4.get() == 0 and itemRow4Cpt.get() != ""):
+        itemRow4Modifier1.delete(0,END)
+        itemRow4Modifier1.insert(0,"RR")
+        itemRow4Modifier2.delete(0,END)
+        itemRow4Modifier3.delete(0,END)
+        itemRow4Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow5.get() == 0 and itemRow5Cpt.get() != ""):
+        itemRow5Modifier1.delete(0,END)
+        itemRow5Modifier1.insert(0,"RR")
+        itemRow5Modifier2.delete(0,END)
+        itemRow5Modifier3.delete(0,END)
+        itemRow5Modifier4.delete(0,END)
+    if(InsuranceType.get() == 1 and rentalCheckRow6.get() == 0 and itemRow6Cpt.get() != ""):
+        itemRow6Modifier1.delete(0,END)
+        itemRow6Modifier1.insert(0,"RR")
+        itemRow6Modifier2.delete(0,END)
+        itemRow6Modifier3.delete(0,END)
+        itemRow6Modifier4.delete(0,END)
     
     itemRow1Price.delete(0,END)
     itemRow1Price.insert(0,details[0])
@@ -140,6 +322,8 @@ def getCPTInfo():
 
     itemRow6Description.delete(0, END)
     itemRow6Description.insert(0, details[11])
+
+
 
 
 def sendToPDFCreator():
@@ -242,6 +426,8 @@ value_inside_patient.set("CA")
 
 value_inside_doctor=StringVar(root)
 value_inside_doctor.set("CA")
+
+
 
 patientFirstNameInput= Entry(patientFrame, width = default_input_width)
 patientLastNameInput = Entry(patientFrame, width = default_input_width)
@@ -352,14 +538,58 @@ itemRowPriceLabel = Label(itemsFrame, text="Price")
 submitButton = Button(submitFrame, text="Submit", command=sendToPDFCreator)
 searchButton = Button(itemsFrame, text="Search", command= getCPTInfo)
 
+InsuranceType = IntVar()
+
 
 invoiceCheck = IntVar()
 intakeCheck = IntVar()
+
+rentalCheckRow1 = IntVar()
+rentalCheckRow2 = IntVar()
+rentalCheckRow3 = IntVar()
+rentalCheckRow4 = IntVar()
+rentalCheckRow5 = IntVar()
+rentalCheckRow6 = IntVar()
+
+InsuranceType.set(0)
+
 invoiceCheck.set(1)
 intakeCheck.set(1)
 
+rentalCheckRow1.set(1)
+rentalCheckRow2.set(1)
+rentalCheckRow3.set(1)
+rentalCheckRow4.set(1)
+rentalCheckRow5.set(1)
+rentalCheckRow6.set(1)
+
+insuranceTypeMedicare = Radiobutton(insuranceFrame, text="Medicare", variable=InsuranceType, value=0)
+insuranceTypeMedical = Radiobutton(insuranceFrame, text="Medi-Cal", variable=InsuranceType, value=1)
+
 createInvoicePDF = Checkbutton(submitFrame, text="Create Invoice PDF", variable=invoiceCheck)
 createIntakeSheetPDF = Checkbutton(submitFrame, text="Create Intake Sheet PDF", variable=intakeCheck)
+
+rentalCheckMarkRow1 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow1, value=0)
+purchaseCheckMarkRow1 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow1, value=1)
+
+rentalCheckMarkRow2 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow2, value=0)
+purchaseCheckMarkRow2 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow2, value=1)
+
+rentalCheckMarkRow3 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow3, value=0)
+purchaseCheckMarkRow3 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow3, value=1)
+
+rentalCheckMarkRow4 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow4, value=0)
+purchaseCheckMarkRow4 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow4, value=1)
+
+rentalCheckMarkRow5 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow5, value=0)
+purchaseCheckMarkRow5 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow5, value=1)
+
+rentalCheckMarkRow6 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow6, value=0)
+purchaseCheckMarkRow6 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow6, value=1)
+
+
+insuranceTypeMedicare.grid(column=0,row=0)
+insuranceTypeMedical.grid(column=1,row=0)
 
 patientFirstNameLabel.grid(column=0, row=0)
 patientFirstNameInput.grid(column=1, row=0)
@@ -415,68 +645,82 @@ patientPCPPhoneNumberInput.grid(column=1, row=4)
 patientPCPNPILabel.grid(column=0, row=5)
 patientPCPNPIInput.grid(column=1, row=5)
 
-itemsTitle.grid(column=0, row=0)
-itemsTitleMod1.grid(column=1, row=0)
-itemsTitleMod2.grid(column=2, row=0)
-itemsTitleMod3.grid(column=3, row=0)
-itemsTitleMod4.grid(column=4, row=0)
-itemsTitleQty.grid(column=5, row=0)
-itemsTitleDescription.grid(column=6,row=0)
-itemRowPriceLabel.grid(column=7,row=0)
 
-itemRow1Cpt.grid(column=0, row = 1)
-itemRow1Modifier1.grid(column=1, row = 1)
-itemRow1Modifier2.grid(column=2, row = 1)
-itemRow1Modifier3.grid(column=3, row = 1)
-itemRow1Modifier4.grid(column=4, row = 1)
-itemRow1Qty.grid(column=5, row = 1)
-itemRow1Description.grid(column=6,row=1)
-itemRow1Price.grid(column=7,row=1)
+itemsTitle.grid(column=2, row=0)
+itemsTitleMod1.grid(column=3, row=0)
+itemsTitleMod2.grid(column=4, row=0)
+itemsTitleMod3.grid(column=5, row=0)
+itemsTitleMod4.grid(column=6, row=0)
+itemsTitleQty.grid(column=7, row=0)
+itemsTitleDescription.grid(column=8,row=0)
+itemRowPriceLabel.grid(column=9,row=0)
 
-itemRow2Cpt.grid(column=0, row = 2)
-itemRow2Modifier1.grid(column=1, row = 2)
-itemRow2Modifier2.grid(column=2, row = 2)
-itemRow2Modifier3.grid(column=3, row = 2)
-itemRow2Modifier4.grid(column=4, row = 2)
-itemRow2Qty.grid(column=5, row = 2)
-itemRow2Description.grid(column=6,row=2)
-itemRow2Price.grid(column=7,row=2)
 
-itemRow3Cpt.grid(column=0, row = 3)
-itemRow3Modifier1.grid(column=1, row = 3)
-itemRow3Modifier2.grid(column=2, row = 3)
-itemRow3Modifier3.grid(column=3, row = 3)
-itemRow3Modifier4.grid(column=4, row = 3)
-itemRow3Qty.grid(column=5, row = 3)
-itemRow3Description.grid(column=6,row=3)
-itemRow3Price.grid(column=7,row=3)
+rentalCheckMarkRow1.grid(column=0, row = 1)
+purchaseCheckMarkRow1.grid(column=1, row = 1)
+itemRow1Cpt.grid(column=2, row = 1)
+itemRow1Modifier1.grid(column=3, row = 1)
+itemRow1Modifier2.grid(column=4, row = 1)
+itemRow1Modifier3.grid(column=5, row = 1)
+itemRow1Modifier4.grid(column=6, row = 1)
+itemRow1Qty.grid(column=7, row = 1)
+itemRow1Description.grid(column=8,row=1)
+itemRow1Price.grid(column=9,row=1)
 
-itemRow4Cpt.grid(column=0, row = 4)
-itemRow4Modifier1.grid(column=1, row = 4)
-itemRow4Modifier2.grid(column=2, row = 4)
-itemRow4Modifier3.grid(column=3, row = 4)
-itemRow4Modifier4.grid(column=4, row = 4)
-itemRow4Qty.grid(column=5, row = 4)
-itemRow4Description.grid(column=6,row=4)
-itemRow4Price.grid(column=7,row=4)
+rentalCheckMarkRow2.grid(column=0, row=2)
+purchaseCheckMarkRow2.grid(column=1, row=2)
+itemRow2Cpt.grid(column=2, row = 2)
+itemRow2Modifier1.grid(column=3, row = 2)
+itemRow2Modifier2.grid(column=4, row = 2)
+itemRow2Modifier3.grid(column=5, row = 2)
+itemRow2Modifier4.grid(column=6, row = 2)
+itemRow2Qty.grid(column=7, row = 2)
+itemRow2Description.grid(column=8,row=2)
+itemRow2Price.grid(column=9,row=2)
 
-itemRow5Cpt.grid(column=0, row = 5)
-itemRow5Modifier1.grid(column=1, row = 5)
-itemRow5Modifier2.grid(column=2, row = 5)
-itemRow5Modifier3.grid(column=3, row = 5)
-itemRow5Modifier4.grid(column=4, row = 5)
-itemRow5Qty.grid(column=5, row = 5)
-itemRow5Description.grid(column=6,row=5)
-itemRow5Price.grid(column=7,row=5)
+rentalCheckMarkRow3.grid(column=0, row=3)
+purchaseCheckMarkRow3.grid(column=1,row=3)
+itemRow3Cpt.grid(column=2, row = 3)
+itemRow3Modifier1.grid(column=3, row = 3)
+itemRow3Modifier2.grid(column=4, row = 3)
+itemRow3Modifier3.grid(column=5, row = 3)
+itemRow3Modifier4.grid(column=6, row = 3)
+itemRow3Qty.grid(column=7, row = 3)
+itemRow3Description.grid(column=8,row=3)
+itemRow3Price.grid(column=9,row=3)
 
-itemRow6Cpt.grid(column=0, row = 6)
-itemRow6Modifier1.grid(column=1, row = 6)
-itemRow6Modifier2.grid(column=2, row = 6)
-itemRow6Modifier3.grid(column=3, row = 6)
-itemRow6Modifier4.grid(column=4, row = 6)
-itemRow6Qty.grid(column=5, row = 6)
-itemRow6Description.grid(column=6,row=6)
-itemRow6Price.grid(column=7,row=6)
+rentalCheckMarkRow4.grid(column=0, row = 4)
+purchaseCheckMarkRow4.grid(column=1, row = 4)
+itemRow4Cpt.grid(column=2, row = 4)
+itemRow4Modifier1.grid(column=3, row = 4)
+itemRow4Modifier2.grid(column=4, row = 4)
+itemRow4Modifier3.grid(column=5, row = 4)
+itemRow4Modifier4.grid(column=6, row = 4)
+itemRow4Qty.grid(column=7, row = 4)
+itemRow4Description.grid(column=8,row=4)
+itemRow4Price.grid(column=9,row=4)
+
+rentalCheckMarkRow5.grid(column=0, row=5)
+purchaseCheckMarkRow5.grid(column=1, row = 5)
+itemRow5Cpt.grid(column=2, row = 5)
+itemRow5Modifier1.grid(column=3, row = 5)
+itemRow5Modifier2.grid(column=4, row = 5)
+itemRow5Modifier3.grid(column=5, row = 5)
+itemRow5Modifier4.grid(column=6, row = 5)
+itemRow5Qty.grid(column=7, row = 5)
+itemRow5Description.grid(column=8,row=5)
+itemRow5Price.grid(column=9,row=5)
+
+rentalCheckMarkRow6.grid(column=0, row=6)
+purchaseCheckMarkRow6.grid(column=1, row=6)
+itemRow6Cpt.grid(column=2, row = 6)
+itemRow6Modifier1.grid(column=3, row = 6)
+itemRow6Modifier2.grid(column=4, row = 6)
+itemRow6Modifier3.grid(column=5, row = 6)
+itemRow6Modifier4.grid(column=6, row = 6)
+itemRow6Qty.grid(column=7, row = 6)
+itemRow6Description.grid(column=8,row=6)
+itemRow6Price.grid(column=9,row=6)
 
 searchButton.grid(column=0,row=7)
 
@@ -485,10 +729,11 @@ createInvoicePDF.grid(column=0, row=0)
 createIntakeSheetPDF.grid(column=1, row=0)
 submitButton.grid(column=2, row=0)
 
-patientFrame.grid(column=0, row=0, padx=10, pady=10)
-itemsFrame.grid(column=1, row=0, padx=10, pady=10)
-doctorFrame.grid(column=0, row=1, padx=10, pady=10)
-submitFrame.grid(column=0, row=2, padx=10, pady=10)
+insuranceFrame.grid(column=0, row=0, padx=0, pady=0)
+patientFrame.grid(column=0, row=1, padx=10, pady=10)
+itemsFrame.grid(column=1, row=1, padx=10, pady=10)
+doctorFrame.grid(column=0, row=2, padx=10, pady=10)
+submitFrame.grid(column=0, row=3, padx=10, pady=10)
 
 
 root.mainloop()
