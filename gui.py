@@ -287,6 +287,7 @@ def getCPTInfo():
         itemRow6Modifier3.delete(0,END)
         itemRow6Modifier4.delete(0,END)
     
+    print(details[0])
     itemRow1Price.delete(0,END)
     itemRow1Price.insert(0,details[0])
 

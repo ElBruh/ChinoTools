@@ -14,7 +14,10 @@ def searchMedicalCPT(query, options):
             cur.execute("SELECT RentalRate, ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
         
         r = cur.fetchone()
-
+        if(r == None):
+            found.append("")
+            found.append("")
+            continue
         found.append(r[0])
         found.append(r[1])
     return found
@@ -33,10 +36,18 @@ def searchMedicareCPT(query, options):
             cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ? AND (MOD LIKE 'RR' OR MOD LIKE '')", (item,))
             #cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ?", (item,))
             cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
-            
+
+
             s = cur1.fetchone()
             r = cur.fetchone()
         print(s)    
+        if(r == None):
+            if(s == None):
+                found.append("")
+            else:
+                found.append(s)
+            found.append("")
+            continue
         if(s == None):
             found.append("")
             found.append("")
