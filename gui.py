@@ -1,5 +1,7 @@
 from tkinter import *
 from typing import Counter
+import pdfrw
+import sqlite3
 import os
 from PDFCreator import formatInput
 from DatabaseTest import searchMedicalCPT, searchMedicareCPT
@@ -92,7 +94,7 @@ submitFrame = Frame(root, relief=RIDGE)
 itemsFrame = LabelFrame(root, text='Items', relief=RIDGE)
 insuranceFrame = LabelFrame(root, text="Insurance Type", relief=RIDGE)
 
-cptRatesFile = open("MEDI-CALRATES.CSV", "r")
+#cptRatesFile = open("MEDI-CALRATES.csv", "r")
 
 def getCPTInfo():
     query = []
@@ -287,7 +289,7 @@ def getCPTInfo():
         itemRow6Modifier3.delete(0,END)
         itemRow6Modifier4.delete(0,END)
     
-    print(details[0])
+    print(details)
     itemRow1Price.delete(0,END)
     itemRow1Price.insert(0,details[0])
 
@@ -355,7 +357,7 @@ def sendToPDFCreator():
     profile_dict['patientPCPPhone'] = patientPCPPhoneNumberInput.get()
     profile_dict['patientPCPNPI'] = patientPCPNPIInput.get()
     
-    #get Cpt Row1 info from forms (20 - 27)
+    #get Cpt Row1 info from forms 
     profile_dict['itemRow1CPT'] = itemRow1Cpt.get()
     profile_dict['itemRow1Modifier1'] = itemRow1Modifier1.get()
     profile_dict['itemRow1Modifier2'] = itemRow1Modifier2.get()
@@ -365,7 +367,7 @@ def sendToPDFCreator():
     profile_dict['itemRow1Qty'] = itemRow1Qty.get()
     profile_dict['itemRow1Price'] = itemRow1Price.get()
 
-    #get Cpt Row2 info from forms (28 - 35)
+    #get Cpt Row2 info from forms
     profile_dict['itemRow2CPT'] = itemRow2Cpt.get()
     profile_dict['itemRow2Modifier1'] = itemRow2Modifier1.get()
     profile_dict['itemRow2Modifier2'] = itemRow2Modifier2.get()
@@ -375,7 +377,7 @@ def sendToPDFCreator():
     profile_dict['itemRow2Qty'] = itemRow2Qty.get()
     profile_dict['itemRow2Price'] = itemRow2Price.get()
 
-    #get Cpt Row3 info from forms (36 - 43)
+    #get Cpt Row3 info from forms
     profile_dict['itemRow3CPT'] = itemRow3Cpt.get()
     profile_dict['itemRow3Modifier1'] = itemRow3Modifier1.get()
     profile_dict['itemRow3Modifier2'] = itemRow3Modifier2.get()
@@ -385,7 +387,7 @@ def sendToPDFCreator():
     profile_dict['itemRow3Qty'] = itemRow3Qty.get()
     profile_dict['itemRow3Price'] = itemRow3Price.get()
 
-    #get Cpt Row4 info from forms(43 - 49)
+    #get Cpt Row4 info from forms
     profile_dict['itemRow4CPT'] = itemRow4Cpt.get()
     profile_dict['itemRow4Modifier1'] = itemRow4Modifier1.get()
     profile_dict['itemRow4Modifier2'] = itemRow4Modifier2.get()
@@ -395,7 +397,7 @@ def sendToPDFCreator():
     profile_dict['itemRow4Qty'] = itemRow4Qty.get()
     profile_dict['itemRow4Price'] = itemRow4Price.get()
 
-    #get Cpt Row5 info from forms (49 - 55)
+    #get Cpt Row5 info from forms 
     profile_dict['itemRow5CPT'] = itemRow5Cpt.get()
     profile_dict['itemRow5Modifier1'] = itemRow5Modifier1.get()
     profile_dict['itemRow5Modifier2'] = itemRow5Modifier2.get()
@@ -405,7 +407,7 @@ def sendToPDFCreator():
     profile_dict['itemRow5Qty'] = itemRow5Qty.get()
     profile_dict['itemRow5Price'] = itemRow5Price.get()
 
-    #get Cpt Row6 info from forms (56 - 62)
+    #get Cpt Row6 info from forms 
     profile_dict['itemRow6CPT'] = itemRow6Cpt.get()
     profile_dict['itemRow6Modifier1'] = itemRow6Modifier1.get()
     profile_dict['itemRow6Modifier2'] = itemRow6Modifier2.get()
@@ -438,6 +440,7 @@ patientAddressZipCodeInput = Entry(patientFrame, width = 10)
 patientAddressStateInput = OptionMenu(patientFrame, value_inside_patient, *option_list)
 patientPhoneNumberInput = Entry(patientFrame, width = default_input_width)
 orderDateInput = Entry(patientFrame, width = default_input_width)
+patientDateOfBirth = Entry(patientFrame, width = default_input_width)
 patientInsuranceInput = Entry(patientFrame, width = default_input_width)
 patientPreauthorizationInput = Entry(patientFrame, width = default_input_width)
 patientPCPFirstNameInput = Entry(doctorFrame, width = default_input_width)

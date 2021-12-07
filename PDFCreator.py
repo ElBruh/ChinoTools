@@ -1,9 +1,7 @@
 import pdfrw
 from datetime import date
 import sys
-
-print(len(sys.argv))
-print(sys.argv)
+import os
 
 def makePDF(myPDF, myDict, Name):
     for page in myPDF.pages:
@@ -108,8 +106,14 @@ def formatInput(profile_dict):
         print("No Intake Sheet Created")    
 
 
-pdf_path = "BlankInvoice(edit).pdf"
+#directory = sys.executable
+#baseDir = os.path.dirname(directory)
+#pdf_path = (baseDir + "/" + "BlankInvoice(edit).pdf")
+
+pdf_path = ("BlankInvoice(edit).pdf")
+
 #pdf_path = "OrderIntakeSheet(edit).pdf"
+#pdf_path = ""
 pdf = pdfrw.PdfReader(pdf_path)
 pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 

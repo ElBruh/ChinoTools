@@ -1,7 +1,14 @@
 import sqlite3
+import os
+import sys
 
-medical = sqlite3.connect('Medi_CalRatesDB1.db')
-medicare = sqlite3.connect('MedicareRatesDB.db')
+#directory = sys.executable
+#baseDir = os.path.dirname(directory)
+#medical = sqlite3.connect(baseDir + "/" + 'Medi-CalRatesDB1.db')
+#medicare = sqlite3.connect(baseDir + "/" + 'MedicareRatesDB1.db')
+
+medical = sqlite3.connect('Medi-CalRatesDB1.db')
+medicare = sqlite3.connect('MedicareRatesDB1.db')
 
 
 def searchMedicalCPT(query, options):
@@ -26,35 +33,26 @@ def searchMedicareCPT(query, options):
     found = []
     for i, item in enumerate(query):
         if(options[i] == 1):
-            cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ? AND (MOD LIKE 'NU' OR MOD LIke '')", (item,))
-            #cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ?", (item,))
-            cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
+            #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'NU' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
+            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE ? AND Mod = 'NU'", (item,))
+            #cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
             
-            s = cur1.fetchone()
-            r = cur.fetchone()
         else:
-            cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ? AND (MOD LIKE 'RR' OR MOD LIKE '')", (item,))
-            #cur1.execute("SELECT CAR From data WHERE HCPCS LIKE ?", (item,))
-            cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
+            #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'RR' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
+            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE ? AND Mod = 'RR'", (item,))
+            #cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
 
-
-            s = cur1.fetchone()
-            r = cur.fetchone()
-        print(s)    
-        if(r == None):
-            if(s == None):
-                found.append("")
-            else:
-                found.append(s)
-            found.append("")
-            continue
+        s = cur1.fetchone()
         if(s == None):
             found.append("")
             found.append("")
             continue
+            
+        print(s[0])   
+        print(s[1]) 
         
-        found.append(s)
-        found.append(r[0])
+        found.append(s[0])
+        found.append(s[1])
     return found
 
 cur = medical.cursor()
