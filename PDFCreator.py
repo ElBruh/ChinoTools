@@ -17,7 +17,7 @@ def makePDF(myPDF, myDict, Name):
                         annotation.update(
                             pdfrw.PdfDict(V='{}'.format(myDict[key]))
                         )
-    pdfrw.PdfWriter().write('{}.pdf'.format(Name), pdf)
+    pdfrw.PdfWriter().write('./Output/{}.pdf'.format(Name), pdf)
     print("Created PDF!")
 def formatInput(profile_dict):
     moddedPDF = pdf
@@ -110,7 +110,7 @@ def formatInput(profile_dict):
 #baseDir = os.path.dirname(directory)
 #pdf_path = (baseDir + "/" + "BlankInvoice(edit).pdf")
 
-pdf_path = ("BlankInvoice(edit).pdf")
+pdf_path = ("./src/BlankInvoice(edit).pdf")
 
 #pdf_path = "OrderIntakeSheet(edit).pdf"
 #pdf_path = ""

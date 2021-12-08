@@ -36,10 +36,4 @@ def getDrInfo(npi):
 
     return doctorDict
 
-
-print("Enter NPI number for Doctor: ")
-input1 = input()
-result = getDrInfo(input1)
-
-print(result)
 #items = json.loads(data)

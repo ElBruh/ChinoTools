@@ -7,8 +7,8 @@ import sys
 #medical = sqlite3.connect(baseDir + "/" + 'Medi-CalRatesDB1.db')
 #medicare = sqlite3.connect(baseDir + "/" + 'MedicareRatesDB1.db')
 
-medical = sqlite3.connect('Medi-CalRatesDB1.db')
-medicare = sqlite3.connect('MedicareRatesDB1.db')
+medical = sqlite3.connect('./src/Medi-CalRatesDB1.db')
+medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
 
 
 def searchMedicalCPT(query, options):

@@ -5,6 +5,7 @@ import sqlite3
 import os
 from PDFCreator import formatInput
 from DatabaseTest import searchMedicalCPT, searchMedicareCPT
+from npiSearch import getDrInfo
 default_input_width = 20
 default_item_input_width = 10
 default_modifier_width = 5
@@ -95,6 +96,44 @@ itemsFrame = LabelFrame(root, text='Items', relief=RIDGE)
 insuranceFrame = LabelFrame(root, text="Insurance Type", relief=RIDGE)
 
 #cptRatesFile = open("MEDI-CALRATES.csv", "r")
+
+def clearDr():
+    patientPCPAddressCityInput.delete(0,END)
+    patientPCPAddressInput.delete(0,END)
+    patientPCPFirstNameInput.delete(0,END)
+    patientPCPLastNameInput.delete(0,END)
+    patientPCPAddressZipCodeInput.delete(0,END)
+    patientPCPPhoneNumberInput.delete(0,END)
+    patientPCPNPIInput.delete(0,END)
+def clearPatient():
+    patientAddressCityInput.delete(0,END)
+    patientAddressInput.delete(0,END)
+    patientFirstNameInput.delete(0,END)
+    patientLastNameInput.delete(0,END)
+    patientAddressZipCodeInput.delete(0,END)
+    patientPhoneNumberInput.delete(0,END)
+    patientInsuranceInput.delete(0,END)
+    patientPreauthorizationInput.delete(0,END)
+
+def getNpiInfo():
+    dr_info_dict = getDrInfo(patientPCPNPIInput.get())
+    
+    patientPCPAddressCityInput.delete(0,END)
+    patientPCPAddressInput.delete(0,END)
+    patientPCPFirstNameInput.delete(0,END)
+    patientPCPLastNameInput.delete(0,END)
+    patientPCPAddressZipCodeInput.delete(0,END)
+    patientPCPPhoneNumberInput.delete(0,END)
+
+    patientPCPAddressCityInput.insert(0,dr_info_dict["city"])
+    patientPCPAddressInput.insert(0,dr_info_dict["address_1"] + dr_info_dict["address_2"])
+    patientPCPFirstNameInput.insert(0,dr_info_dict["first_name"])
+    patientPCPLastNameInput.insert(0,dr_info_dict["last_name"])
+    patientPCPAddressZipCodeInput.insert(0,dr_info_dict["zip"])
+    patientPCPPhoneNumberInput.insert(0,dr_info_dict["phone_number"])
+
+
+    
 
 def getCPTInfo():
     query = []
@@ -541,6 +580,8 @@ itemRowPriceLabel = Label(itemsFrame, text="Price")
 
 submitButton = Button(submitFrame, text="Submit", command=sendToPDFCreator)
 searchButton = Button(itemsFrame, text="Search", command= getCPTInfo)
+searchDrNPI = Button(doctorFrame, text="Search NPI", command=getNpiInfo)
+clearDrForms = Button(doctorFrame, text="Clear All", command=clearDr)
 
 InsuranceType = IntVar()
 
@@ -732,6 +773,8 @@ searchButton.grid(column=0,row=7)
 createInvoicePDF.grid(column=0, row=0)
 createIntakeSheetPDF.grid(column=1, row=0)
 submitButton.grid(column=2, row=0)
+searchDrNPI.grid(column=2, row=5)
+clearDrForms.grid(column=0,row=6)
 
 insuranceFrame.grid(column=0, row=0, padx=0, pady=0)
 patientFrame.grid(column=0, row=1, padx=10, pady=10)
