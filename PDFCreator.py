@@ -13,14 +13,16 @@ def makePDF(myPDF, myDict, Name):
                     #print(key)
                 
                     if key in myDict.keys():
-                        print("found {}".format(key))
+                        #print("found {}".format(key))
                         annotation.update(
                             pdfrw.PdfDict(V='{}'.format(myDict[key]))
                         )
-    pdfrw.PdfWriter().write('./Output/{}.pdf'.format(Name), pdf)
+    pdfrw.PdfWriter().write('./Output/{}.pdf'.format(Name), myPDF)
     print("Created PDF!")
+
 def formatInput(profile_dict):
     moddedPDF = pdf
+    moddedPDF1 = pdf1
     if(profile_dict['makeInvoice'] == 1):
         data_dictForInvoice = {
             'CUST PHONE Row1' : profile_dict['patientPhone'],
@@ -79,29 +81,57 @@ def formatInput(profile_dict):
             'QTYRow6' : profile_dict['itemRow6Qty'],
             'UnitPriceRow6' : profile_dict['itemRow6Price'],
         }
-        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date)))
-    elif(profile_dict['make_intake'] == 1):
+        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Invoice"))
+    if(profile_dict['makeIntake'] == 1):
         data_dictForIntake = {
-            'Date' : some_date,
-            'Phone' : '5625567619',
-            'Phone_2' : some_date,
-            'INSURANCE INFORMATIONRow1' : 'sample',
-            'Name': 'Carls jr',
-            'By' : 'Eli',
-            'Address' : 'sample',
-            'CityState Zip_3' : 'sample',
-            'Clinical InformationRow1' : 'sample',
-            'Name_2' : '1',#DOCTOR
-            'Address_5' : '25',
-            'CityState' : '25',
-            'Date:' : '25',
-            'Time' : '25',
-            'Name Facility:' : '25',
-            'Address_2:' : '25',
-            'Clinical InformationRow1_2:' : '25',
-            'I received instructions and understand that Medicare defines the' : 'stuff'
+            'PatientPhone' : profile_dict['patientPhone'],
+            'OrderReceivedDate' : profile_dict['patientOrderDate'],
+            'OrderDispensedDate' : profile_dict['patientOrderDate'],
+            'PatientName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
+            'PatientAddress':profile_dict['patientAddress'],
+            'PatientCityState':profile_dict['patientCity'] + " " + profile_dict['patientState'],
+            'PatientZip':profile_dict['patientZip'],
+            'InsuranceInformation': 'Medicare',
+            'MBI':profile_dict['patientMBI'] + "\n",
+            'Rep' : profile_dict['patientLastName'],
+            'MembersName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
+            'ClinicalInformationRow2': profile_dict['itemRow1Description'].upper() + "\n" +
+            profile_dict['itemRow2Description'].upper() + "\n"+
+            profile_dict['itemRow3Description'].upper() + "\n"+
+            profile_dict['itemRow4Description'].upper() + "\n"+
+            profile_dict['itemRow5Description'].upper() + "\n"+
+            profile_dict['itemRow6Description'].upper() + "\n",
+
+            'DoctorName':profile_dict['patientPCPFirstName'] + " " + profile_dict['patientPCPLastName'],
+            'DoctorPhone':profile_dict['patientPCPPhone'],
+            'DoctorAddress':profile_dict['patientPCPAddress'],
+            'DoctorCityState':profile_dict['patientPCPCity'] + " " + profile_dict['patientPCPState'] + " " + profile_dict['patientPCPZip'],
+            'DoctorNPI':profile_dict['patientPCPNPI'],
+            
+            'CPTRow1' : profile_dict['itemRow1CPT'].upper(),
+            'CPtRow2' : profile_dict['itemRow2CPT'].upper(),
+            'CPTRow3' : profile_dict['itemRow3CPT'].upper(),
+            'CPTRow4' : profile_dict['itemRow4CPT'].upper(),
+            'CPTRow5' : profile_dict['itemRow5CPT'].upper(),
+            'CPTRow6' : profile_dict['itemRow6CPT'].upper(),
+            'CPTAllowableRow1':profile_dict['itemRow1Price'],
+            'CPTAllowableRow2':profile_dict['itemRow2Price'],
+            'CPTAllowableRow3':profile_dict['itemRow3Price'],
+            'CPTAllowableRow4':profile_dict['itemRow4Price'],
+            'CPTAllowableRow5':profile_dict['itemRow5Price'],
+            'CPTAllowableRow6':profile_dict['itemRow6Price'],
+
+            'ItemDescription':profile_dict['itemRow1Description'].upper() + "\n" +
+            profile_dict['itemRow2Description'].upper() + "\n"+
+            profile_dict['itemRow3Description'].upper() + "\n"+
+            profile_dict['itemRow4Description'].upper() + "\n"+
+            profile_dict['itemRow5Description'].upper() + "\n"+
+            profile_dict['itemRow6Description'].upper() + "\n",
+            
+            
+            
         }
-        makePDF(moddedPDF, data_dictForIntake)
+        makePDF(moddedPDF1, data_dictForIntake, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Intake"))
     else:
         print("No Intake Sheet Created")    
 
@@ -112,10 +142,12 @@ def formatInput(profile_dict):
 
 pdf_path = ("./src/BlankInvoice(edit).pdf")
 
-#pdf_path = "OrderIntakeSheet(edit).pdf"
+pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
 #pdf_path = ""
 pdf = pdfrw.PdfReader(pdf_path)
+pdf1 = pdfrw.PdfReader(pdf_path1)
 pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+pdf1.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 
 ANNOT_KEY = '/Annots'
 ANNOT_FIELD_KEY = '/T'
@@ -123,10 +155,10 @@ ANNOT_VAL_KEY = '/V'
 ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
-
+#test_dict = {"test":"test"}
 some_date = date.today()
 
-
+#makePDF(pdf, test_dict,"Test" )
 
 
 

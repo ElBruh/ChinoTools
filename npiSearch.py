@@ -24,9 +24,12 @@ def getDrInfo(npi):
     params["number"] = npi
     resp = requests.get(url=url, params=params)
     data = resp.json()
-
-    doctorDict["first_name"] = data["results"][0]["basic"]["first_name"]
-    doctorDict["last_name"] = data["results"][0]["basic"]["last_name"]
+    try:
+        doctorDict["first_name"] = data["results"][0]["basic"]["first_name"]
+        doctorDict["last_name"] = data["results"][0]["basic"]["last_name"]
+    except:
+        doctorDict["first_name"] = data["results"][0]["basic"]["authorized_official_first_name"]
+        doctorDict["last_name"] = data["results"][0]["basic"]["authorized_official_last_name"]
     doctorDict["address_1"] = data["results"][0]["addresses"][0]["address_1"]
     doctorDict["address_2"] = data["results"][0]["addresses"][0]["address_2"]
     doctorDict["city"] = data["results"][0]["addresses"][0]["city"]
