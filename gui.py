@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from typing import Counter
 import pdfrw
 import sqlite3
@@ -10,6 +11,8 @@ default_input_width = 20
 default_item_input_width = 10
 default_modifier_width = 5
 root = Tk()
+
+
 
 root.title("Create Patient Profile")
 
@@ -105,6 +108,7 @@ def clearDr():
     patientPCPAddressZipCodeInput.delete(0,END)
     patientPCPPhoneNumberInput.delete(0,END)
     patientPCPNPIInput.delete(0,END)
+
 def clearPatient():
     patientAddressCityInput.delete(0,END)
     patientAddressInput.delete(0,END)
@@ -114,10 +118,70 @@ def clearPatient():
     patientPhoneNumberInput.delete(0,END)
     patientInsuranceInput.delete(0,END)
     patientPreauthorizationInput.delete(0,END)
+    orderDateInput.delete(0,END)
+
+def clearCpt():
+    itemRow1Cpt.delete(0,END)
+    itemRow2Cpt.delete(0,END)
+    itemRow3Cpt.delete(0,END)
+    itemRow4Cpt.delete(0,END)
+    itemRow5Cpt.delete(0,END)
+    itemRow6Cpt.delete(0,END)
+
+    itemRow1Modifier1.delete(0,END)
+    itemRow1Modifier2.delete(0,END)
+    itemRow1Modifier3.delete(0,END)
+    itemRow1Modifier4.delete(0,END)
+    itemRow2Modifier1.delete(0,END)
+    itemRow2Modifier2.delete(0,END)
+    itemRow2Modifier3.delete(0,END)
+    itemRow2Modifier4.delete(0,END)
+    itemRow3Modifier1.delete(0,END)
+    itemRow3Modifier2.delete(0,END)
+    itemRow3Modifier3.delete(0,END)
+    itemRow3Modifier4.delete(0,END)
+    itemRow4Modifier1.delete(0,END)
+    itemRow4Modifier2.delete(0,END)
+    itemRow4Modifier3.delete(0,END)
+    itemRow4Modifier4.delete(0,END)
+    itemRow5Modifier1.delete(0,END)
+    itemRow5Modifier2.delete(0,END)
+    itemRow5Modifier3.delete(0,END)
+    itemRow5Modifier4.delete(0,END)
+    itemRow6Modifier1.delete(0,END)
+    itemRow6Modifier2.delete(0,END)
+    itemRow6Modifier3.delete(0,END)
+    itemRow6Modifier4.delete(0,END)
+
+    itemRow1Description.delete(0,END)
+    itemRow2Description.delete(0,END)
+    itemRow3Description.delete(0,END)
+    itemRow4Description.delete(0,END)
+    itemRow5Description.delete(0,END)
+    itemRow6Description.delete(0,END)
+
+    itemRow1Qty.delete(0,END)
+    itemRow2Qty.delete(0,END)
+    itemRow3Qty.delete(0,END)
+    itemRow4Qty.delete(0,END)
+    itemRow5Qty.delete(0,END)
+    itemRow6Qty.delete(0,END)
+
+    itemRow1Price.delete(0,END)
+    itemRow2Price.delete(0,END)
+    itemRow3Price.delete(0,END)
+    itemRow4Price.delete(0,END)
+    itemRow5Price.delete(0,END)
+    itemRow6Price.delete(0,END)
+
+
 
 def getNpiInfo():
-    dr_info_dict = getDrInfo(patientPCPNPIInput.get())
-    
+    try:
+        dr_info_dict = getDrInfo(patientPCPNPIInput.get())
+    except:
+        messagebox.showerror(title="Error", message="Dr. Info Not Found!", )
+        return
     patientPCPAddressCityInput.delete(0,END)
     patientPCPAddressInput.delete(0,END)
     patientPCPFirstNameInput.delete(0,END)
@@ -581,7 +645,9 @@ itemRowPriceLabel = Label(itemsFrame, text="Price")
 submitButton = Button(submitFrame, text="Submit", command=sendToPDFCreator)
 searchButton = Button(itemsFrame, text="Search", command= getCPTInfo)
 searchDrNPI = Button(doctorFrame, text="Search NPI", command=getNpiInfo)
-clearDrForms = Button(doctorFrame, text="Clear All", command=clearDr)
+clearDrForms = Button(doctorFrame, text="Clear", command=clearDr)
+clearPatientForms = Button(patientFrame, text="Clear", command=clearPatient)
+clearCptForms = Button(itemsFrame, text="Clear", command=clearCpt)
 
 InsuranceType = IntVar()
 
@@ -665,6 +731,8 @@ patientInsuranceInput.grid(column=1, row=6)
 
 patientPreauthorizationLabel.grid(column=0, row=7)
 patientPreauthorizationInput.grid(column=1, row=7)
+
+clearPatientForms.grid(column=0, row=8)
 
 patientPCPFirstNameLabel.grid(column=0, row=0)
 patientPCPFirstNameInput.grid(column=1, row=0)
@@ -768,12 +836,12 @@ itemRow6Description.grid(column=8,row=6)
 itemRow6Price.grid(column=9,row=6)
 
 searchButton.grid(column=0,row=7)
-
+clearCptForms.grid(column=1,row=7)
 
 createInvoicePDF.grid(column=0, row=0)
 createIntakeSheetPDF.grid(column=1, row=0)
 submitButton.grid(column=2, row=0)
-searchDrNPI.grid(column=2, row=5)
+searchDrNPI.grid(column=5, row=5)
 clearDrForms.grid(column=0,row=6)
 
 insuranceFrame.grid(column=0, row=0, padx=0, pady=0)
