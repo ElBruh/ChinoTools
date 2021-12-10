@@ -128,6 +128,11 @@ def formatInput(profile_dict):
             profile_dict['itemRow5Description'].upper() + "\n"+
             profile_dict['itemRow6Description'].upper() + "\n",
             
+            'ClinicalInformationRow1':profile_dict['diagnosisCodeRow1'].upper() + "\n" +
+            profile_dict['diagnosisCodeRow2'].upper() + "\n"+
+            profile_dict['diagnosisCodeRow3'].upper() + "\n"+
+            profile_dict['diagnosisCodeRow4'].upper(),
+            
             
             
         }
