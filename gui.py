@@ -7,6 +7,7 @@ import os
 from PDFCreator import formatInput
 from DatabaseTest import searchMedicalCPT, searchMedicareCPT
 from npiSearch import getDrInfo
+from searchICD10 import getICDInfo
 default_input_width = 20
 default_item_input_width = 10
 default_modifier_width = 5
@@ -90,6 +91,11 @@ profile_dict ={
     'itemRow4Description':'',
     'itemRow5Description':'',
     'itemRow6Description':'',
+    'diagnosisCodeRow1':'',
+    'diagnosisCodeRow2':'',
+    'diagnosisCodeRow3':'',
+    'diagnosisCodeRow4':'',
+
 }
 
 patientFrame = LabelFrame(root, text='Patient',  bd=2, relief=RIDGE)
@@ -97,6 +103,7 @@ doctorFrame = LabelFrame(root, text='Doctor', bd=2, relief=RIDGE)
 submitFrame = Frame(root, relief=RIDGE)
 itemsFrame = LabelFrame(root, text='Items', relief=RIDGE)
 insuranceFrame = LabelFrame(root, text="Insurance Type", relief=RIDGE)
+diagnosisFrame = LabelFrame(root, text="Diagnosis", relief=RIDGE)
 
 #cptRatesFile = open("MEDI-CALRATES.csv", "r")
 
@@ -174,8 +181,67 @@ def clearCpt():
     itemRow5Price.delete(0,END)
     itemRow6Price.delete(0,END)
 
+def clearICD():
+    diagnosisCodeRow1.delete(0,END)
+    diagnosisCodeRow2.delete(0,END)
+    diagnosisCodeRow3.delete(0,END)
+    diagnosisCodeRow4.delete(0,END)
+          
+    diagnosisCodeRow1Description.delete(0,END)
+    diagnosisCodeRow2Description.delete(0,END)
+    diagnosisCodeRow3Description.delete(0,END)
+    diagnosisCodeRow4Description.delete(0,END)
 
+def getICDInfoFromPY():
+    icd_info_dict={
+        'row1Name':'',
+        'row21Name':'',
+        'row3Name':'',
+        'row4Name':'',
+        'row1Description':'',
+        'row2Description':'',
+        'row3Description':'',
+        'row4Description':''
+    }
 
+    
+    if(diagnosisCodeRow1.get() != ""):
+        try:
+            tempDict = getICDInfo(diagnosisCodeRow1.get())
+            diagnosisCodeRow1Description.delete(0,END)
+            diagnosisCodeRow1.delete(0,END)
+            diagnosisCodeRow1Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow1.insert(0,tempDict['Name'])
+        except:
+            messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow1.get()),)
+    if(diagnosisCodeRow2.get() != ""):
+        try:
+            tempDict = getICDInfo(diagnosisCodeRow2.get())
+            diagnosisCodeRow2Description.delete(0,END)
+            diagnosisCodeRow2.delete(0,END)
+            diagnosisCodeRow2Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow2.insert(0,tempDict['Name'])
+        except:
+            messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow2.get()),)
+    if(diagnosisCodeRow3.get() != ""):
+        try:
+            tempDict = getICDInfo(diagnosisCodeRow3.get())
+            diagnosisCodeRow3Description.delete(0,END)
+            diagnosisCodeRow3.delete(0,END)
+            diagnosisCodeRow3Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow3.insert(0,tempDict['Name'])
+        except:
+            messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow3.get()),)
+    if(diagnosisCodeRow4.get() != ""):
+        try:
+            tempDict = getICDInfo(diagnosisCodeRow4.get())
+            diagnosisCodeRow4Description.delete(0,END)
+            diagnosisCodeRow4.delete(0,END)
+            diagnosisCodeRow4Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow4.insert(0,tempDict['Name'])
+        except:
+            messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow4.get()),)
+    
 def getNpiInfo():
     try:
         dr_info_dict = getDrInfo(patientPCPNPIInput.get())
@@ -519,6 +585,12 @@ def sendToPDFCreator():
     profile_dict['itemRow6Description'] = itemRow6Description.get().strip()
     profile_dict['itemRow6Qty'] = itemRow6Qty.get()
     profile_dict['itemRow6Price'] = itemRow6Price.get()
+
+    #get diagnosis codes from forms
+    profile_dict['diagnosisCodeRow1'] = diagnosisCodeRow1.get()
+    profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
+    profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
+    profile_dict['diagnosisCodeRow4'] = diagnosisCodeRow4.get()
     
     
 
@@ -534,7 +606,7 @@ value_inside_doctor=StringVar(root)
 value_inside_doctor.set("CA")
 
 
-
+#Patient INFORMATION FORM
 patientFirstNameInput= Entry(patientFrame, width = default_input_width)
 patientLastNameInput = Entry(patientFrame, width = default_input_width)
 patientAddressInput = Entry(patientFrame, width = default_input_width)
@@ -575,7 +647,7 @@ patientPCPAddressZipCodeLabel = Label(doctorFrame, text="Zip")
 patientPCPPhoneNumberLabel = Label(doctorFrame, text="Phone Number")
 patientPCPNPILabel = Label(doctorFrame, text="NPI")
 
-
+#CPT CODE ENTRY FORMS
 itemRow1Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow1Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow1Modifier2 = Entry(itemsFrame, width=default_modifier_width)
@@ -641,13 +713,30 @@ itemsTitleDescription = Label(itemsFrame, text="Description")
 itemRowPriceLabel = Label(itemsFrame, text="Price")
 
 
+#Diagnosis ICD-10 CODES FORM ENTRY
+diagnosisCode = Label(diagnosisFrame, text = "Diagnosis Code")
+diagnosisDescription = Label(diagnosisFrame, text = "Diagnosis Description")
 
+diagnosisCodeRow1 = Entry(diagnosisFrame, width = default_item_input_width)
+diagnosisCodeRow2 = Entry(diagnosisFrame, width = default_item_input_width)
+diagnosisCodeRow3 = Entry(diagnosisFrame, width = default_item_input_width)
+diagnosisCodeRow4 = Entry(diagnosisFrame, width = default_item_input_width)
+
+diagnosisCodeRow1Description = Entry(diagnosisFrame, width = default_input_width)
+diagnosisCodeRow2Description = Entry(diagnosisFrame, width = default_input_width)
+diagnosisCodeRow3Description = Entry(diagnosisFrame, width = default_input_width)
+diagnosisCodeRow4Description = Entry(diagnosisFrame, width = default_input_width)
+
+
+#BUTTONS FOR FORMS
 submitButton = Button(submitFrame, text="Submit", command=sendToPDFCreator)
 searchButton = Button(itemsFrame, text="Search", command= getCPTInfo)
 searchDrNPI = Button(doctorFrame, text="Search NPI", command=getNpiInfo)
+searchICD = Button(diagnosisFrame, text="Search", command=getICDInfoFromPY)
 clearDrForms = Button(doctorFrame, text="Clear", command=clearDr)
 clearPatientForms = Button(patientFrame, text="Clear", command=clearPatient)
 clearCptForms = Button(itemsFrame, text="Clear", command=clearCpt)
+clearICDForms = Button(diagnosisFrame, text="Clear", command=clearICD)
 
 InsuranceType = IntVar()
 
@@ -835,6 +924,23 @@ itemRow6Qty.grid(column=7, row = 6)
 itemRow6Description.grid(column=8,row=6)
 itemRow6Price.grid(column=9,row=6)
 
+
+diagnosisCode.grid(column=0,row=0)
+diagnosisDescription.grid(column=1,row=0)
+
+diagnosisCodeRow1.grid(column=0,row=1)
+diagnosisCodeRow1Description.grid(column=1,row=1)
+
+diagnosisCodeRow2.grid(column=0,row=2)
+diagnosisCodeRow2Description.grid(column=1,row=2)
+
+diagnosisCodeRow3.grid(column=0,row=3)
+diagnosisCodeRow3Description.grid(column=1,row=3)
+
+diagnosisCodeRow4.grid(column=0,row=4)
+diagnosisCodeRow4Description.grid(column=1,row=4)
+clearICDForms.grid(column=1,row=5)
+
 searchButton.grid(column=0,row=7)
 clearCptForms.grid(column=1,row=7)
 
@@ -843,12 +949,15 @@ createIntakeSheetPDF.grid(column=1, row=0)
 submitButton.grid(column=2, row=0)
 searchDrNPI.grid(column=5, row=5)
 clearDrForms.grid(column=0,row=6)
+searchICD.grid(column=0,row=5)
+
 
 insuranceFrame.grid(column=0, row=0, padx=0, pady=0)
 patientFrame.grid(column=0, row=1, padx=10, pady=10)
 itemsFrame.grid(column=1, row=1, padx=10, pady=10)
 doctorFrame.grid(column=0, row=2, padx=10, pady=10)
 submitFrame.grid(column=0, row=3, padx=10, pady=10)
+diagnosisFrame.grid(column=1,row=2, padx=10, pady=10)
 
 
 root.mainloop()
