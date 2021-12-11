@@ -10,6 +10,7 @@ from npiSearch import getDrInfo
 from searchICD10 import getICDInfo
 default_input_width = 20
 default_item_input_width = 10
+default_ICD_Description_width = 65
 default_modifier_width = 5
 root = Tk()
 
@@ -95,6 +96,10 @@ profile_dict ={
     'diagnosisCodeRow2':'',
     'diagnosisCodeRow3':'',
     'diagnosisCodeRow4':'',
+    'diagnosisCodeRow1Description':'',
+    'diagnosisCodeRow2Description':'',
+    'diagnosisCodeRow3Description':'',
+    'diagnosisCodeRow4Description':'',
 
 }
 
@@ -108,6 +113,7 @@ diagnosisFrame = LabelFrame(root, text="Diagnosis", relief=RIDGE)
 #cptRatesFile = open("MEDI-CALRATES.csv", "r")
 
 def clearDr():
+
     patientPCPAddressCityInput.delete(0,END)
     patientPCPAddressInput.delete(0,END)
     patientPCPFirstNameInput.delete(0,END)
@@ -117,6 +123,7 @@ def clearDr():
     patientPCPNPIInput.delete(0,END)
 
 def clearPatient():
+
     patientAddressCityInput.delete(0,END)
     patientAddressInput.delete(0,END)
     patientFirstNameInput.delete(0,END)
@@ -128,6 +135,7 @@ def clearPatient():
     orderDateInput.delete(0,END)
 
 def clearCpt():
+
     itemRow1Cpt.delete(0,END)
     itemRow2Cpt.delete(0,END)
     itemRow3Cpt.delete(0,END)
@@ -182,6 +190,7 @@ def clearCpt():
     itemRow6Price.delete(0,END)
 
 def clearICD():
+
     diagnosisCodeRow1.delete(0,END)
     diagnosisCodeRow2.delete(0,END)
     diagnosisCodeRow3.delete(0,END)
@@ -193,61 +202,60 @@ def clearICD():
     diagnosisCodeRow4Description.delete(0,END)
 
 def getICDInfoFromPY():
-    icd_info_dict={
-        'row1Name':'',
-        'row21Name':'',
-        'row3Name':'',
-        'row4Name':'',
-        'row1Description':'',
-        'row2Description':'',
-        'row3Description':'',
-        'row4Description':''
-    }
-
     
     if(diagnosisCodeRow1.get() != ""):
+
         try:
             tempDict = getICDInfo(diagnosisCodeRow1.get())
             diagnosisCodeRow1Description.delete(0,END)
             diagnosisCodeRow1.delete(0,END)
-            diagnosisCodeRow1Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow1Description.insert(0, "-" +  tempDict['Description'])
             diagnosisCodeRow1.insert(0,tempDict['Name'])
         except:
             messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow1.get()),)
+    
     if(diagnosisCodeRow2.get() != ""):
+
         try:
             tempDict = getICDInfo(diagnosisCodeRow2.get())
             diagnosisCodeRow2Description.delete(0,END)
             diagnosisCodeRow2.delete(0,END)
-            diagnosisCodeRow2Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow2Description.insert(0, "-" +  tempDict['Description'])
             diagnosisCodeRow2.insert(0,tempDict['Name'])
         except:
             messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow2.get()),)
+    
     if(diagnosisCodeRow3.get() != ""):
+
         try:
             tempDict = getICDInfo(diagnosisCodeRow3.get())
             diagnosisCodeRow3Description.delete(0,END)
             diagnosisCodeRow3.delete(0,END)
-            diagnosisCodeRow3Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow3Description.insert(0, "-" + tempDict['Description'])
             diagnosisCodeRow3.insert(0,tempDict['Name'])
         except:
             messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow3.get()),)
+    
     if(diagnosisCodeRow4.get() != ""):
+
         try:
             tempDict = getICDInfo(diagnosisCodeRow4.get())
             diagnosisCodeRow4Description.delete(0,END)
             diagnosisCodeRow4.delete(0,END)
-            diagnosisCodeRow4Description.insert(0, tempDict['Description'])
+            diagnosisCodeRow4Description.insert(0, "-" +  tempDict['Description'])
             diagnosisCodeRow4.insert(0,tempDict['Name'])
         except:
             messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow4.get()),)
     
 def getNpiInfo():
+
     try:
         dr_info_dict = getDrInfo(patientPCPNPIInput.get())
+
     except:
         messagebox.showerror(title="Error", message="Dr. Info Not Found!", )
         return
+
     patientPCPAddressCityInput.delete(0,END)
     patientPCPAddressInput.delete(0,END)
     patientPCPFirstNameInput.delete(0,END)
@@ -266,6 +274,7 @@ def getNpiInfo():
     
 
 def getCPTInfo():
+
     query = []
     options = []
     
@@ -591,6 +600,11 @@ def sendToPDFCreator():
     profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
     profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
     profile_dict['diagnosisCodeRow4'] = diagnosisCodeRow4.get()
+
+    profile_dict['diagnosisCodeRow1Description'] = diagnosisCodeRow1Description.get()
+    profile_dict['diagnosisCodeRow2Description'] = diagnosisCodeRow2Description.get()
+    profile_dict['diagnosisCodeRow3Description'] = diagnosisCodeRow3Description.get()
+    profile_dict['diagnosisCodeRow4Description'] = diagnosisCodeRow4Description.get()
     
     
 
@@ -722,10 +736,10 @@ diagnosisCodeRow2 = Entry(diagnosisFrame, width = default_item_input_width)
 diagnosisCodeRow3 = Entry(diagnosisFrame, width = default_item_input_width)
 diagnosisCodeRow4 = Entry(diagnosisFrame, width = default_item_input_width)
 
-diagnosisCodeRow1Description = Entry(diagnosisFrame, width = default_input_width)
-diagnosisCodeRow2Description = Entry(diagnosisFrame, width = default_input_width)
-diagnosisCodeRow3Description = Entry(diagnosisFrame, width = default_input_width)
-diagnosisCodeRow4Description = Entry(diagnosisFrame, width = default_input_width)
+diagnosisCodeRow1Description = Entry(diagnosisFrame, width = default_ICD_Description_width)
+diagnosisCodeRow2Description = Entry(diagnosisFrame, width = default_ICD_Description_width)
+diagnosisCodeRow3Description = Entry(diagnosisFrame, width = default_ICD_Description_width)
+diagnosisCodeRow4Description = Entry(diagnosisFrame, width = default_ICD_Description_width)
 
 
 #BUTTONS FOR FORMS
