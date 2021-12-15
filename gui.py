@@ -5,7 +5,7 @@ import pdfrw
 import sqlite3
 import os
 from PDFCreator import formatInput
-from DatabaseTest import searchMedicalCPT, searchMedicareCPT
+from DatabaseTest import searchMedicalCPT, searchMedicareCPT, searchMedcalCPT2, searchMedicareCPT2
 from npiSearch import getDrInfo
 from searchICD10 import getICDInfo
 default_input_width = 20
@@ -274,7 +274,7 @@ def getNpiInfo():
     
 
 def getCPTInfo():
-
+    '''
     query = []
     options = []
     
@@ -292,181 +292,383 @@ def getCPTInfo():
     query.append(itemRow4Cpt.get())
     query.append(itemRow5Cpt.get())
     query.append(itemRow6Cpt.get())
+    '''
 
-    if(InsuranceType.get() == 1):
+    if(itemRow1Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow1Cpt.get(), rentalCheckRow1.get())
+                itemRow1Price.delete(0,END)
+                itemRow1Price.insert(0, temp_Dict["ItemValue"])
+                itemRow1Description.delete(0,END)
+                itemRow1Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow1.get() == 1):
+                    itemRow1Modifier1.delete(0,END)
+                    itemRow1Modifier1.insert(0,"NU")
+                    itemRow1Modifier2.delete(0,END)
+                    itemRow1Modifier3.delete(0,END)
+                    itemRow1Modifier4.delete(0,END)
+                if(rentalCheckRow1.get() == 0):
+                    itemRow1Modifier1.delete(0,END)
+                    itemRow1Modifier1.insert(0,"RR")
+                    itemRow1Modifier2.delete(0,END)
+                    itemRow1Modifier3.delete(0,END)
+                    itemRow1Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow1.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow1Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow1Cpt.get()),)
+        #if Medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow1Cpt.get(), rentalCheckRow1.get())
+                itemRow1Price.delete(0,END)
+                itemRow1Price.insert(0, temp_Dict["ItemValue"])
+                itemRow1Description.delete(0,END)
+                itemRow1Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow1.get() == 1):
+                    itemRow1Modifier1.delete(0,END)
+                    itemRow1Modifier1.insert(0,"NU")
+                    itemRow1Modifier2.delete(0,END)
+                    itemRow1Modifier2.insert(0,"KX")
+                    itemRow1Modifier3.delete(0,END)
+                    itemRow1Modifier4.delete(0,END)
+                if(rentalCheckRow1.get() == 0):
+                    itemRow1Modifier1.delete(0,END)
+                    itemRow1Modifier1.insert(0,"RR")
+                    itemRow1Modifier2.delete(0,END)
+                    itemRow1Modifier2.insert(0,"KH")
+                    itemRow1Modifier3.delete(0,END)
+                    itemRow1Modifier3.insert(0,"KX")
+                    itemRow1Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow1.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow1Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow1Cpt.get()),)
+    if(itemRow2Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow2Cpt.get(), rentalCheckRow2.get())
+                itemRow2Price.delete(0,END)
+                itemRow2Price.insert(0, temp_Dict["ItemValue"])
+                itemRow2Description.delete(0,END)
+                itemRow2Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow2.get() == 1):
+                    itemRow2Modifier1.delete(0,END)
+                    itemRow2Modifier1.insert(0,"NU")
+                    itemRow2Modifier2.delete(0,END)
+                    itemRow2Modifier3.delete(0,END)
+                    itemRow2Modifier4.delete(0,END)
+                if(rentalCheckRow2.get() == 0):
+                    itemRow2Modifier1.delete(0,END)
+                    itemRow2Modifier1.insert(0,"RR")
+                    itemRow2Modifier2.delete(0,END)
+                    itemRow2Modifier3.delete(0,END)
+                    itemRow2Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow2.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow2Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow2Cpt.get()),)
+        #if medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow2Cpt.get(), rentalCheckRow2.get())
+                itemRow2Price.delete(0,END)
+                itemRow2Price.insert(0, temp_Dict["ItemValue"])
+                itemRow2Description.delete(0,END)
+                itemRow2Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow2.get() == 1):
+                    itemRow2Modifier1.delete(0,END)
+                    itemRow2Modifier1.insert(0,"NU")
+                    itemRow2Modifier2.delete(0,END)
+                    itemRow2Modifier2.insert(0,"KX")
+                    itemRow2Modifier3.delete(0,END)
+                    itemRow2Modifier4.delete(0,END)
+
+                if(rentalCheckRow2.get() == 0):
+                    itemRow2Modifier1.delete(0,END)
+                    itemRow2Modifier1.insert(0,"RR")
+                    itemRow2Modifier2.delete(0,END)
+                    itemRow2Modifier2.insert(0,"KH")
+                    itemRow2Modifier3.delete(0,END)
+                    itemRow2Modifier3.insert(0,"KX")
+                    itemRow2Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow2.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow2Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow2Cpt.get()),)
+    if(itemRow3Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow3Cpt.get(), rentalCheckRow3.get())
+                itemRow3Price.delete(0,END)
+                itemRow3Price.insert(0, temp_Dict["ItemValue"])
+                itemRow3Description.delete(0,END)
+                itemRow3Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow3.get() == 1):
+                    itemRow3Modifier1.delete(0,END)
+                    itemRow3Modifier1.insert(0,"NU")
+                    itemRow3Modifier2.delete(0,END)
+                    itemRow3Modifier3.delete(0,END)
+                    itemRow3Modifier4.delete(0,END)
+                if(rentalCheckRow3.get() == 0):
+                    itemRow3Modifier1.delete(0,END)
+                    itemRow3Modifier1.insert(0,"RR")
+                    itemRow3Modifier2.delete(0,END)
+                    itemRow3Modifier3.delete(0,END)
+                    itemRow3Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow3.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow3Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow3Cpt.get()),)
+        #if Medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow3Cpt.get(), rentalCheckRow3.get())
+                itemRow3Price.delete(0,END)
+                itemRow3Price.insert(0, temp_Dict["ItemValue"])
+                itemRow3Description.delete(0,END)
+                itemRow3Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow3.get() == 1):
+                    itemRow3Modifier1.delete(0,END)
+                    itemRow3Modifier1.insert(0,"NU")
+                    itemRow3Modifier2.delete(0,END)
+                    itemRow3Modifier2.insert(0,"KX")
+                    itemRow3Modifier3.delete(0,END)
+                    itemRow3Modifier4.delete(0,END)
+                if(rentalCheckRow3.get() == 0):
+                    itemRow3Modifier1.delete(0,END)
+                    itemRow3Modifier1.insert(0,"RR")
+                    itemRow3Modifier2.delete(0,END)
+                    itemRow3Modifier2.insert(0,"KH")
+                    itemRow3Modifier3.delete(0,END)
+                    itemRow3Modifier3.insert(0,"KX")
+                    itemRow3Modifier4.delete(0,END)
+                
+            except:
+                if(rentalCheckRow3.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee schedule".format(itemRow3Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee schedule".format(itemRow3Cpt.get()),)
+    if(itemRow4Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow4Cpt.get(), rentalCheckRow4.get())
+                itemRow4Price.delete(0,END)
+                itemRow4Price.insert(0, temp_Dict["ItemValue"])
+                itemRow4Description.delete(0,END)
+                itemRow4Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow4.get() == 1):
+                    itemRow4Modifier1.delete(0,END)
+                    itemRow4Modifier1.insert(0,"NU")
+                    itemRow4Modifier2.delete(0,END)
+                    itemRow4Modifier3.delete(0,END)
+                    itemRow4Modifier4.delete(0,END)
+                if(rentalCheckRow4.get() == 0):
+                    itemRow4Modifier1.delete(0,END)
+                    itemRow4Modifier1.insert(0,"RR")
+                    itemRow4Modifier2.delete(0,END)
+                    itemRow4Modifier3.delete(0,END)
+                    itemRow4Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow4.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow4Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow4Cpt.get()),)
+        #if Medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow4Cpt.get(), rentalCheckRow4.get())
+                itemRow4Price.delete(0,END)
+                itemRow4Price.insert(0, temp_Dict["ItemValue"])
+                itemRow4Description.delete(0,END)
+                itemRow4Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow4.get() == 1):
+                    itemRow4Modifier1.delete(0,END)
+                    itemRow4Modifier1.insert(0,"NU")
+                    itemRow4Modifier2.delete(0,END)
+                    itemRow4Modifier2.insert(0,"KX")
+                    itemRow4Modifier3.delete(0,END)
+                    itemRow4Modifier4.delete(0,END)
+                if(rentalCheckRow4.get() == 0):
+                    itemRow4Modifier1.delete(0,END)
+                    itemRow4Modifier1.insert(0,"RR")
+                    itemRow4Modifier2.delete(0,END)
+                    itemRow4Modifier2.insert(0,"KH")
+                    itemRow4Modifier3.delete(0,END)
+                    itemRow4Modifier3.insert(0,"KX")
+                    itemRow4Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow4.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow4Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow4Cpt.get()),)
+    if(itemRow5Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow5Cpt.get(), rentalCheckRow5.get())
+                itemRow5Price.delete(0,END)
+                itemRow5Price.insert(0, temp_Dict["ItemValue"])
+                itemRow5Description.delete(0,END)
+                itemRow5Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow5.get() == 1):
+                    itemRow5Modifier1.delete(0,END)
+                    itemRow5Modifier1.insert(0,"NU")
+                    itemRow5Modifier2.delete(0,END)
+                    itemRow5Modifier3.delete(0,END)
+                    itemRow5Modifier4.delete(0,END)
+                if(rentalCheckRow5.get() == 0):
+                    itemRow5Modifier1.delete(0,END)
+                    itemRow5Modifier1.insert(0,"RR")
+                    itemRow5Modifier2.delete(0,END)
+                    itemRow5Modifier3.delete(0,END)
+                    itemRow5Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow5().get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow5Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow5Cpt.get()),)
+        #if Medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow5Cpt.get(), rentalCheckRow5.get())
+                itemRow5Price.delete(0,END)
+                itemRow5Price.insert(0, temp_Dict["ItemValue"])
+                itemRow5Description.delete(0,END)
+                itemRow5Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow5.get() == 1):
+                    itemRow5Modifier1.delete(0,END)
+                    itemRow5Modifier1.insert(0,"NU")
+                    itemRow5Modifier2.delete(0,END)
+                    itemRow5Modifier2.insert(0,"KX")
+                    itemRow5Modifier3.delete(0,END)
+                    itemRow5Modifier4.delete(0,END)
+                if(rentalCheckRow5.get() == 0):
+                    itemRow5Modifier1.delete(0,END)
+                    itemRow5Modifier1.insert(0,"RR")
+                    itemRow5Modifier2.delete(0,END)
+                    itemRow5Modifier2.insert(0,"KH")
+                    itemRow5Modifier3.delete(0,END)
+                    itemRow5Modifier3.insert(0,"KX")
+                    itemRow5Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow5().get == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow5Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow5Cpt.get()),)
+    if(itemRow6Cpt.get() != ""):
+        #if Medical
+        if(InsuranceType.get() == 1):
+            try:
+                temp_Dict = searchMedcalCPT2(itemRow6Cpt.get(), rentalCheckRow6.get())
+                itemRow6Price.delete(0,END)
+                itemRow6Price.insert(0, temp_Dict["ItemValue"])
+                itemRow6Description.delete(0,END)
+                itemRow6Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow6.get() == 1):
+                    itemRow6Modifier1.delete(0,END)
+                    itemRow6Modifier1.insert(0,"NU")
+                    itemRow6Modifier2.delete(0,END)
+                    itemRow6Modifier3.delete(0,END)
+                    itemRow6Modifier4.delete(0,END)
+                if(rentalCheckRow6.get() == 0):
+                    itemRow6Modifier1.delete(0,END)
+                    itemRow6Modifier1.insert(0,"RR")
+                    itemRow6Modifier2.delete(0,END)
+                    itemRow6Modifier3.delete(0,END)
+                    itemRow6Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow6.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medi-Cal Fee Schedule".format(itemRow6Cpt.get()),)
+                else:
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medi-Cal Fee Schedule".format(itemRow6Cpt.get()),)    
+        #if Medicare
+        if(InsuranceType.get() == 0):
+            try:
+                temp_Dict = searchMedicareCPT2(itemRow6Cpt.get(), rentalCheckRow6.get())
+                itemRow6Price.delete(0,END)
+                itemRow6Price.insert(0, temp_Dict["ItemValue"])
+                itemRow6Description.delete(0,END)
+                itemRow6Description.insert(0, temp_Dict["itemDescription"])
+
+                if(rentalCheckRow6.get() == 1):
+                    itemRow6Modifier1.delete(0,END)
+                    itemRow6Modifier1.insert(0,"NU")
+                    itemRow6Modifier2.delete(0,END)
+                    itemRow6Modifier2.insert(0,"KX")
+                    itemRow6Modifier3.delete(0,END)
+                    itemRow6Modifier4.delete(0,END)
+                if(rentalCheckRow6.get() == 0):
+                    itemRow6Modifier1.delete(0,END)
+                    itemRow6Modifier1.insert(0,"RR")
+                    itemRow6Modifier2.delete(0,END)
+                    itemRow6Modifier2.insert(0,"KH")
+                    itemRow6Modifier3.delete(0,END)
+                    itemRow6Modifier3.insert(0,"KX")
+                    itemRow6Modifier4.delete(0,END)
+            except:
+                if(rentalCheckRow6.get() == 0):
+                    messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow6Cpt.get()),)
+                else:   
+                    messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow6Cpt.get()),)
+
+    '''if(InsuranceType.get() == 1):
         details = searchMedicalCPT(query, options)
     elif(InsuranceType.get() == 0):
         details = searchMedicareCPT(query, options)
-
+    '''
     #IF Medicare NU
-    if(InsuranceType.get() == 0 and rentalCheckRow1.get() == 1 and itemRow1Cpt.get() != ""):
-        itemRow1Modifier1.delete(0,END)
-        itemRow1Modifier1.insert(0,"NU")
-        itemRow1Modifier2.delete(0,END)
-        itemRow1Modifier2.insert(0,"KX")
-        itemRow1Modifier3.delete(0,END)
-        itemRow1Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow2.get() == 1 and itemRow2Cpt.get() != ""):
-        itemRow2Modifier1.delete(0,END)
-        itemRow2Modifier1.insert(0,"NU")
-        itemRow2Modifier2.delete(0,END)
-        itemRow2Modifier2.insert(0,"KX")
-        itemRow2Modifier3.delete(0,END)
-        itemRow2Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow3.get() == 1 and itemRow3Cpt.get() != ""):
-        itemRow3Modifier1.delete(0,END)
-        itemRow3Modifier1.insert(0,"NU")
-        itemRow3Modifier2.delete(0,END)
-        itemRow3Modifier2.insert(0,"KX")
-        itemRow3Modifier3.delete(0,END)
-        itemRow3Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow4.get() == 1 and itemRow4Cpt.get() != ""):
-        itemRow4Modifier1.delete(0,END)
-        itemRow4Modifier1.insert(0,"NU")
-        itemRow4Modifier2.delete(0,END)
-        itemRow4Modifier2.insert(0,"KX")
-        itemRow4Modifier3.delete(0,END)
-        itemRow4Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow5.get() == 1 and itemRow5Cpt.get() != ""):
-        itemRow5Modifier1.delete(0,END)
-        itemRow5Modifier1.insert(0,"NU")
-        itemRow5Modifier2.delete(0,END)
-        itemRow5Modifier2.insert(0,"KX")
-        itemRow5Modifier3.delete(0,END)
-        itemRow5Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow6.get() == 1 and itemRow6Cpt.get() != ""):
-        itemRow6Modifier1.delete(0,END)
-        itemRow6Modifier1.insert(0,"NU")
-        itemRow6Modifier2.delete(0,END)
-        itemRow6Modifier2.insert(0,"KX")
-        itemRow6Modifier3.delete(0,END)
-        itemRow6Modifier4.delete(0,END)
+    
+    
+    
+    
+    
+    
     #IF Medicare RR
-    if(InsuranceType.get() == 0 and rentalCheckRow1.get() == 0 and itemRow1Cpt.get() != ""):
-        itemRow1Modifier1.delete(0,END)
-        itemRow1Modifier1.insert(0,"RR")
-        itemRow1Modifier2.delete(0,END)
-        itemRow1Modifier2.insert(0,"KH")
-        itemRow1Modifier3.delete(0,END)
-        itemRow1Modifier3.insert(0,"KX")
-        itemRow1Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow2.get() == 0 and itemRow2Cpt.get() != ""):
-        itemRow2Modifier1.delete(0,END)
-        itemRow2Modifier1.insert(0,"RR")
-        itemRow2Modifier2.delete(0,END)
-        itemRow2Modifier2.insert(0,"KH")
-        itemRow2Modifier3.delete(0,END)
-        itemRow2Modifier3.insert(0,"KX")
-        itemRow2Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow3.get() == 0 and itemRow3Cpt.get() != ""):
-        itemRow3Modifier1.delete(0,END)
-        itemRow3Modifier1.insert(0,"RR")
-        itemRow3Modifier2.delete(0,END)
-        itemRow3Modifier2.insert(0,"KH")
-        itemRow3Modifier3.delete(0,END)
-        itemRow3Modifier3.insert(0,"KX")
-        itemRow3Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow4.get() == 0 and itemRow4Cpt.get() != ""):
-        itemRow4Modifier1.delete(0,END)
-        itemRow4Modifier1.insert(0,"RR")
-        itemRow4Modifier2.delete(0,END)
-        itemRow4Modifier2.insert(0,"KH")
-        itemRow4Modifier3.delete(0,END)
-        itemRow4Modifier3.insert(0,"KX")
-        itemRow4Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow5.get() == 0 and itemRow5Cpt.get() != ""):
-        itemRow5Modifier1.delete(0,END)
-        itemRow5Modifier1.insert(0,"RR")
-        itemRow5Modifier2.delete(0,END)
-        itemRow5Modifier2.insert(0,"KH")
-        itemRow5Modifier3.delete(0,END)
-        itemRow5Modifier3.insert(0,"KX")
-        itemRow5Modifier4.delete(0,END)
-    if(InsuranceType.get() == 0 and rentalCheckRow6.get() == 0 and itemRow6Cpt.get() != ""):
-        itemRow6Modifier1.delete(0,END)
-        itemRow6Modifier1.insert(0,"RR")
-        itemRow6Modifier2.delete(0,END)
-        itemRow6Modifier2.insert(0,"KH")
-        itemRow6Modifier3.delete(0,END)
-        itemRow6Modifier3.insert(0,"KX")
-        itemRow6Modifier4.delete(0,END)
+    
+    
+    
+    
+    
+    
 
     #IF Medical NU
-    if(InsuranceType.get() == 1 and rentalCheckRow1.get() == 1 and itemRow1Cpt.get() != ""):
-        itemRow1Modifier1.delete(0,END)
-        itemRow1Modifier1.insert(0,"NU")
-        itemRow1Modifier2.delete(0,END)
-        itemRow1Modifier3.delete(0,END)
-        itemRow1Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow2.get() == 1 and itemRow2Cpt.get() != ""):
-        itemRow2Modifier1.delete(0,END)
-        itemRow2Modifier1.insert(0,"NU")
-        itemRow2Modifier2.delete(0,END)
-        itemRow2Modifier3.delete(0,END)
-        itemRow2Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow3.get() == 1 and itemRow3Cpt.get() != ""):
-        itemRow3Modifier1.delete(0,END)
-        itemRow3Modifier1.insert(0,"NU")
-        itemRow3Modifier2.delete(0,END)
-        itemRow3Modifier3.delete(0,END)
-        itemRow3Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow4.get() == 1 and itemRow4Cpt.get() != ""):
-        itemRow4Modifier1.delete(0,END)
-        itemRow4Modifier1.insert(0,"NU")
-        itemRow4Modifier2.delete(0,END)
-        itemRow4Modifier3.delete(0,END)
-        itemRow4Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow5.get() == 1 and itemRow5Cpt.get() != ""):
-        itemRow5Modifier1.delete(0,END)
-        itemRow5Modifier1.insert(0,"NU")
-        itemRow5Modifier2.delete(0,END)
-        itemRow5Modifier3.delete(0,END)
-        itemRow5Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow6.get() == 1 and itemRow6Cpt.get() != ""):
-        itemRow6Modifier1.delete(0,END)
-        itemRow6Modifier1.insert(0,"NU")
-        itemRow6Modifier2.delete(0,END)
-        itemRow6Modifier3.delete(0,END)
-        itemRow6Modifier4.delete(0,END)
+    
+    
+    
+    
+    
+    
 
     #IF Medical RR
-    if(InsuranceType.get() == 1 and rentalCheckRow1.get() == 0 and itemRow1Cpt.get() != ""):
-        itemRow1Modifier1.delete(0,END)
-        itemRow1Modifier1.insert(0,"RR")
-        itemRow1Modifier2.delete(0,END)
-        itemRow1Modifier3.delete(0,END)
-        itemRow1Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow2.get() == 0 and itemRow2Cpt.get() != ""):
-        itemRow2Modifier1.delete(0,END)
-        itemRow2Modifier1.insert(0,"RR")
-        itemRow2Modifier2.delete(0,END)
-        itemRow2Modifier3.delete(0,END)
-        itemRow2Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow3.get() == 0 and itemRow3Cpt.get() != ""):
-        itemRow3Modifier1.delete(0,END)
-        itemRow3Modifier1.insert(0,"RR")
-        itemRow3Modifier2.delete(0,END)
-        itemRow3Modifier3.delete(0,END)
-        itemRow3Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow4.get() == 0 and itemRow4Cpt.get() != ""):
-        itemRow4Modifier1.delete(0,END)
-        itemRow4Modifier1.insert(0,"RR")
-        itemRow4Modifier2.delete(0,END)
-        itemRow4Modifier3.delete(0,END)
-        itemRow4Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow5.get() == 0 and itemRow5Cpt.get() != ""):
-        itemRow5Modifier1.delete(0,END)
-        itemRow5Modifier1.insert(0,"RR")
-        itemRow5Modifier2.delete(0,END)
-        itemRow5Modifier3.delete(0,END)
-        itemRow5Modifier4.delete(0,END)
-    if(InsuranceType.get() == 1 and rentalCheckRow6.get() == 0 and itemRow6Cpt.get() != ""):
-        itemRow6Modifier1.delete(0,END)
-        itemRow6Modifier1.insert(0,"RR")
-        itemRow6Modifier2.delete(0,END)
-        itemRow6Modifier3.delete(0,END)
-        itemRow6Modifier4.delete(0,END)
     
+    
+    
+    
+    
+    
+    '''
     print(details)
     itemRow1Price.delete(0,END)
     itemRow1Price.insert(0,details[0])
@@ -503,7 +705,7 @@ def getCPTInfo():
 
     itemRow6Description.delete(0, END)
     itemRow6Description.insert(0, details[11])
-
+    '''
 
 
 
@@ -595,7 +797,7 @@ def sendToPDFCreator():
     profile_dict['itemRow6Qty'] = itemRow6Qty.get()
     profile_dict['itemRow6Price'] = itemRow6Price.get()
 
-    #get diagnosis codes from forms
+    #get diagnosis codes and descriptions from forms
     profile_dict['diagnosisCodeRow1'] = diagnosisCodeRow1.get()
     profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
     profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
