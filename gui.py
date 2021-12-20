@@ -28,7 +28,8 @@ profile_dict ={
     'patientState':'',
     'patientZip':'',
     'patientPhone':'',
-    'patientOrderDate':'',    
+    'patientOrderDate':'',
+    'patientDateOfBirth': '',    
     'patientMBI':'',
     'patientPreauthorization':'',
     'patientReferralName':'',
@@ -726,6 +727,7 @@ def sendToPDFCreator():
     profile_dict['patientOrderDate'] = orderDateInput.get()
     profile_dict['patientMBI'] = patientInsuranceInput.get()
     profile_dict['patientPreauthorization'] = patientPreauthorizationInput.get()
+    profile_dict["patientDateOfBirth"] = patientDateOfBirth.get()
 
     #get doctor info from forms
     profile_dict['patientPCPFirstName'] = patientPCPFirstNameInput.get()
@@ -852,6 +854,7 @@ patientAddressZipCodeLabel = Label(patientFrame, text="Zip")
 patientAddressStateLabel = Label(patientFrame, text="State")
 patientPhoneNumberLabel = Label(patientFrame, text="Phone Number")
 orderDateLabel = Label(patientFrame, text="Date Of Service")
+patientDateOfBirthLabel = Label(patientFrame, text="DOB")
 patientInsuranceLabel = Label(patientFrame, text="MBI")
 patientPreauthorizationLabel = Label(patientFrame, text="Pre-auth")
 patientPCPFirstNameLabel = Label(doctorFrame, text="First Name")
@@ -1028,16 +1031,19 @@ patientAddressZipCodeInput.grid(column=5, row=3, padx=10)
 patientPhoneNumberLabel.grid(column=0, row=4)
 patientPhoneNumberInput.grid(column=1, row=4)
 
-orderDateLabel.grid(column=0, row=5)
-orderDateInput.grid(column=1, row=5)
+patientDateOfBirthLabel.grid(column = 0, row = 5)
+patientDateOfBirth.grid(column= 1, row = 5)
 
-patientInsuranceLabel.grid(column=0, row=6)
-patientInsuranceInput.grid(column=1, row=6)
+orderDateLabel.grid(column=0, row=6)
+orderDateInput.grid(column=1, row=6)
 
-patientPreauthorizationLabel.grid(column=0, row=7)
-patientPreauthorizationInput.grid(column=1, row=7)
+patientInsuranceLabel.grid(column=0, row=7)
+patientInsuranceInput.grid(column=1, row=7)
 
-clearPatientForms.grid(column=0, row=8)
+patientPreauthorizationLabel.grid(column=0, row=8)
+patientPreauthorizationInput.grid(column=1, row=8)
+
+clearPatientForms.grid(column=0, row=9)
 
 patientPCPFirstNameLabel.grid(column=0, row=0)
 patientPCPFirstNameInput.grid(column=1, row=0)
