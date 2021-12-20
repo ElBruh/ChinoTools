@@ -811,8 +811,11 @@ def sendToPDFCreator():
     profile_dict['diagnosisCodeRow4Description'] = diagnosisCodeRow4Description.get()
     
     
-
-    formatInput(profile_dict)
+    try:
+        formatInput(profile_dict)
+        messagebox.showerror(title="Success!", message="PDFs have been created!")
+    except:
+        messagebox.showerror(title="Error!", message="An error has occured")
     #os.system("python PDFCreator.py {} {} {} {} \"{}\" {} {} {} {} {} {} {} {}".format(a,b,c,d,e,f,g,h,i,j,k,l,m))
 
 
