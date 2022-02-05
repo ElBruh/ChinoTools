@@ -6,12 +6,13 @@ from selenium.webdriver.chrome.options import Options
 import pickle
 import time
 
-fileOfIds = open("Drids.txt", "r")
+fileOfIds = open("TXTx/Drids.txt", "r")
 ids = []
 newInfo = []
 for lines in fileOfIds:
     ids.append(int(lines))
-DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
+#DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
+DRIVER_PATH = 'chromedriver'
 
 driver = webdriver.Chrome(executable_path=DRIVER_PATH)
 driver.get('https://www.hipaaspace.com/medical_billing/coding/national_provider_identifier/npi_number_lookup.aspx')

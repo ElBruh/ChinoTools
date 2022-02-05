@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 import pickle
 import time
 
-fileOfIds = open("TestMedicareClaims.txt", "r")
+fileOfIds = open("./TXTx/TestMedicareClaims.txt", "r")
 #fileOfIds = open("IEHPCLAIMS.txt", "r")
 ids = []
 patientList = []
@@ -17,18 +17,18 @@ for lines in fileOfIds:
 
 #DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
 DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
-
-driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-driver.get('https://www.officeally.com/slogin.aspx')
-cookies = pickle.load(open("cookies.pkl", "rb"))
-for cookie in cookies:
-    driver.add_cookie(cookie)
+chrome_options = Options()
+chrome_options.add_argument("user-data-dir=./selenium")
+#driver = webdriver.Chrome(executable_path=DRIVER_PATH)
+driver = webdriver.Chrome(chrome_options=chrome_options)
+driver.get(url='https://www.officeally.com/slogin.aspx')
+###   driver.add_cookie(cookie)
 #login = driver.find_element_by_xpath("//input[@type='username']").send_keys('romaminc')
 #password = driver.find_element_by_xpath("//input[@type='password']").send_keys('Advancemedical$2021!^!')
 #submit = driver.find_element_by_xpath("//button[@ID='Login1_LoginButton']").click()
 
 login = driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-password = driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!')
+password = driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!')
 submit = driver.find_element(By.ID, "Login1_LoginButton").click()
 #i = 1
 for myId in ids:

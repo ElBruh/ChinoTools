@@ -21,6 +21,7 @@ root.title("Create Patient Profile")
 profile_dict ={
     'makeInvoice':1,
     'makeIntake':1,
+    'UserName':'',
     'patientOrderDate':'',
     'patientLastName':'',
     'patientAddress':'',
@@ -634,86 +635,11 @@ def getCPTInfo():
                 else:   
                     messagebox.showerror(title="Error", message="CPT code ({} NU) Not Found In Medicare Fee Schedule".format(itemRow6Cpt.get()),)
 
-    '''if(InsuranceType.get() == 1):
-        details = searchMedicalCPT(query, options)
-    elif(InsuranceType.get() == 0):
-        details = searchMedicareCPT(query, options)
-    '''
-    #IF Medicare NU
-    
-    
-    
-    
-    
-    
-    #IF Medicare RR
-    
-    
-    
-    
-    
-    
-
-    #IF Medical NU
-    
-    
-    
-    
-    
-    
-
-    #IF Medical RR
-    
-    
-    
-    
-    
-    
-    '''
-    print(details)
-    itemRow1Price.delete(0,END)
-    itemRow1Price.insert(0,details[0])
-
-    itemRow1Description.delete(0, END)
-    itemRow1Description.insert(0, details[1])
-
-    itemRow2Price.delete(0,END)
-    itemRow2Price.insert(0,details[2])
-
-    itemRow2Description.delete(0, END)
-    itemRow2Description.insert(0, details[3])
-
-    itemRow3Price.delete(0,END)
-    itemRow3Price.insert(0,details[4])
-
-    itemRow3Description.delete(0, END)
-    itemRow3Description.insert(0, details[5])
-
-    itemRow4Price.delete(0,END)
-    itemRow4Price.insert(0,details[6])
-
-    itemRow4Description.delete(0, END)
-    itemRow4Description.insert(0, details[7])
-
-    itemRow5Price.delete(0,END)
-    itemRow5Price.insert(0,details[8])
-
-    itemRow5Description.delete(0, END)
-    itemRow5Description.insert(0, details[9])
-
-    itemRow6Price.delete(0,END)
-    itemRow6Price.insert(0,details[10])
-
-    itemRow6Description.delete(0, END)
-    itemRow6Description.insert(0, details[11])
-    '''
-
-
 
 def sendToPDFCreator():
     #print(e)
     
-
+    profile_dict["UserName"] = userName.get()
     #get patient info from forms
     profile_dict['makeInvoice'] = invoiceCheck.get()
     profile_dict['makeIntake'] = intakeCheck.get()
@@ -826,6 +752,14 @@ value_inside_patient.set("CA")
 value_inside_doctor=StringVar(root)
 value_inside_doctor.set("CA")
 
+insurance_option_list=["Medicare", "IEHP", "Anthem Blue Cross", "Health Net", "","","","",]
+value_inside_insurance=StringVar(root)
+value_inside_insurance.set("Medicare")
+
+#User information form field
+userName = Entry(insuranceFrame, width = default_input_width)
+userNameLabel = Label(insuranceFrame, text="User Name")
+insuranceList = OptionMenu(insuranceFrame, value_inside_insurance)
 
 #Patient INFORMATION FORM
 patientFirstNameInput= Entry(patientFrame, width = default_input_width)
@@ -1012,6 +946,8 @@ purchaseCheckMarkRow6 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckR
 
 insuranceTypeMedicare.grid(column=0,row=0)
 insuranceTypeMedical.grid(column=1,row=0)
+userNameLabel.grid(column=0,row=1)
+userName.grid(column=1, row=1)
 
 patientFirstNameLabel.grid(column=0, row=0)
 patientFirstNameInput.grid(column=1, row=0)

@@ -33,7 +33,7 @@ def formatInput(profile_dict):
                         profile_dict['patientCity'] + " " + profile_dict['patientState'] + " " + profile_dict['patientZip']),
 
             'INSURANCE INFORMATIONRow1' : ("ID: " + profile_dict['patientMBI'] + "\n"+ profile_dict['patientPreauthorization']),
-            'SALESPERSONRow1' : profile_dict['patientLastName'],
+            'SALESPERSONRow1' : profile_dict['UserName'],
             #'MANUFRow1' : profile_dict['itemRow1CPT'],
             #'ITEMLOTRow1' : profile_dict['itemRow1CPT'],
             'DESCRIPTIONRow1' : profile_dict['itemRow1Description'].upper(),
@@ -85,6 +85,7 @@ def formatInput(profile_dict):
     if(profile_dict['makeIntake'] == 1):
         data_dictForIntake = {
             'PatientPhone' : profile_dict['patientPhone'],
+            'OrderReceivedBy': profile_dict['UserName'],
             'OrderReceivedDate' : profile_dict['patientOrderDate'],
             'OrderDispensedDate' : profile_dict['patientOrderDate'],
             'PatientName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
