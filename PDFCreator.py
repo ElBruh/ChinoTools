@@ -3,7 +3,7 @@ from datetime import date
 import sys
 import os
 
-def makePDF(myPDF, myDict, Name):
+def makePDF(myPDF, myDict, Name, profile_dict):
     for page in myPDF.pages:
         annotations = page[ANNOT_KEY]
         for annotation in annotations:
@@ -17,7 +17,13 @@ def makePDF(myPDF, myDict, Name):
                         annotation.update(
                             pdfrw.PdfDict(V='{}'.format(myDict[key]))
                         )
-    pdfrw.PdfWriter().write('./Output/{}.pdf'.format(Name), myPDF)
+    if(os.path.exists('./Output/{}'.format(profile_dict['patientLastName'].upper() + "_" + profile_dict['patientFirstName'].upper())) == False):
+        os.makedirs('./Output/{}'.format(profile_dict['patientLastName'].upper() + "_" + profile_dict['patientFirstName'].upper()))
+        pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
+    else:
+        pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
+    with open('./Output/{}/Communication_Log.txt'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName']), 'w') as f:
+        f.write("Communication Log for " + profile_dict['patientFirstName'].upper() + "_" + profile_dict['patientLastName'].upper() + "\n" + "Created on " + str(some_date))
     print("Created PDF!")
 
 def formatInput(profile_dict):
@@ -33,7 +39,8 @@ def formatInput(profile_dict):
                         profile_dict['patientCity'] + " " + profile_dict['patientState'] + " " + profile_dict['patientZip']),
 
             'INSURANCE INFORMATIONRow1' : ("ID: " + profile_dict['patientMBI'] + "\n"+ profile_dict['patientPreauthorization']),
-            'SALESPERSONRow1' : profile_dict['UserName'],
+            'SALESPERSONRow1' : profile_dict['UserName'].upper(),
+            'ACCN Row1' : profile_dict['account'].upper(),
             #'MANUFRow1' : profile_dict['itemRow1CPT'],
             #'ITEMLOTRow1' : profile_dict['itemRow1CPT'],
             'DESCRIPTIONRow1' : profile_dict['itemRow1Description'].upper(),
@@ -81,11 +88,11 @@ def formatInput(profile_dict):
             'QTYRow6' : profile_dict['itemRow6Qty'],
             'UnitPriceRow6' : profile_dict['itemRow6Price'],
         }
-        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Invoice"))
+        makePDF(moddedPDF, data_dictForInvoice, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Invoice"), profile_dict)
     if(profile_dict['makeIntake'] == 1):
         data_dictForIntake = {
             'PatientPhone' : profile_dict['patientPhone'],
-            'OrderReceivedBy': profile_dict['UserName'],
+            'OrderReceivedBy': profile_dict['UserName'].upper(),
             'OrderReceivedDate' : profile_dict['patientOrderDate'],
             'OrderDispensedDate' : profile_dict['patientOrderDate'],
             'PatientName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
@@ -93,7 +100,7 @@ def formatInput(profile_dict):
             'PatientCityState':profile_dict['patientCity'] + " " + profile_dict['patientState'],
             'PatientZip':profile_dict['patientZip'],
             'PatientDOB':profile_dict['patientDateOfBirth'],
-            'InsuranceInformation': 'Medicare',
+            'InsuranceInformation': profile_dict['account'].upper(),
             'MBI':profile_dict['patientMBI'] + "\n",
             'Rep' : profile_dict['patientLastName'],
             'MembersName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
@@ -139,7 +146,7 @@ def formatInput(profile_dict):
             
             
         }
-        makePDF(moddedPDF1, data_dictForIntake, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Intake"))
+        makePDF(moddedPDF1, data_dictForIntake, (profile_dict['patientFirstName'] + "_" + profile_dict['patientLastName'] + "_" + str(some_date) + "Intake"), profile_dict)
     else:
         print("No Intake Sheet Created")    
 

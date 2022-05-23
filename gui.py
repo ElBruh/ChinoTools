@@ -22,6 +22,7 @@ profile_dict ={
     'makeInvoice':1,
     'makeIntake':1,
     'UserName':'',
+    'account':'',
     'patientOrderDate':'',
     'patientLastName':'',
     'patientAddress':'',
@@ -111,6 +112,8 @@ submitFrame = Frame(root, relief=RIDGE)
 itemsFrame = LabelFrame(root, text='Items', relief=RIDGE)
 insuranceFrame = LabelFrame(root, text="Insurance Type", relief=RIDGE)
 diagnosisFrame = LabelFrame(root, text="Diagnosis", relief=RIDGE)
+InsuranceType = IntVar()
+InsuranceType.set(0)
 
 #cptRatesFile = open("MEDI-CALRATES.csv", "r")
 
@@ -134,7 +137,9 @@ def clearPatient():
     patientPhoneNumberInput.delete(0,END)
     patientInsuranceInput.delete(0,END)
     patientPreauthorizationInput.delete(0,END)
+    patientDateOfBirth.delete(0,END)
     orderDateInput.delete(0,END)
+
 
 def clearCpt():
 
@@ -202,6 +207,14 @@ def clearICD():
     diagnosisCodeRow2Description.delete(0,END)
     diagnosisCodeRow3Description.delete(0,END)
     diagnosisCodeRow4Description.delete(0,END)
+
+def setInsuranceType(*args):
+    if(value_inside_insurance.get() != "IEHP"):
+        InsuranceType.set(0)
+    else:
+        InsuranceType.set(1)
+    
+    print(InsuranceType.get())
 
 def getICDInfoFromPY():
     
@@ -640,6 +653,7 @@ def sendToPDFCreator():
     #print(e)
     
     profile_dict["UserName"] = userName.get()
+    profile_dict["account"] = value_inside_insurance.get()
     #get patient info from forms
     profile_dict['makeInvoice'] = invoiceCheck.get()
     profile_dict['makeIntake'] = intakeCheck.get()
@@ -739,7 +753,7 @@ def sendToPDFCreator():
     
     try:
         formatInput(profile_dict)
-        messagebox.showerror(title="Success!", message="PDFs have been created!")
+        messagebox.showinfo(title="Success!", message="PDFs have been created!")
     except:
         messagebox.showerror(title="Error!", message="An error has occured")
     #os.system("python PDFCreator.py {} {} {} {} \"{}\" {} {} {} {} {} {} {} {}".format(a,b,c,d,e,f,g,h,i,j,k,l,m))
@@ -752,14 +766,14 @@ value_inside_patient.set("CA")
 value_inside_doctor=StringVar(root)
 value_inside_doctor.set("CA")
 
-insurance_option_list=["Medicare", "IEHP", "Anthem Blue Cross", "Health Net", "","","","",]
+insurance_option_list=("Medicare", "IEHP", "Anthem Blue Cross", "Health Net", "Aetna","AlphaCare Medical Group", "Anthem Blue Cross of California", "Blue Cross - California", "Blue Shield - California", "Brand New Day", "CIGNA Health Plan", "Department of Labor-DEEOIC", "Humana", "TRICARE California (WEST-WPS)", "United HealthCare")
 value_inside_insurance=StringVar(root)
 value_inside_insurance.set("Medicare")
 
 #User information form field
 userName = Entry(insuranceFrame, width = default_input_width)
 userNameLabel = Label(insuranceFrame, text="User Name")
-insuranceList = OptionMenu(insuranceFrame, value_inside_insurance)
+insuranceList = OptionMenu(insuranceFrame, value_inside_insurance, insurance_option_list[0], *insurance_option_list, command=setInsuranceType)
 
 #Patient INFORMATION FORM
 patientFirstNameInput= Entry(patientFrame, width = default_input_width)
@@ -894,7 +908,6 @@ clearPatientForms = Button(patientFrame, text="Clear", command=clearPatient)
 clearCptForms = Button(itemsFrame, text="Clear", command=clearCpt)
 clearICDForms = Button(diagnosisFrame, text="Clear", command=clearICD)
 
-InsuranceType = IntVar()
 
 
 invoiceCheck = IntVar()
@@ -907,7 +920,7 @@ rentalCheckRow4 = IntVar()
 rentalCheckRow5 = IntVar()
 rentalCheckRow6 = IntVar()
 
-InsuranceType.set(0)
+
 
 invoiceCheck.set(1)
 intakeCheck.set(1)
@@ -919,8 +932,8 @@ rentalCheckRow4.set(1)
 rentalCheckRow5.set(1)
 rentalCheckRow6.set(1)
 
-insuranceTypeMedicare = Radiobutton(insuranceFrame, text="Medicare", variable=InsuranceType, value=0)
-insuranceTypeMedical = Radiobutton(insuranceFrame, text="Medi-Cal", variable=InsuranceType, value=1)
+#insuranceTypeMedicare = Radiobutton(insuranceFrame, text="Medicare", variable=InsuranceType, value=0)
+#insuranceTypeMedical = Radiobutton(insuranceFrame, text="Medi-Cal", variable=InsuranceType, value=1)
 
 createInvoicePDF = Checkbutton(submitFrame, text="Create Invoice PDF", variable=invoiceCheck)
 createIntakeSheetPDF = Checkbutton(submitFrame, text="Create Intake Sheet PDF", variable=intakeCheck)
@@ -944,8 +957,11 @@ rentalCheckMarkRow6 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow
 purchaseCheckMarkRow6 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow6, value=1)
 
 
-insuranceTypeMedicare.grid(column=0,row=0)
-insuranceTypeMedical.grid(column=1,row=0)
+#insuranceTypeMedicare.grid(column=0,row=0)
+#insuranceTypeMedical.grid(column=1,row=0)
+
+insuranceList.grid(column=1,row=0)
+
 userNameLabel.grid(column=0,row=1)
 userName.grid(column=1, row=1)
 
