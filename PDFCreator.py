@@ -1,5 +1,5 @@
 import pdfrw
-from datetime import date
+from datetime import datetime
 import sys
 import os
 
@@ -22,7 +22,7 @@ def makePDF(myPDF, myDict, Name, profile_dict):
         pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
     else:
         pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
-    with open('./Output/{}/Communication_Log.txt'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName']), 'w') as f:
+    with open('./Output/{}/Communication_Log {}.txt'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], str(some_date)), 'w') as f:
         f.write("Communication Log for " + profile_dict['patientFirstName'].upper() + "_" + profile_dict['patientLastName'].upper() + "\n" + "Created on " + str(some_date))
     print("Created PDF!")
 
@@ -102,7 +102,6 @@ def formatInput(profile_dict):
             'PatientDOB':profile_dict['patientDateOfBirth'],
             'InsuranceInformation': profile_dict['account'].upper(),
             'MBI':profile_dict['patientMBI'] + "\n",
-            'Rep' : profile_dict['patientLastName'],
             'MembersName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
             'PatientName1':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
             'ClinicalInformationRow2': profile_dict['itemRow1Description'].upper() + "\n" +
@@ -171,8 +170,9 @@ ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 #test_dict = {"test":"test"}
-some_date = date.today()
-
+new_date = datetime.now()
+some_date = new_date.strftime("%B-%d-%Y--%H-%M-%S ")
+print(some_date)
 #makePDF(pdf, test_dict,"Test" )
 
 
