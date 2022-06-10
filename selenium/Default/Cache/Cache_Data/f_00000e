@@ -1,0 +1,919 @@
+var docereeBaseUrl = "https://bidder.doceree.com";
+var oldAdserverBaseUrl = "https://programmatic.doceree.com/";
+var docereeTrackingBaseUrl = "https://tracking.doceree.com";
+var styleCssPath = "https://servedbydoceree.doceree.com/resources/p/style.css"
+
+var docereeUserContext = docereeUserContext || {};
+var docereeAdCode = docereeAdCode || "DOC_";
+var docereeBannerCode = docereeBannerCode || "_DOC_SLOT";
+var docereeAdBlockLevelEnum = {
+    inappropriateAd: 'inappropriateAd',
+    overlappingAd: 'overlappingAd',
+    notInterestedInCampaign: 'notInterestedInCampaign',
+    notInterestedInBrand: 'notInterestedInBrand',
+    notInterestedInBrandType: 'notInterestedInBrandType',
+    notInterestedInClientType: 'notInterestedInClientType'
+}
+var docereeProcessedIds = docereeProcessedIds || {};
+var docereeAds = docereeAds || {};
+var docereeIdsBeingTracked = docereeIdsBeingTracked || new Set();
+var newDocereeIdsBeingTracked = newDocereeIdsBeingTracked || new Set();
+var docereeScrollEventListenerPresent = docereeScrollEventListenerPresent || false;
+var percentageRequired = 90;
+
+var windowPrototype = {
+    wdHeight: function() {
+        try {
+            let myHeight;
+            if (typeof(window.innerWidth) == 'number') {
+                //Non-IE
+                myHeight = window.innerHeight;
+            } else if (document.documentElement && (document.documentElement.clientHeight)) {
+                //IE 6+ in 'standards compliant mode'
+                myHeight = document.documentElement.clientHeight;
+            } else if (document.body && (document.body.clientHeight)) {
+                //IE 4 compatible
+                myHeight = document.body.clientHeight;
+            }
+            return myHeight;
+        } catch (error) {
+            return 0;
+        }
+    },
+    wdWidth: function() {
+        try {
+            let myWidth;
+            if (typeof(window.innerWidth) == 'number') {
+                //Non-IE
+                myWidth = window.innerWidth;
+
+            } else if (document.documentElement && (document.documentElement.clientWidth)) {
+                //IE 6+ in 'standards compliant mode'
+                myWidth = document.documentElement.clientWidth;
+
+            } else if (document.body && (document.body.clientWidth)) {
+                //IE 4 compatible
+                myWidth = document.body.clientWidth;
+            }
+            return myWidth;
+        } catch (error) {
+            return 0;
+        }
+    }
+}
+
+function debounce (func, interval) {
+    var timeout;
+    return function () {
+      var context = this;
+      var later = function () {
+        timeout = null;
+        func.apply(context);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, interval || 400);
+    }
+}
+
+var tracking = debounce(function() {
+    try {
+        for (const elementId of docereeIdsBeingTracked.values()) {
+            const docereeElem = getDOMElement(elementId);
+            if (elementId && !!docereeElem && checkHeightExists(docereeElem, elementId)) {
+                if (getAdViewPercentage(docereeElem, elementId)) {
+                    if(!checkIfTabIsDisable()){
+                        docereeIdsBeingTracked.delete(elementId);                 
+                        setTimeout(() => {
+                            var elem = document.getElementById(elementId)
+                            if(elem) {
+                                elem.innerHTML = '';
+                                getDynamicImage(elementId);
+                            } 
+                        }, 30000);
+                    }
+                }
+            }
+          }
+    } catch (err) {
+        logging(err);
+    }
+}, 800);
+
+var newTracking = debounce(function() {
+    try {
+        for (const elementId of newDocereeIdsBeingTracked.values()) {
+            const docereeElem = getDOMElement(elementId);
+            if (elementId && !!docereeElem && checkHeightExists(docereeElem, elementId)) {
+                if (getAdViewPercentage(docereeElem, elementId)) {
+                    if(!checkIfTabIsDisable()){
+                        newDocereeIdsBeingTracked.delete(elementId);                 
+                        var elem = document.getElementById(elementId)
+                        if(elem) {
+                            elem.innerHTML = '';
+                            getDynamicImage(elementId);
+                        } 
+                    }
+                }
+            }
+          }
+    } catch (err) {
+        logging(err);
+    }
+}, 800);
+
+var addDocereeScrollListener = function() {
+    try {
+        if(!docereeScrollEventListenerPresent) {
+            window.addEventListener("scroll", tracking, false);
+            window.addEventListener("scroll", newTracking, false);
+            tabVisibilityChangeListener(tracking);
+            tabVisibilityChangeListener(newTracking);
+            window.addEventListener("focus", tracking);           
+            window.addEventListener("focus", newTracking);           
+            docereeScrollEventListenerPresent = true;
+        }
+    } catch (error) {
+        logging(error)
+    }
+}
+
+function tabVisibilityChangeListener(callback) {
+    if ("webkitHidden" in document) {
+        document.addEventListener("webkitvisibilitychange", callback);
+    } else if ("mozHidden" in document) {
+        document.addEventListener("mozvisibilitychange", callback);
+    } else if ("msHidden" in document) {
+        document.addEventListener("msvisibilitychange", callback);
+    } else {
+        document.addEventListener("visibilitychange", callback);
+    }
+}
+
+function docReady(fn) {
+    if (document.readyState != 'loading') {
+      fn();
+    } else if (document.addEventListener) {
+      document.addEventListener('DOMContentLoaded', fn);
+    } else {
+      document.attachEvent('onreadystatechange', function() {
+        if (document.readyState != 'loading')
+          fn();
+      });
+    }
+}
+
+docReady(initDocereeSlotRenderer);
+
+function initDocereeSlotRenderer() {
+    try {
+        let ids = document.querySelectorAll('div[id^=DOC_]');
+        let listOfDocereeAdIds = [];
+        Array.prototype.forEach.call(ids, function(el, i) {
+            if (el.id.indexOf(docereeBannerCode) === -1 && (listOfDocereeAdIds.indexOf((el.id).split(docereeAdCode)[0]) === -1) && (el.id).includes(docereeAdCode)) {
+                listOfDocereeAdIds.push((el.id));
+            }
+        });
+        
+        for (let codeSnippetId of listOfDocereeAdIds) {
+            let element = document.getElementById(codeSnippetId);
+    
+            let process = false;
+            if (docereeProcessedIds.ids && docereeProcessedIds.ids.includes(codeSnippetId)) {
+                process = false;    
+            } else {
+                if (docereeProcessedIds.ids) {
+                    docereeProcessedIds.ids.push(codeSnippetId);
+                } else {
+                    docereeProcessedIds.ids = [];
+                    docereeProcessedIds.ids.push(codeSnippetId);
+                }
+                process = true;
+            }
+    
+            if (process && element) {
+                if(getAdViewPercentage(element, codeSnippetId)) {
+                    getDynamicImage(codeSnippetId);
+                } else {
+                    newDocereeIdsBeingTracked.add(codeSnippetId); 
+                    addDocereeScrollListener();
+                }
+            } else {
+                // console.log(codeSnippetId + ' already processed.');
+            }
+        }
+    } catch (err) {
+        logging(err.message);
+    }
+}
+
+
+function processHTMLAndRender(responseJson, creativeHtml, unesc, elementId) {
+    if(responseJson.sourceURL) {
+        creativeHtml = creativeHtml.replace('<head>', `<head><style>html,body{padding:0;margin:0;}</style><base href="${responseJson.sourceURL.split('index.html')[0]}" target="_blank">`);
+    }
+    creativeHtml = creativeHtml.replaceAll('[TRACKING_LINK]', responseJson.ctaLink);
+    creativeHtml = creativeHtml.replaceAll(/DOCEREE_CLICK_URL_UNESC/g, unesc);
+    while(creativeHtml.indexOf("_ucid") > -1) {
+        creativeHtml = creativeHtml.replace("_ucid", uuidv4())
+    }
+
+    insertAnIFrame(responseJson, creativeHtml);
+    docereeIdsBeingTracked.add(elementId);
+    addDocereeScrollListener();
+
+    var element = document?.getElementById(elementId);
+    if (element) {
+        addUserConsentOptions(element, elementId, responseJson.height, responseJson.width);
+    }
+}
+
+function getDynamicImage(elementId) {
+    try {
+        let hcpLoggedInUser = getHCPFromPublisherPage();
+        let query = 'id=' + elementId + '&publisherDomain=' + document.domain + '&pubRequestedURL=' + encodeURIComponent(document.URL) + '&loggedInUser=' + hcpLoggedInUser + '&sessionToken=' + getCookie('_docereeSession') + '&currentUrl=' + window.encodeURIComponent(window.location.href);
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    docereeAds[elementId] = docereeAds[elementId] || {};
+                    let responseJson = JSON.parse(xhttp.responseText);
+                    // following statements will be called if we are not able to deduce
+                    // the hcp in 15 seconds in first login attempt as well as upon
+                    // successful ad rendering
+                    if (responseJson && responseJson.newPlatformUid) {
+                        let cookieContent = { platformUid: responseJson.newPlatformUid, version: responseJson.version };
+                        document.cookie = "_docereeId=" + JSON.stringify(cookieContent) + ';path=/;max-age=' + responseJson.maxAge;
+                    }
+                    let impressionLink = "";
+                    if(responseJson.impressionLink) {
+                        impressionLink = (responseJson.impressionLink.includes("http:") || responseJson.impressionLink.includes("https:")) ? responseJson.impressionLink : ('//' + responseJson.impressionLink);
+                        docereeAds[elementId].impressionLink = impressionLink;
+                    }
+                    let ctaLink = "";
+                    if(responseJson.ctaLink) {
+                        ctaLink = (responseJson.ctaLink.includes("http:") || responseJson.ctaLink.includes("https:")) ? responseJson.ctaLink : ('//' + responseJson.ctaLink);
+                        docereeAds[elementId].ctaLink = ctaLink;           
+                    }
+                    // following statements will be called upon successful ad rendering
+                    if (responseJson && responseJson.DIVID) {
+                        // this is the case where ad butler is not involved
+                        if (!responseJson.passbackTag) {
+                            let unesc = '';
+                            if (docereeAds && docereeAds[elementId] && docereeAds[elementId].click && docereeAds[elementId].click.indexOf('http') > -1 ) {
+                                unesc = docereeAds[elementId].click;
+                            }
+                            if (responseJson.creativeType && responseJson.creativeType !== 'banner') {
+                                if (responseJson.sourceHTML) {
+                                    responseJson.sourceHTML = responseJson.sourceHTML.replace(/[\uE000-\uF8FF]/g, '');
+                                    processHTMLAndRender(responseJson, responseJson.sourceHTML, unesc, elementId)
+                                } else {
+                                    fetchHTMLAd(responseJson.sourceURL, function(error, creativeHtml){
+                                        if(!error) {
+                                            processHTMLAndRender(responseJson, creativeHtml, unesc, elementId)
+                                        }
+                                    });
+                                }
+                            } else {
+                                // in the case of banner ad, we are having the CTA link as optional
+                                if (responseJson.ctaLink) {
+                                    docereeAds[elementId].clickCount = 0;
+                                    let navigationCustomURL = docereeAds[elementId].ctaLink;
+                                    navigationCustomURL = navigationCustomURL.replace('DOCEREE_CLICK_URL_UNESC', unesc);  
+                                    let htmlString = "<a id='" + responseJson.DIVID + docereeBannerCode + "' name='" + responseJson.CBID + "'  href='" + navigationCustomURL
+                                        + "'  target='blank'><img onload='window.parent.registerImpression(" + elementId + "); window.parent.onAdsLoaded(" + elementId + ");' src='" + responseJson.sourceURL + "'></a>";
+                                    insertAnIFrame(responseJson, htmlString);
+                                } else {
+                                    let htmlString = "<div id='" + responseJson.DIVID + docereeBannerCode + "' name='" + responseJson.CBID + "'><img onload='window.parent.registerImpression(" + elementId + "); window.parent.onAdsLoaded(" + elementId + ");' src='" + responseJson.sourceURL + "'></a>";
+                                    insertAnIFrame(responseJson, htmlString);
+                                }
+                                docereeIdsBeingTracked.add(elementId);
+                                addDocereeScrollListener();
+
+                                var element = document?.getElementById(elementId);
+                                if (element) {
+                                    addUserConsentOptions(element, elementId, responseJson.height, responseJson.width);
+                                }
+                            }                            
+                        } else {
+                            insertAnIFrame(responseJson, responseJson.passbackTag);
+                        }
+                    }
+                } else {
+                    let responseJson = JSON.parse(xhttp.responseText);
+                    if (responseJson && responseJson.newPlatformUid) {
+                        let cookieContent = { platformUid: responseJson.newPlatformUid, version: responseJson.version };
+                        document.cookie = "_docereeId=" + JSON.stringify(cookieContent) + ';path=/;max-age=' + responseJson.maxAge;
+                    }
+                    let errMessage = responseJson.errMessage;
+                    logging("Exception : getImage API,  " + errMessage);
+                }
+            }
+        };
+        xhttp.withCredentials = true;
+        xhttp.crossDomain = true;
+        var url =  docereeBaseUrl + "/v1/adrequest?" + query;
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function getCookiePlatformUid() {
+    let docereeScriptVersion = '0.1';
+    let cookieContent = getCookie('_docereeId');
+    if (!!cookieContent) {
+        cookieContent = JSON.parse(cookieContent)
+        if (cookieContent.version == docereeScriptVersion) {
+            return cookieContent.platformUid;
+        }
+    }
+}
+
+function getHCPFromPublisherPage() {
+    let docereeScriptVersion = '0.1';
+    let hcpData = {};
+    hcpData['version'] = docereeScriptVersion;
+
+    let platformUid = getCookiePlatformUid()
+    if(platformUid) {
+        hcpData['platformUid'] = platformUid
+    }
+
+    let encryptedContextSet = getCookie('_docereeContext');
+    if (!!encryptedContextSet) {
+        let contextSet = JSON.parse(decodeURIComponent(atob(encryptedContextSet)));
+        hcpData['email'] = contextSet['email'];
+        hcpData['firstName'] = contextSet['firstName'];
+        hcpData['lastName'] = contextSet['lastName'];
+        hcpData['specialization'] = contextSet['specialization'];
+        hcpData['city'] = contextSet['city'];
+        hcpData['zipCode'] = contextSet['zipCode'];
+        hcpData['npi'] = contextSet['npi'];
+        hcpData['hashedNPI'] = contextSet['hashedNPI'];
+        hcpData['hashedEmail'] = contextSet['hashedEmail'];
+        hcpData['hashedMobile'] = contextSet['hashedMobile'];
+        hcpData['gender'] = contextSet['gender'];
+        hcpData['mciRegistrationNumber'] = contextSet['mciRegistrationNumber'];
+    } else {
+        // INFO: this indicates that the user context is not set, i.e. HCP may have clicked logout. In this case, we have to remove the _docereeId cookie
+        eraseCookie('_docereeContext');
+    }
+
+    let dmdEncryptedContext = getCookie('_docereeDmdContext');
+    if (!!dmdEncryptedContext) {
+        try {
+            let dmdData = JSON.parse(decodeURIComponent(atob(dmdEncryptedContext)));
+            hcpData['dmd'] = dmdData;
+        } catch (error) {
+            // sometime dmd does not send well formed JSON
+            logging(error);
+        }
+    } else {
+        // INFO: this indicates that the dmd context is not set
+        eraseCookie('_docereeDmdContext');
+    }
+
+    if(docereeUserContext && Object.keys(docereeUserContext).length) {
+        hcpData['specialization'] = hcpData['specialization'] || docereeUserContext['specialization'];
+        hcpData['city'] = hcpData['city'] || docereeUserContext['city'];
+        hcpData['zipCode'] = hcpData['zipCode'] || docereeUserContext['zipCode'];
+        hcpData['firstName'] = hcpData['firstName'] || docereeUserContext['firstName'];
+    }
+
+    hcpData = JSON.stringify(hcpData);
+    let encryptedHCP = btoa(encodeURIComponent(hcpData));
+    return encryptedHCP;
+};
+
+function getCookie(name) {
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return '';
+};
+
+function eraseCookie(name) {
+    document.cookie = name + '=; Max-Age=-99999999;';
+};
+
+function insertAnIFrame(responseJson, iFrameContent) {
+    var iFrame = document.createElement('iframe');
+    iFrame.loading = "lazy";
+    iFrame.frameBorder = 0;
+    iFrame.scrolling = "no";
+    iFrame.noresize = "noresize";
+    iFrame.marginheight = 0;
+    iFrame.marginwidth = 0;
+    if (!responseJson.height && !responseJson.width) {
+        if (docereeAds && docereeAds[responseJson.DIVID] && docereeAds[responseJson.DIVID].content_sizes) {
+            let size = docereeAds[responseJson.DIVID].content_sizes[0].split(' x ');
+            if (size && size.length == 2) {
+                responseJson.width = size[0];
+                responseJson.height = size[1];
+            }
+        }
+    }
+    if (responseJson.width) {
+        iFrame.style.width = iFrame.width = responseJson.width + 'px';
+    }
+    if (responseJson.height) {
+        iFrame.style.height = iFrame.height = responseJson.height + 'px';
+    }
+
+    document.getElementById(responseJson.DIVID).appendChild(iFrame);
+
+    if(responseJson.creativeType && responseJson.creativeType !== 'banner') {
+        html = iFrameContent;
+        iFrame.id = `${responseJson.DIVID}${docereeBannerCode}`;
+        iFrame.name = responseJson.CBID;
+        iFrame.onload = function (event) {
+            registerImpression(document.getElementById(responseJson.DIVID));
+            onAdsLoaded(document.getElementById(responseJson.DIVID));
+        }
+    } else {
+        html = "<!DOCTYPE HTML><html><head><style>html,body{padding:0;margin:0;}</style></head><body><div id=" + responseJson.DIVID + ">" + iFrameContent + "</div>";
+        html += "</body></html>";
+    }
+
+    let contentDocument = iFrame.contentDocument;
+    contentDocument.open();
+    contentDocument.write(html);
+    contentDocument.close();
+}
+
+function UserAction(listenerType, link) {
+    try {
+        let xhttp = new XMLHttpRequest();
+        xhttp.withCredentials = true;
+        xhttp.crossDomain = true;
+        xhttp.open("GET", link, true);
+        xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhttp.send();
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function fetchHTMLAd(link, callback) {
+    try {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                callback(null, this.responseText);
+            }else {
+                callback(`error in fetching html a`);
+            }
+        };
+        xhttp.open("GET", link, true);
+        xhttp.setRequestHeader('Content-type', 'plain/html; charset=utf-8');
+        xhttp.send();
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function logging(details) {
+    let xhttp = new XMLHttpRequest();
+    let currentDataTime = new Date();
+    xhttp.open("POST", oldAdserverBaseUrl + "/render/logExceptions", true);
+    xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+    xhttp.send(JSON.stringify({
+        "excDetails": currentDataTime.toUTCString() + ' : Path :' + window.location.origin + ' , ERROR : ' + details
+    }));
+}
+
+function getScrollTop() {
+    try {
+        let scrollTop = document.body.scrollTop;
+        if (scrollTop == 0) {
+            if (window.pageYOffset)
+                scrollTop = window.pageYOffset;
+            else
+                scrollTop = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+        }
+        return scrollTop;
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function getScrollLeft() {
+    try {
+        let scrollLeft = document.body.scrollLeft;
+        if (scrollLeft == 0) {
+            if (window.pageXOffset)
+                scrollLeft = window.pageXOffset;
+            else
+                scrollLeft = (document.body.parentElement) ? document.body.parentElement.scrollLeft : 0;
+        }
+        return scrollLeft;
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function getDOMElement(elementId) {
+    try {
+        let elem;
+        if (document.getElementById) {
+            elem = document.getElementById(elementId);
+        } else if (document.all) {
+            elem = document.all[elementId];
+        }
+        return elem;
+    } catch(error) {
+        logging(error);
+    }
+}
+
+function getElementTop(elem) {
+    try {
+        if (elem != null) {
+            yPos = elem.offsetTop;
+            tempEl = elem.offsetParent;
+            while (tempEl != null) {
+                yPos += tempEl.offsetTop;
+                tempEl = tempEl.offsetParent;
+            }
+            return yPos;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function getElementLeft(elem) {
+    try {
+        if (elem != null) {
+            xPos = elem.offsetLeft;
+            tempEl = elem.offsetParent;
+            while (tempEl != null) {
+                xPos += tempEl.offsetLeft;
+                tempEl = tempEl.offsetParent;
+            }
+            return xPos;
+        } else {
+            return 0;
+        }
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function getElementHeight(elem) {
+    if (elem != null) {
+        return elem.offsetHeight;
+    } else {
+        return 0;
+    }
+}
+
+function getElementWidth(elem) {
+    if (elem != null) {
+        return elem.offsetWidth;
+    } else {
+        return 0;
+    }
+}
+
+function checkIfTabIsDisable() {
+    let active = document.hidden || document.webkitHidden || document.mozHidden || document.msHidden || !document.hasFocus();
+    return active;
+}
+
+function checkHeightExists(elem, elementId) {
+    let elemHeight = getElementHeight(elem);
+    if (elemHeight === 0 && docereeAds && docereeAds[elementId] && docereeAds[elementId].content_sizes) {
+        let size = docereeAds[elementId].content_sizes[0].split(' x ');
+        if (size && size.length == 2) {
+            elemHeight = size[1];
+        }
+    }
+    return elemHeight > 0;
+}
+
+function getAdViewPercentage(element, elementId) {
+    try {
+        let threshold = percentageRequired;
+        let scrolltop = getScrollTop();
+        let scrollLeft = getScrollLeft();
+        let advZoneTop = getElementTop(element);
+        let advZoneLeft = getElementLeft(element);
+        let advZoneWidth = getElementWidth(element);
+        let advZoneHeight = getElementHeight(element);
+        if (advZoneHeight === 0 || advZoneWidth === 0) {
+            if (docereeAds && docereeAds[elementId] && docereeAds[elementId].content_sizes) {
+                let size = docereeAds[elementId].content_sizes[0].split(' x ');
+                if (size && size.length == 2) {
+                    if(!advZoneHeight) {
+                        advZoneHeight = size[1];
+                    }
+                    if(!advZoneWidth) {
+                        advZoneWidth = size[0];
+                    }
+                }
+            }            
+        }
+        let visibleScreenY = scrolltop + windowPrototype.wdHeight();
+        let visibleScreenX = scrollLeft + windowPrototype.wdWidth();
+
+        let xDiff = visibleScreenX - advZoneLeft;
+        let yDiff = visibleScreenY - advZoneTop;
+
+        if(xDiff < 0) {
+            xDiff = 0;
+        } else if(xDiff > windowPrototype.wdWidth() + advZoneWidth) {
+            xDiff = 0;
+        } else if(xDiff > advZoneWidth) {
+            xDiff = visibleScreenX - (scrollLeft + (visibleScreenX - (advZoneLeft + advZoneWidth)));
+            if (xDiff > advZoneWidth) {
+                xDiff = advZoneWidth;
+            }
+        }
+        if(yDiff < 0 ){
+            yDiff = 0;
+        } else if(yDiff > windowPrototype.wdHeight() + advZoneHeight) {
+            yDiff = 0;
+        } else if(yDiff > advZoneHeight){
+            yDiff = visibleScreenY - (scrolltop + (visibleScreenY - (advZoneTop + advZoneHeight)));
+            if (yDiff > advZoneHeight) {
+                yDiff = advZoneHeight;
+            }
+        }
+            
+        let visibleAdArea = xDiff * yDiff;
+        let totalAdArea = advZoneHeight * advZoneWidth;
+        let percentageVisible = (visibleAdArea / totalAdArea) * 100;
+        
+        let check1 = advZoneTop >= 0 ;
+        let check2 = scrolltop + windowPrototype.wdHeight() > 1;
+        let check3 = scrollLeft >= 0;
+        let thresholdPercentageReached = check1 && check2 && check3
+            && percentageVisible > threshold && percentageVisible <= 100;
+        return thresholdPercentageReached;
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function addUserConsentOptions(elem, elementId, height, width) {
+    // setting parent relative
+    elem.style.position = 'relative';
+    elem.style.display = 'inline-block';
+    
+    let adSize = '200x200'; // default size
+    if (height && width) {
+        adSize = `${width}x${height}`
+    } else {
+        try {
+            let a = elem.children[0].innerHTML
+            adSize = a.substring(a.indexOf("[") + 1, a.indexOf("]")).split(" ").join("");
+            adSize = adSize.substring(1, adSize.length - 1);
+        } catch (err) {
+            // error in parsing size will go with 200x200
+        }
+    }
+    
+    // add css for actions
+    const styleLink = document.createElement('link');
+    // styleLink.href = docereeBaseUrl + '/render/getCSS';
+    styleLink.href = styleCssPath;
+    styleLink.rel = "stylesheet";
+    styleLink.type = "text/css";
+    elem.appendChild(styleLink);
+
+    //render actions for ad
+    let actions = `
+        <div class="action info-action" onclick="showAdBlockerForm(event, ${elementId})">
+            <div class="info-label">
+                <span>Ads by doceree</span>
+            </div>
+            <span style="color: #000 !important;">
+                <svg  height="15" width="15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15 15"><path d="M7.5,1.5a6,6,0,1,0,0,12a6,6,0,1,0,0,-12m0,1a5,5,0,1,1,0,10a5,5,0,1,1,0,-10ZM6.625,11l1.75,0l0,-4.5l-1.75,0ZM7.5,3.75a1,1,0,1,0,0,2a1,1,0,1,0,0,-2Z"  stroke="#6c40f7" stroke-width="0.4"></path></svg>
+            </span>
+        </div>
+        <div class="action close-action" onclick="showAdBlockerForm(event, ${elementId})">
+            <svg height="15" width="15" xmlns="//www.w3.org/2000/svg">
+                <path d="M0,0l15,0l0,15l-15,0Z" fill="#fff"></path>
+                <path d="M3.25,3.25l8.5,8.5M11.75,3.25l-8.5,8.5" stroke="#6c40f7" stroke-width="1.25"></path>
+            </svg>
+        </div>
+    `;
+
+    const divOfActions = document.createElement('div');
+    divOfActions.classList.add('da-action-container');
+    divOfActions.classList.add('opacityadd');
+    divOfActions.style.opacity = 0;
+    divOfActions.innerHTML = actions;
+    elem.appendChild(divOfActions);
+
+    let formConainer =  `
+        <div id="da-irrelative-form-1" class="da-irrelative-form size_${adSize}">
+            <div class="da-back-action" onclick="hideAdBlockerForm(event, ${elementId})">
+                <svg viewBox="0 0 64 64" width="15" width="15" fill="#6c40f7" xmlns="http://www.w3.org/2000/svg">
+                    <path width="15" width="15" d="M54 30H14.101l15.278-14.552a2 2 0 10-2.759-2.897L9.172 29.171A3.978 3.978 0 008 32c0 1.068.417 2.073 1.207 2.862l17.414 16.586c.387.369.883.552 1.379.552a1.999 1.999 0 001.38-3.448L14.038 34H54a2 2 0 000-4z"/>
+                </svg>
+            </div>
+            <div class="da-form-heading">Ads by doceree</div>
+            <div class="action-button-container">
+                <div class="action-button" onclick="showAdBlockerForm2(event, ${elementId})">Report this Ad</div>
+                <a href="https://support.doceree.com/hc/en-us/articles/360050646094-Why-this-Ad-" target="_blank" class="why-this-da">
+                    <div class="action-button">
+                        Why this Ad?
+                        <div class='icon'>
+                            <svg  height="15" width="15" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 15 15"><path d="M7.5,1.5a6,6,0,1,0,0,12a6,6,0,1,0,0,-12m0,1a5,5,0,1,1,0,10a5,5,0,1,1,0,-10ZM6.625,11l1.75,0l0,-4.5l-1.75,0ZM7.5,3.75a1,1,0,1,0,0,2a1,1,0,1,0,0,-2Z"  stroke="#6c40f7" stroke-width="0.3"></path></svg></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div id="da-irrelative-form-2" class="da-irrelative-form size_${adSize}">
+            <div class="action-button-container">
+                <div class="action-button" onclick="showAdBlockerForm4(event, ${elementId}, '${elementId}', '${docereeAdBlockLevelEnum.overlappingAd}')">
+                    Ad is covering the content of the website.
+                </div>
+                <div class="action-button" onclick="showAdBlockerForm4(event, ${elementId}, '${elementId}', '${docereeAdBlockLevelEnum.inappropriateAd}')">
+                    Ad was inappropriate.
+                </div>
+                <div class="action-button"  onclick="showAdBlockerForm3(event, ${elementId})">
+                    Not interested in this Ad.
+                </div>
+            </div>
+        </div>
+
+        <div id="da-irrelative-form-3" class="da-irrelative-form size_${adSize}">
+            <div class="action-button-container">
+                <div class="action-button" onclick="showAdBlockerForm4(event, ${elementId}, '${elementId}', '${docereeAdBlockLevelEnum.notInterestedInCampaign}')">
+                    I'm not interested in seeing ads for this product.
+                </div>
+                <div class="action-button" onclick="showAdBlockerForm4(event, ${elementId}, '${elementId}', '${docereeAdBlockLevelEnum.notInterestedInBrand}')">
+                    I'm not interested in seeing ads for this brand.
+                </div>
+                <div class="action-button" onclick="showAdBlockerForm4(event, ${elementId},'${elementId}', '${docereeAdBlockLevelEnum.notInterestedInBrandType}')">
+                    I'm not interested in seeing ads for this category.
+                </div>
+                <div class="action-button"  onclick="showAdBlockerForm4(event, ${elementId}, '${elementId}', '${docereeAdBlockLevelEnum.notInterestedInClientType}')">
+                    I'm not interested in seeing ads from pharmaceutical brands.
+                </div>
+            </div>
+        </div>
+
+        <div id="da-irrelative-form-4" class="da-irrelative-form size_${adSize}">
+            <p class="thank-you-message">
+                Thank you for reporting this to us. Your feedback will help us improve. 
+            </p>
+            <p>This ad by doceree will now be closed.</p>
+        </div>
+    `;
+
+    const divOfForm = document.createElement('div');
+    divOfForm.classList.add('opacityadd');
+    divOfForm.style.opacity = 0;
+    divOfForm.innerHTML = formConainer;
+    elem.appendChild(divOfForm)
+
+    window.showAdBlockerForm = function (event, elem) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.querySelector(`[id=da-irrelative-form-1]`).style.display = 'flex';
+    }
+
+    window.hideAdBlockerForm = function (event, elem) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.querySelector(`[id=da-irrelative-form-1]`).style.display = 'none';
+    }
+
+    window.showAdBlockerForm2 = function (event, elem) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.querySelector(`[id=da-irrelative-form-2]`).style.display = 'flex';
+    }
+
+    window.showAdBlockerForm3 = function (event, elem) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.querySelector(`[id=da-irrelative-form-3]`).style.display = 'flex';
+    }
+
+    window.showAdBlockerForm4 = function (event, elem, elementId, blockReason) {
+        event.stopPropagation();
+        event.preventDefault();
+        let campaignId = ''
+        try {
+            if (docereeAds && docereeAds[elementId] && docereeAds[elementId].impressionLink) {  
+                let adLink = docereeAds[elementId].impressionLink;  
+                campaignId = new URL(adLink).searchParams.get("sb");    
+            } else {    
+                let iFrameElem = elem.getElementsByTagName("iframe")[0];    
+                let aTags = iFrameElem.contentWindow.document.getElementsByTagName('a');            
+                if(aTags.length == 0) { 
+                    let innerIframe = iFrameElem.contentWindow.document.getElementsByTagName('iframe');             
+                    if(innerIframe.length) {    
+                        aTags = innerIframe[0].contentWindow.document.getElementsByTagName('a');    
+                    }   
+                }   
+                if(aTags) { 
+                    let adLink = aTags[0].href; 
+                    campaignId = new URL(adLink).searchParams.get("sb");    
+                }
+            }
+        } catch (error) {
+            // not doing anything here
+        }
+
+        elem.querySelector(`[id=da-irrelative-form-4]`).style.display = 'flex';
+        let hcpUser = getHCPFromPublisherPage();
+        let blockingInfo = {
+            publisherACSID: elementId.trim(),
+            advertiserCampID: campaignId,
+            blockLevel: blockReason,
+        }
+        try {
+            let userInfo = JSON.parse(decodeURIComponent(atob(hcpUser)));
+            if (userInfo.platformUid) {
+                blockingInfo.platformUid = userInfo.platformUid;
+            }
+        } catch (error) {
+            // not doing anything here
+        }
+        saveAdBlockingInfo(blockingInfo);
+    }
+}
+
+function saveAdBlockingInfo(options) {
+    try {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    // saved successfully.
+                    setTimeout(() => {
+                        // add timeout to show thank you message.
+                        document.getElementById(options.publisherACSID).innerHTML = '';
+                        getDynamicImage(options.publisherACSID);
+                    }, 2000);
+                } else {
+                    logging('error in saving ');
+                }
+            }
+        };
+        xhttp.open("POST", docereeTrackingBaseUrl + "/saveadblockinfo", true);
+        xhttp.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhttp.send(JSON.stringify(options));
+    } catch (error) {
+        logging(error);
+    }
+}
+
+function registerImpression(docElem) {
+    try {
+        const link = docereeAds[docElem.id] && docereeAds[docElem.id].impressionLink;
+        if (link) {
+            UserAction('CPM', link);    
+        }
+    } catch (error) {
+        logging(error)
+    }
+}
+
+function registerClick(docElem) {
+    try {
+        const link = docereeAds[docElem.id] && docereeAds[docElem.id].ctaLink;
+        if(docereeAds[docElem.id].clickCount < 1) {
+            docereeAds[docElem.id].clickCount++;
+            UserAction('CPC', link);
+        }
+    } catch (error) {
+        logging(error)
+    }
+}
+
+function onAdsLoaded(docElemId, adbElemId) {
+    try {
+        if(typeof docElemId !== 'string') {
+            docElemId = docElemId.id;
+        }
+        let elem = document.getElementById(docElemId);
+        const controlsElem = elem.getElementsByClassName("da-action-container")[0];
+        controlsElem.style.display = 'flex';
+        tracking();
+    } catch (error) {
+        //not able to display controls
+    }
+}
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
