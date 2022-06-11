@@ -1,13 +1,14 @@
+import profile
 from tkinter import *
 from tkinter import messagebox
+from tkinter import filedialog
 from typing import Counter
-import pdfrw
-import sqlite3
-import os
+import pickle
 from PDFCreator import formatInput
 from DatabaseTest import searchMedicalCPT, searchMedicareCPT, searchMedcalCPT2, searchMedicareCPT2
 from npiSearch import getDrInfo
 from searchICD10 import getICDInfo
+
 default_input_width = 20
 default_item_input_width = 10
 default_ICD_Description_width = 65
@@ -17,6 +18,13 @@ root = Tk()
 
 
 root.title("Create Patient Profile")
+
+
+
+
+
+
+
 
 profile_dict ={
     'makeInvoice':1,
@@ -103,6 +111,7 @@ profile_dict ={
     'diagnosisCodeRow2Description':'',
     'diagnosisCodeRow3Description':'',
     'diagnosisCodeRow4Description':'',
+    'profileCreationDate':'',
 
 }
 
@@ -207,6 +216,12 @@ def clearICD():
     diagnosisCodeRow2Description.delete(0,END)
     diagnosisCodeRow3Description.delete(0,END)
     diagnosisCodeRow4Description.delete(0,END)
+
+def clearAll():
+    clearICD()
+    clearCpt()
+    clearPatient()
+    clearDr()
 
 def setInsuranceType(*args):
     if(value_inside_insurance.get() != "IEHP"):
@@ -651,7 +666,9 @@ def getCPTInfo():
 
 def sendToPDFCreator():
     #print(e)
-    
+    #new_date = datetime.now()
+    #some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")
+    #profile_dict["profileCreationDate"] = some_date
     profile_dict["UserName"] = userName.get()
     profile_dict["account"] = value_inside_insurance.get()
     #get patient info from forms
@@ -758,6 +775,31 @@ def sendToPDFCreator():
         messagebox.showerror(title="Error!", message="An error has occured")
     #os.system("python PDFCreator.py {} {} {} {} \"{}\" {} {} {} {} {} {} {} {}".format(a,b,c,d,e,f,g,h,i,j,k,l,m))
 
+def donothing():
+    print("Nothing")
+
+def getProfileFromFile():
+    fileOfIds = filedialog.askopenfilename()
+    with open(fileOfIds, 'rb') as handle:
+        b = pickle.load(handle)
+    clearAll()
+    patientFirstNameInput.insert(0, b["patientFirstName"])
+    patientLastNameInput.insert(0, b["patientLastName"])
+    patientAddressInput.insert(0, b["patientAddress"])
+    patientAddressCityInput.insert(0, b["patientCity"])
+    value_inside_patient.set(b["patientState"])
+    patientAddressZipCodeInput.insert(0, b["patientZip"])
+    patientPhoneNumberInput.insert(0, b["patientPhone"])
+
+menubar = Menu(root)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=clearAll)
+filemenu.add_command(label="Open", command=getProfileFromFile)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+root.config(menu=menubar)
 
 option_list=["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI"]
 value_inside_patient=StringVar(root)
@@ -771,11 +813,11 @@ value_inside_insurance=StringVar(root)
 value_inside_insurance.set("Medicare")
 
 #User information form field
-userName = Entry(insuranceFrame, width = default_input_width)
 userNameLabel = Label(insuranceFrame, text="User Name")
 insuranceList = OptionMenu(insuranceFrame, value_inside_insurance, insurance_option_list[0], *insurance_option_list, command=setInsuranceType)
 
 #Patient INFORMATION FORM
+userName = Entry(insuranceFrame, width = default_input_width)
 patientFirstNameInput= Entry(patientFrame, width = default_input_width)
 patientLastNameInput = Entry(patientFrame, width = default_input_width)
 patientAddressInput = Entry(patientFrame, width = default_input_width)
@@ -783,8 +825,8 @@ patientAddressCityInput = Entry(patientFrame, width = default_input_width)
 patientAddressZipCodeInput = Entry(patientFrame, width = 10)
 patientAddressStateInput = OptionMenu(patientFrame, value_inside_patient, *option_list)
 patientPhoneNumberInput = Entry(patientFrame, width = default_input_width)
-orderDateInput = Entry(patientFrame, width = default_input_width)
 patientDateOfBirth = Entry(patientFrame, width = default_input_width)
+orderDateInput = Entry(patientFrame, width = default_input_width)
 patientInsuranceInput = Entry(patientFrame, width = default_input_width)
 patientPreauthorizationInput = Entry(patientFrame, width = default_input_width)
 patientPCPFirstNameInput = Entry(doctorFrame, width = default_input_width)
@@ -819,6 +861,12 @@ patientPCPNPILabel = Label(doctorFrame, text="NPI")
 
 #CPT CODE ENTRY FORMS
 itemRow1Cpt = Entry(itemsFrame, width = default_item_input_width)
+itemRow2Cpt = Entry(itemsFrame, width = default_item_input_width)
+itemRow3Cpt = Entry(itemsFrame, width = default_item_input_width)
+itemRow4Cpt = Entry(itemsFrame, width = default_item_input_width)
+itemRow5Cpt = Entry(itemsFrame, width = default_item_input_width)
+itemRow6Cpt = Entry(itemsFrame, width = default_item_input_width)
+
 itemRow1Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow1Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow1Modifier3 = Entry(itemsFrame, width=default_modifier_width)
@@ -827,7 +875,6 @@ itemRow1Qty = Entry(itemsFrame, width=default_modifier_width)
 itemRow1Description = Entry(itemsFrame, width=default_input_width)
 itemRow1Price = Entry(itemsFrame, width=default_modifier_width)
 
-itemRow2Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow2Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow2Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow2Modifier3 = Entry(itemsFrame, width=default_modifier_width)
@@ -836,7 +883,6 @@ itemRow2Qty = Entry(itemsFrame, width=default_modifier_width)
 itemRow2Description = Entry(itemsFrame, width=default_input_width)
 itemRow2Price = Entry(itemsFrame, width=default_modifier_width)
 
-itemRow3Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow3Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow3Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow3Modifier3 = Entry(itemsFrame, width=default_modifier_width)
@@ -845,7 +891,6 @@ itemRow3Qty = Entry(itemsFrame, width=default_modifier_width)
 itemRow3Description = Entry(itemsFrame, width=default_input_width)
 itemRow3Price = Entry(itemsFrame, width=default_modifier_width)
 
-itemRow4Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow4Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow4Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow4Modifier3 = Entry(itemsFrame, width=default_modifier_width)
@@ -854,7 +899,6 @@ itemRow4Qty = Entry(itemsFrame, width=default_modifier_width)
 itemRow4Description = Entry(itemsFrame, width=default_input_width)
 itemRow4Price = Entry(itemsFrame, width=default_modifier_width)
 
-itemRow5Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow5Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow5Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow5Modifier3 = Entry(itemsFrame, width=default_modifier_width)
@@ -863,7 +907,6 @@ itemRow5Qty = Entry(itemsFrame, width=default_modifier_width)
 itemRow5Description = Entry(itemsFrame, width=default_input_width)
 itemRow5Price = Entry(itemsFrame, width=default_modifier_width)
 
-itemRow6Cpt = Entry(itemsFrame, width = default_item_input_width)
 itemRow6Modifier1 = Entry(itemsFrame, width=default_modifier_width)
 itemRow6Modifier2 = Entry(itemsFrame, width=default_modifier_width)
 itemRow6Modifier3 = Entry(itemsFrame, width=default_modifier_width)

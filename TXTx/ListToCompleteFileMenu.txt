@@ -1,0 +1,97 @@
+    profile_dict["UserName"] = userName.get()
+    profile_dict["account"] = value_inside_insurance.get()
+    #get patient info from forms
+    profile_dict['makeInvoice'] = invoiceCheck.get()
+    profile_dict['makeIntake'] = intakeCheck.get()
+    profile_dict['patientFirstName'] = patientFirstNameInput.get()
+    profile_dict['patientLastName'] = patientLastNameInput.get()
+    profile_dict['patientAddress'] = patientAddressInput.get()
+    profile_dict['patientCity'] = patientAddressCityInput.get()
+    profile_dict['patientState'] = value_inside_patient.get()
+    profile_dict['patientZip'] = patientAddressZipCodeInput.get()
+    profile_dict['patientPhone'] = patientPhoneNumberInput.get()
+    profile_dict['patientOrderDate'] = orderDateInput.get()
+    profile_dict['patientMBI'] = patientInsuranceInput.get()
+    profile_dict['patientPreauthorization'] = patientPreauthorizationInput.get()
+    profile_dict["patientDateOfBirth"] = patientDateOfBirth.get()
+
+    #get doctor info from forms
+    profile_dict['patientPCPFirstName'] = patientPCPFirstNameInput.get()
+    profile_dict['patientPCPLastName'] = patientPCPLastNameInput.get()
+    profile_dict['patientPCPAddress'] = patientPCPAddressInput.get()
+    profile_dict['patientPCPCity'] = patientPCPAddressCityInput.get()
+    profile_dict['patientPCPState'] = value_inside_doctor.get()
+    profile_dict['patientPCPZip'] = patientPCPAddressZipCodeInput.get()
+    profile_dict['patientPCPPhone'] = patientPCPPhoneNumberInput.get()
+    profile_dict['patientPCPNPI'] = patientPCPNPIInput.get()
+    
+    #get Cpt Row1 info from forms 
+    profile_dict['itemRow1CPT'] = itemRow1Cpt.get()
+    profile_dict['itemRow1Modifier1'] = itemRow1Modifier1.get()
+    profile_dict['itemRow1Modifier2'] = itemRow1Modifier2.get()
+    profile_dict['itemRow1Modifier3'] = itemRow1Modifier3.get()
+    profile_dict['itemRow1Modifier4'] = itemRow1Modifier4.get()
+    profile_dict['itemRow1Description'] = itemRow1Description.get().strip()
+    profile_dict['itemRow1Qty'] = itemRow1Qty.get()
+    profile_dict['itemRow1Price'] = itemRow1Price.get()
+
+    #get Cpt Row2 info from forms
+    profile_dict['itemRow2CPT'] = itemRow2Cpt.get()
+    profile_dict['itemRow2Modifier1'] = itemRow2Modifier1.get()
+    profile_dict['itemRow2Modifier2'] = itemRow2Modifier2.get()
+    profile_dict['itemRow2Modifier3'] = itemRow2Modifier3.get()
+    profile_dict['itemRow2Modifier4'] = itemRow2Modifier4.get()
+    profile_dict['itemRow2Description'] = itemRow2Description.get().strip()
+    profile_dict['itemRow2Qty'] = itemRow2Qty.get()
+    profile_dict['itemRow2Price'] = itemRow2Price.get()
+
+    #get Cpt Row3 info from forms
+    profile_dict['itemRow3CPT'] = itemRow3Cpt.get()
+    profile_dict['itemRow3Modifier1'] = itemRow3Modifier1.get()
+    profile_dict['itemRow3Modifier2'] = itemRow3Modifier2.get()
+    profile_dict['itemRow3Modifier3'] = itemRow3Modifier3.get()
+    profile_dict['itemRow3Modifier4'] = itemRow3Modifier4.get()
+    profile_dict['itemRow3Description'] = itemRow3Description.get().strip()
+    profile_dict['itemRow3Qty'] = itemRow3Qty.get()
+    profile_dict['itemRow3Price'] = itemRow3Price.get()
+
+    #get Cpt Row4 info from forms
+    profile_dict['itemRow4CPT'] = itemRow4Cpt.get()
+    profile_dict['itemRow4Modifier1'] = itemRow4Modifier1.get()
+    profile_dict['itemRow4Modifier2'] = itemRow4Modifier2.get()
+    profile_dict['itemRow4Modifier3'] = itemRow4Modifier3.get()
+    profile_dict['itemRow4Modifier4'] = itemRow4Modifier4.get()
+    profile_dict['itemRow4Description'] = itemRow4Description.get().strip()
+    profile_dict['itemRow4Qty'] = itemRow4Qty.get()
+    profile_dict['itemRow4Price'] = itemRow4Price.get()
+
+    #get Cpt Row5 info from forms 
+    profile_dict['itemRow5CPT'] = itemRow5Cpt.get()
+    profile_dict['itemRow5Modifier1'] = itemRow5Modifier1.get()
+    profile_dict['itemRow5Modifier2'] = itemRow5Modifier2.get()
+    profile_dict['itemRow5Modifier3'] = itemRow5Modifier3.get()
+    profile_dict['itemRow5Modifier4'] = itemRow5Modifier4.get()
+    profile_dict['itemRow5Description'] = itemRow5Description.get().strip()
+    profile_dict['itemRow5Qty'] = itemRow5Qty.get()
+    profile_dict['itemRow5Price'] = itemRow5Price.get()
+
+    #get Cpt Row6 info from forms 
+    profile_dict['itemRow6CPT'] = itemRow6Cpt.get()
+    profile_dict['itemRow6Modifier1'] = itemRow6Modifier1.get()
+    profile_dict['itemRow6Modifier2'] = itemRow6Modifier2.get()
+    profile_dict['itemRow6Modifier3'] = itemRow6Modifier3.get()
+    profile_dict['itemRow6Modifier4'] = itemRow6Modifier4.get()
+    profile_dict['itemRow6Description'] = itemRow6Description.get().strip()
+    profile_dict['itemRow6Qty'] = itemRow6Qty.get()
+    profile_dict['itemRow6Price'] = itemRow6Price.get()
+
+    #get diagnosis codes and descriptions from forms
+    profile_dict['diagnosisCodeRow1'] = diagnosisCodeRow1.get()
+    profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
+    profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
+    profile_dict['diagnosisCodeRow4'] = diagnosisCodeRow4.get()
+
+    profile_dict['diagnosisCodeRow1Description'] = diagnosisCodeRow1Description.get()
+    profile_dict['diagnosisCodeRow2Description'] = diagnosisCodeRow2Description.get()
+    profile_dict['diagnosisCodeRow3Description'] = diagnosisCodeRow3Description.get()
+    profile_dict['diagnosisCodeRow4Description'] = diagnosisCodeRow4Description.get()

@@ -6,6 +6,9 @@ import os
 
 
 def makePDF(myPDF, myDict, Name, profile_dict):
+    new_date = datetime.now()
+    some_date = new_date.strftime("%B.%d.%Y--%I.%M.%S%p ")
+    
     for page in myPDF.pages:
         annotations = page[ANNOT_KEY]
         for annotation in annotations:
@@ -22,11 +25,11 @@ def makePDF(myPDF, myDict, Name, profile_dict):
     if(os.path.exists('./Output/{}'.format(profile_dict['patientLastName'].upper() + "_" + profile_dict['patientFirstName'].upper())) == False):
         os.makedirs('./Output/{}'.format(profile_dict['patientLastName'].upper() + "_" + profile_dict['patientFirstName'].upper()))
         pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
-        with open('./Output/{}/{}-data.pickle'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName']), 'wb') as handle:
+        with open('./Output/{}/{}-{}-data.pickle'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], some_date), 'wb') as handle:
             pickle.dump(profile_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
     else:
         pdfrw.PdfWriter().write('./Output/{}/{}.pdf'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'],Name), myPDF)
-        with open('./Output/{}/{}-data.pickle'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName']), 'wb') as handle:
+        with open('./Output/{}/{}-{}-data.pickle'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], some_date), 'wb') as handle:
             pickle.dump(profile_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
     with open('./Output/{}/Communication_Log {}.txt'.format(profile_dict['patientLastName'] + "_" + profile_dict['patientFirstName'], str(some_date)), 'w') as f:
         f.write("Communication Log for " + profile_dict['patientFirstName'].upper() + "_" + profile_dict['patientLastName'].upper() + "\n" + "Created on " + str(some_date))
@@ -34,6 +37,8 @@ def makePDF(myPDF, myDict, Name, profile_dict):
     print("Created PDF!")
 
 def formatInput(profile_dict):
+    new_date = datetime.now()
+    some_date = new_date.strftime("%B.%d.%Y--%I.%M.%S%p ")
     moddedPDF = pdf
     moddedPDF1 = pdf1
     if(profile_dict['makeInvoice'] == 1):
@@ -157,14 +162,14 @@ def formatInput(profile_dict):
         print("No Intake Sheet Created")    
 
 
-directory = sys.executable
-baseDir = os.path.dirname(directory)
-pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
-pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
+#directory = sys.executable
+#baseDir = os.path.dirname(directory)
+#pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
+#pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
 
-#pdf_path = ("./src/BlankInvoice(edit).pdf")
+pdf_path = ("./src/BlankInvoice(edit).pdf")
 
-#pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
 #pdf_path = ""
 pdf = pdfrw.PdfReader(pdf_path)
 pdf1 = pdfrw.PdfReader(pdf_path1)
@@ -178,9 +183,9 @@ ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
 #test_dict = {"test":"test"}
-new_date = datetime.now()
-some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")
-print(some_date)
+#new_date = datetime.now()
+#some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")
+#print(some_date)
 #makePDF(pdf, test_dict,"Test" )
 
 
