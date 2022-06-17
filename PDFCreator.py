@@ -162,14 +162,14 @@ def formatInput(profile_dict):
         print("No Intake Sheet Created")    
 
 
-#directory = sys.executable
-#baseDir = os.path.dirname(directory)
-#pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
-#pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
+directory = sys.executable#
+baseDir = os.path.dirname(directory)
+pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
+pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
 
-pdf_path = ("./src/BlankInvoice(edit).pdf")
+#pdf_path = ("./src/BlankInvoice(edit).pdf")
 
-pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+#pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
 #pdf_path = ""
 pdf = pdfrw.PdfReader(pdf_path)
 pdf1 = pdfrw.PdfReader(pdf_path1)

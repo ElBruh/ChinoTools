@@ -8,6 +8,9 @@ import pickle
 import time
 import tkinter as tk
 from tkinter import filedialog
+import os
+import sys
+#from ChromeScrape import DRIVER_PATH
 
 #root = tk.Tk()
 #root.withdraw()
@@ -23,12 +26,19 @@ def fillClaimFormFunction():
 
 
 
-    #DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
+    DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
     #DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
-    DRIVER_PATH = 'C:\\Users\\Bruh\\Downloads\\chromedriver_win32\\chromedriver.exe'
+    #DRIVER_PATH = 'C:\\Users\\Bruh\\Downloads\\chromedriver_win32\\chromedriver.exe'
+    #DRIVER_PATH = "\\src\\chromedriver.exe"
+    
+    directory = sys.executable
+    baseDir = os.path.dirname(directory)
+    DRIVER_PATH = baseDir + "\\src\\chromedriver.exe"
+    print(DRIVER_PATH)
 
     chrome_options = Options()
     chrome_options.add_argument("user-data-dir=C:\\Src\\ChinoTools\\selenium") 
+    #chrome_options.add_argument("user-data-dir=C:{}\\selenium".format(baseDir))
     chrome_options.add_experimental_option("detach", True)
     #chrome_options.add_argument("executable_path={}".format(DRIVER_PATH))
     driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)

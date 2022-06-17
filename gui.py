@@ -880,11 +880,12 @@ def getProfileFromFile():
     diagnosisCodeRow3Description.insert(0,b['diagnosisCodeRow3Description'])
     diagnosisCodeRow4Description.insert(0,b['diagnosisCodeRow4Description'])
 
+
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=clearAll)
 filemenu.add_command(label="Open", command=getProfileFromFile)
-filemenu.add_command(label="Save", command=donothing)
+#filemenu.add_command(label="Save", command=donothing)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
@@ -897,13 +898,13 @@ value_inside_patient.set("CA")
 value_inside_doctor=StringVar(root)
 value_inside_doctor.set("CA")
 
-insurance_option_list=("Medicare", "IEHP", "Anthem Blue Cross", "Health Net", "Aetna","AlphaCare Medical Group", "Anthem Blue Cross of California", "Blue Cross - California", "Blue Shield - California", "Brand New Day", "CIGNA Health Plan", "Department of Labor-DEEOIC", "Humana", "TRICARE California (WEST-WPS)", "United HealthCare")
+insurance_option_list=("IEHP", "Medicare", "Anthem Blue Cross", "Health Net", "Aetna","AlphaCare Medical Group", "Anthem Blue Cross of California", "Blue Cross - California", "Blue Shield - California", "Brand New Day", "CIGNA Health Plan", "Department of Labor-DEEOIC", "Humana", "TRICARE California (WEST-WPS)", "United HealthCare")
 value_inside_insurance=StringVar(root)
 value_inside_insurance.set("Medicare")
 
 #User information form field
 userNameLabel = Label(insuranceFrame, text="User Name")
-insuranceList = OptionMenu(insuranceFrame, value_inside_insurance, insurance_option_list[0], *insurance_option_list, command=setInsuranceType)
+insuranceList = OptionMenu(insuranceFrame, value_inside_insurance, *insurance_option_list)
 
 #Patient INFORMATION FORM
 userName = Entry(insuranceFrame, width = default_input_width)
@@ -1269,6 +1270,25 @@ itemsFrame.grid(column=1, row=1, padx=10, pady=10)
 doctorFrame.grid(column=0, row=2, padx=10, pady=10)
 submitFrame.grid(column=0, row=3, padx=10, pady=10)
 diagnosisFrame.grid(column=1,row=2, padx=10, pady=10)
+
+root.grid_columnconfigure(0,weight=1)
+root.grid_columnconfigure(1,weight=1)
+root.grid_columnconfigure(2,weight=1)
+root.grid_columnconfigure(3,weight=1)
+root.grid_columnconfigure(4,weight=1)
+root.grid_columnconfigure(5,weight=1)
+root.grid_columnconfigure(6,weight=1)
+root.grid_columnconfigure(7,weight=1)
+root.grid_columnconfigure(8,weight=1)
+
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=1)
+root.grid_rowconfigure(2, weight=1)
+root.grid_rowconfigure(3, weight=1)
+root.grid_rowconfigure(4, weight=1)
+root.grid_rowconfigure(5, weight=1)
+root.grid_rowconfigure(6, weight=1)
+root.grid_rowconfigure(7, weight=1)
 
 
 root.mainloop()
