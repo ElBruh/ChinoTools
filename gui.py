@@ -1291,4 +1291,7 @@ root.grid_rowconfigure(6, weight=1)
 root.grid_rowconfigure(7, weight=1)
 
 
+root.update()
+root.minsize(root.winfo_width(), root.winfo_height())
+
 root.mainloop()
