@@ -26,10 +26,10 @@ def fillClaimFormFunction():
 
 
 
-    DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
+    #DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
     #DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
     #DRIVER_PATH = 'C:\\Users\\Bruh\\Downloads\\chromedriver_win32\\chromedriver.exe'
-    #DRIVER_PATH = "\\src\\chromedriver.exe"
+    #DRIVER_PATH = ".\\src\\chromedriver.exe"
     
     directory = sys.executable
     baseDir = os.path.dirname(directory)
@@ -37,7 +37,8 @@ def fillClaimFormFunction():
     print(DRIVER_PATH)
 
     chrome_options = Options()
-    chrome_options.add_argument("user-data-dir=C:\\Src\\ChinoTools\\selenium") 
+    chrome_options.add_argument("user-data-dir=C:\\src\\selenium") 
+    #chrome_options.add_argument("user-data-dir=C:\\Src\\ChinoTools\\selenium") 
     #chrome_options.add_argument("user-data-dir=C:{}\\selenium".format(baseDir))
     chrome_options.add_experimental_option("detach", True)
     #chrome_options.add_argument("executable_path={}".format(DRIVER_PATH))
@@ -45,10 +46,10 @@ def fillClaimFormFunction():
 
     #driver = webdriver.Chrome(executable_path=DRIVER_PATH)
     driver.get('https://www.officeally.com/slogin.aspx')
-
-    login = driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    password = driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^')
-    submit = driver.find_element(By.ID, "Login1_LoginButton").click()
+    #driver.switch_to.frame("Iframe9")
+    driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
+    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!')
+    driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
     driver.get('https://www.officeally.com/secure_oa.asp?GOTO=onlineentry&TaskAction=Edit&Mode=Create&ClaimID=-1&encounter=&CMS=0212&sPatient=-1&sBillProv=1415905&sRndProv=1344022&sFacility=-1&sTemplate=-1&sPayer=1892359')

@@ -1,3 +1,77 @@
-2022/06/17-11:04:01.585 7d4 Reusing MANIFEST C:\Src\ChinoTools\selenium\Default\Session Storage/MANIFEST-000001
-2022/06/17-11:04:01.586 7d4 Recovering log #3
-2022/06/17-11:04:01.586 7d4 Reusing old log C:\Src\ChinoTools\selenium\Default\Session Storage/000003.log 
+2022/08/12-16:13:44.259 1940 Reusing MANIFEST C:\Src\ChinoTools\selenium\Default\Session Storage/MANIFEST-000001
+2022/08/12-16:13:44.260 1940 Recovering log #9
+2022/08/12-16:13:44.260 1940 Reusing old log C:\Src\ChinoTools\selenium\Default\Session Storage/000009.log 
+2022/08/12-16:13:49.181 2470 Level-0 table #13: started
+2022/08/12-16:13:49.185 2470 Level-0 table #13: 13033 bytes OK
+2022/08/12-16:13:49.187 2470 Delete type=0 #9
+2022/08/12-16:13:49.187 2470 Compacting 4@0 + 0@1 files
+2022/08/12-16:13:49.189 2470 Generated table #14@0: 8 keys, 380 bytes
+2022/08/12-16:13:49.189 2470 Compacted 4@0 + 0@1 files => 380 bytes
+2022/08/12-16:13:49.189 2470 compacted to: files[ 0 1 0 0 0 0 0 ]
+2022/08/12-16:13:49.190 2470 Delete type=2 #3
+2022/08/12-16:13:49.190 2470 Delete type=2 #7
+2022/08/12-16:13:49.190 2470 Delete type=2 #10
+2022/08/12-16:13:49.190 2470 Delete type=2 #13
+2022/08/12-16:16:09.386 1940 Level-0 table #16: started
+2022/08/12-16:16:09.392 1940 Level-0 table #16: 13765 bytes OK
+2022/08/12-16:16:09.393 1940 Delete type=0 #12
+2022/08/12-16:17:57.138 2470 Level-0 table #18: started
+2022/08/12-16:17:57.144 2470 Level-0 table #18: 13498 bytes OK
+2022/08/12-16:17:57.148 2470 Delete type=0 #15
+2022/08/12-16:19:42.172 1940 Level-0 table #20: started
+2022/08/12-16:19:42.177 1940 Level-0 table #20: 13372 bytes OK
+2022/08/12-16:19:42.179 1940 Delete type=0 #17
+2022/08/12-16:21:45.686 2470 Level-0 table #22: started
+2022/08/12-16:21:45.687 2470 Level-0 table #22: 13621 bytes OK
+2022/08/12-16:21:45.688 2470 Delete type=0 #19
+2022/08/12-16:21:45.688 2470 Compacting 4@0 + 1@1 files
+2022/08/12-16:21:45.690 2470 Generated table #23@0: 294 keys, 8231 bytes
+2022/08/12-16:21:45.690 2470 Compacted 4@0 + 1@1 files => 8231 bytes
+2022/08/12-16:21:45.691 2470 compacted to: files[ 0 1 0 0 0 0 0 ]
+2022/08/12-16:21:45.691 2470 Delete type=2 #14
+2022/08/12-16:21:45.691 2470 Delete type=2 #16
+2022/08/12-16:21:45.691 2470 Delete type=2 #18
+2022/08/12-16:21:45.691 2470 Delete type=2 #20
+2022/08/12-16:21:45.691 2470 Delete type=2 #22
+2022/08/12-16:23:33.737 1940 Level-0 table #25: started
+2022/08/12-16:23:33.742 1940 Level-0 table #25: 13582 bytes OK
+2022/08/12-16:23:33.744 1940 Delete type=0 #21
+2022/08/12-16:25:23.343 2470 Level-0 table #27: started
+2022/08/12-16:25:23.348 2470 Level-0 table #27: 13347 bytes OK
+2022/08/12-16:25:23.349 2470 Delete type=0 #24
+2022/08/12-16:27:07.868 1940 Level-0 table #29: started
+2022/08/12-16:27:07.870 1940 Level-0 table #29: 13579 bytes OK
+2022/08/12-16:27:07.871 1940 Delete type=0 #26
+2022/08/12-16:28:55.999 2470 Level-0 table #31: started
+2022/08/12-16:28:56.005 2470 Level-0 table #31: 13461 bytes OK
+2022/08/12-16:28:56.006 2470 Delete type=0 #28
+2022/08/12-16:28:56.006 2470 Compacting 4@0 + 1@1 files
+2022/08/12-16:28:56.008 2470 Generated table #32@0: 289 keys, 8113 bytes
+2022/08/12-16:28:56.008 2470 Compacted 4@0 + 1@1 files => 8113 bytes
+2022/08/12-16:28:56.009 2470 compacted to: files[ 0 1 0 0 0 0 0 ]
+2022/08/12-16:28:56.009 2470 Delete type=2 #23
+2022/08/12-16:28:56.009 2470 Delete type=2 #25
+2022/08/12-16:28:56.009 2470 Delete type=2 #27
+2022/08/12-16:28:56.009 2470 Delete type=2 #29
+2022/08/12-16:28:56.009 2470 Delete type=2 #31
+2022/08/12-16:30:38.409 1940 Level-0 table #34: started
+2022/08/12-16:30:38.410 1940 Level-0 table #34: 13702 bytes OK
+2022/08/12-16:30:38.411 1940 Delete type=0 #30
+2022/08/12-16:32:22.451 2470 Level-0 table #36: started
+2022/08/12-16:32:22.452 2470 Level-0 table #36: 13646 bytes OK
+2022/08/12-16:32:22.453 2470 Delete type=0 #33
+2022/08/12-16:34:09.201 2470 Level-0 table #38: started
+2022/08/12-16:34:09.203 2470 Level-0 table #38: 13574 bytes OK
+2022/08/12-16:34:09.203 2470 Delete type=0 #35
+2022/08/12-16:35:58.741 1940 Level-0 table #40: started
+2022/08/12-16:35:58.745 1940 Level-0 table #40: 13404 bytes OK
+2022/08/12-16:35:58.746 1940 Delete type=0 #37
+2022/08/12-16:35:58.746 1940 Compacting 4@0 + 1@1 files
+2022/08/12-16:35:58.748 1940 Generated table #41@0: 291 keys, 8216 bytes
+2022/08/12-16:35:58.748 1940 Compacted 4@0 + 1@1 files => 8216 bytes
+2022/08/12-16:35:58.749 1940 compacted to: files[ 0 1 0 0 0 0 0 ]
+2022/08/12-16:35:58.749 1940 Delete type=2 #32
+2022/08/12-16:35:58.749 1940 Delete type=2 #34
+2022/08/12-16:35:58.749 1940 Delete type=2 #36
+2022/08/12-16:35:58.749 1940 Delete type=2 #38
+2022/08/12-16:35:58.749 1940 Delete type=2 #40

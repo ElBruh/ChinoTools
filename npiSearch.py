@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import sys
 import requests
 import json
@@ -12,30 +13,36 @@ doctorDict = {
     "state" : "",
     "zip" : "",
     "phone_number" : "",
-
 }
+
+token="4F92BE926DA7401E96561F9AB7996E0493247313F16845F8B40CAF1A80B9D065"
 
 params = dict(
     version=2.1,
-    number=1780951947
+    number=1780951947,
+    token="4F92BE926DA7401E96561F9AB7996E0493247313F16845F8B40CAF1A80B9D065"
 )
 def getDrInfo(npi):
-
-    params["number"] = npi
-    resp = requests.get(url=url, params=params)
+    
+    #params["number"] = npi
+    resp = requests.get("https://www.hipaaspace.com/api/npi/search?q={}&rt=json&token={}".format(npi, token))
+    print(resp)
     data = resp.json()
+    print(data)
     try:
-        doctorDict["first_name"] = data["results"][0]["basic"]["first_name"]
-        doctorDict["last_name"] = data["results"][0]["basic"]["last_name"]
+        doctorDict["first_name"] = data["NPI"][0]["FirstName"]
+        doctorDict["last_name"] = data["NPI"][0]["LastName"]
+        
+        
     except:
-        doctorDict["first_name"] = data["results"][0]["basic"]["authorized_official_first_name"]
-        doctorDict["last_name"] = data["results"][0]["basic"]["authorized_official_last_name"]
-    doctorDict["address_1"] = data["results"][0]["addresses"][0]["address_1"]
-    doctorDict["address_2"] = data["results"][0]["addresses"][0]["address_2"]
-    doctorDict["city"] = data["results"][0]["addresses"][0]["city"]
-    doctorDict["state"] = data["results"][0]["addresses"][0]["state"]
-    doctorDict["zip"] = data["results"][0]["addresses"][0]["postal_code"]
-    doctorDict["phone_number"] = data["results"][0]["addresses"][0]["telephone_number"]
+        doctorDict["first_name"] = data["NPI"][0]["AuthorizedOfficialFirstName"]
+        doctorDict["last_name"] = data["NPI"][0]["AuthorizedOfficialLastName"]
+    
+    doctorDict["address_1"] = data["NPI"][0]["FirstLinePracticeLocationAddress"]
+    doctorDict["city"] = data["NPI"][0]["PracticeLocationAddressCityName"]
+    doctorDict["state"] = data["NPI"][0]["PracticeLocationAddressStateName"]
+    doctorDict["zip"] = data["NPI"][0]["PracticeLocationAddressPostalCode"]
+    doctorDict["phone_number"] = data["NPI"][0]["PracticeLocationAddressTelephoneNumber"]
 
     return doctorDict
 
