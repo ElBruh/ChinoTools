@@ -76,6 +76,8 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_REFER_PHYSICIAN_NPI').send_keys(b["patientPCPNPI"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_selReferringProviderQual').send_keys("DK - Ordering Provider")
 
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRIOR_AUTH_NUMBER').send_keys(b["patientPreauthorization"])
+
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_1").send_keys(b["diagnosisCodeRow1"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_2").send_keys(b["diagnosisCodeRow2"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_3").send_keys(b["diagnosisCodeRow3"])

@@ -1,0 +1,70 @@
+{'resultCount': 1, 'results': [
+        {'created_epoch': '1150031435000', 
+        'enumeration_type': 'NPI-1', 
+        'last_updated_epoch': '1391649853000', 
+        'number': '1366484883', 
+        'addresses': [
+                {'country_code': 'US', 
+                'country_name': 'United States', 
+                'address_purpose': 'MAILING',
+                'address_type': 'DOM', 
+                'address_1': '7974 HAVEN AVE', 
+                'address_2': 'SUITE 210', 
+                'city': 'RANCHO CUCAMONGA', 
+                'state': 'CA', 
+                'postal_code': '917303052', 
+                'telephone_number': '909-945-0122', 
+                'fax_number': '909-945-0125'
+                },
+                {'country_code': 'US', 
+                'country_name': 'United States', 
+                'address_purpose': 'LOCATION', 
+                'address_type': 'DOM', 
+                'address_1': '7974 HAVEN AVE', 
+                'address_2': 'SUITE 210', 
+                'city': 'RANCHO CUCAMONGA', 'state': 'CA', 
+                'postal_code': '917303052', 
+                'telephone_number': '909-945-0122', 
+                'fax_number': '909-945-0125'
+                }
+            ], 'practiceLocations': [], 
+            'basic': {'first_name': 'SARINA', 
+            'last_name': 'KULAR', 
+            'credential': 'M.D.', 
+            'sole_proprietor': 'NO', 
+            'gender': 'F', 
+            'enumeration_date': '2006-06-11', 
+            'last_updated': '2014-02-05', 
+            'status': 'A', 
+            'name_prefix': 'Mrs.', 
+            'name_suffix': '--'
+            }, 'taxonomies': [
+                {'code': '207R00000X', 
+                'desc': 'Internal Medicine', 
+                'state': 'CA', 
+                'license': 'A61563', 
+                'primary': True
+                }
+            ], 'identifiers': [
+                {'code': '05', 
+                'desc': 'MEDICAID', 
+                'issuer': None, 
+                'identifier': '00A615630', 
+                'state': 'CA'
+                },
+                {'code': '08', 
+                'desc': 'MEDICARE PIN', 
+                'issuer': None, 
+                'identifier': '00A615631', 
+                'state': 'CA'
+                },
+                {'code': '02', 
+                'desc': 'MEDICARE UPIN', 
+                'issuer': None, 
+                'identifier': 'G64611', 
+                'state': 'CA'
+                }
+            ], 'endpoints': [], 'other_names': []
+        }
+    ]
+}

@@ -1,9 +1,151 @@
+from doctest import testfile
 import pdfrw
 from datetime import datetime
 import pickle
 import sys
 import os
+import re
 
+
+temp_dict ={
+    'makeInvoice':1,
+    'makeIntake':1,
+    'UserName':'',
+    'account':'',
+    'patientOrderDate':'',
+    'patientLastName':'',
+    'patientAddress':'',
+    'patientCity':'',
+    'patientState':'',
+    'patientZip':'',
+    'patientPhone':'',
+    'patientOrderDate':'',
+    'patientDateOfBirth': '',    
+    'patientMBI':'',
+    'patientPreauthorization':'',
+    'patientReferralName':'',
+    'patientPCPFirstName':'',
+    'patientPCPLastName':'',
+    'patientPCPAddress':'',
+    'patientPCPCity':'',
+    'patientPCPState':'',
+    'patientPCPZip':'',
+    'patientPCPPhone':'',
+    'patientPCPNPI':'',
+    'itemRow1CPT':'',
+    'itemRow2CPT':'',
+    'itemRow3CPT':'',
+    'itemRow4CPT':'',
+    'itemRow5CPT':'',
+    'itemRow6CPT':'',
+    'itemRow1Modifier1':'',
+    'itemRow1Modifier2':'',
+    'itemRow1Modifier3':'',
+    'itemRow1Modifier4':'',
+    'itemRow2Modifier1':'',
+    'itemRow2Modifier2':'',
+    'itemRow2Modifier3':'',
+    'itemRow2Modifier4':'',
+    'itemRow3Modifier1':'',
+    'itemRow3Modifier2':'',
+    'itemRow3Modifier3':'',
+    'itemRow3Modifier4':'',
+    'itemRow4Modifier1':'',
+    'itemRow4Modifier2':'',
+    'itemRow4Modifier3':'',
+    'itemRow4Modifier4':'',
+    'itemRow5Modifier1':'',
+    'itemRow5Modifier2':'',
+    'itemRow5Modifier3':'',
+    'itemRow5Modifier4':'',
+    'itemRow6Modifier1':'',
+    'itemRow5Modifier2':'',
+    'itemRow5Modifier3':'',
+    'itemRow5Modifier4':'',
+    'itemRow6Modifier1':'',
+    'itemRow6Modifier2':'',
+    'itemRow6Modifier3':'',
+    'itemRow6Modifier4':'',
+    'itemRow1Qty':'',
+    'itemRow2Qty':'',
+    'itemRow3Qty':'',
+    'itemRow4Qty':'',
+    'itemRow5Qty':'',
+    'itemRow6Qty':'',
+    'itemRow1Price':'',
+    'itemRow2Price':'',
+    'itemRow3Price':'',
+    'itemRow4Price':'',
+    'itemRow5Price':'',
+    'itemRow6Price':'',
+    'itemRow1Description':'',
+    'itemRow2Description':'',
+    'itemRow3Description':'',
+    'itemRow4Description':'',
+    'itemRow5Description':'',
+    'itemRow6Description':'',
+    'diagnosisCodeRow1':'',
+    'diagnosisCodeRow2':'',
+    'diagnosisCodeRow3':'',
+    'diagnosisCodeRow4':'',
+    'diagnosisCodeRow1Description':'',
+    'diagnosisCodeRow2Description':'',
+    'diagnosisCodeRow3Description':'',
+    'diagnosisCodeRow4Description':'',
+    'profileCreationDate':'',
+
+}
+
+data_dictInvoice = {
+    'CUST PHONE Row1' : '',
+    'ORDER DATERow1' : '',
+    'DELIVERY DATERow1' : '',
+    'SHIP TORow1' : '',
+    'INSURANCE INFORMATIONRow1' : '',
+    'SALESPERSONRow1' : '',
+    'ACCN Row1' : '',
+    #'MANUFRow1' : profile_dict['itemRow1CPT'],
+    #'ITEMLOTRow1' : profile_dict['itemRow1CPT'],
+    'DESCRIPTIONRow1' : '',
+    'BILLING CODERow1' : '',
+    'QTYRow1' : '',
+    'UnitPriceRow1' : '',
+    'DOCTORRow1' : '',
+    #'MANUFRow2' : profile_dict['itemRow2CPT'],
+    #'ITEMLOTRow2' : profile_dict['itemRow2CPT'],
+    'DESCRIPTIONRow2' : '',
+    'BILLING CODERow2' : '',
+    'QTYRow2' : '',
+    'UnitPriceRow2' : '',
+
+    #'MANUFRow3' : profile_dict['itemRow3CPT'],
+    #'ITEMLOTRow3' : profile_dict['itemRow3CPT'],
+    'DESCRIPTIONRow3' : '',
+    'BILLING CODERow3' : '',
+    'QTYRow3' : '',
+    'UnitPriceRow3' : '',
+
+    #'MANUFRow4' : profile_dict['itemRow4CPT'],
+    #'ITEMLOTRow4' : profile_dict['itemRow4CPT'],
+    'DESCRIPTIONRow4' : '',
+    'BILLING CODERow4' : '',
+    'QTYRow4' : '',
+    'UnitPriceRow4' : '',
+
+    #'MANUFRow5' : profile_dict['itemRow5CPT'],
+    #'ITEMLOTRow5' : profile_dict['itemRow5CPT'],
+    'DESCRIPTIONRow5' : '',
+    'BILLING CODERow5' : '',
+    'QTYRow5' : '',
+    'UnitPriceRow5' : '',
+
+    #'MANUFRow6' : profile_dict['itemRow6CPT'],
+    #'ITEMLOTRow6' : profile_dict['itemRow6CPT'],
+    'DESCRIPTIONRow6' : '',
+    'BILLING CODERow6' : '',
+    'QTYRow6' : '',
+    'UnitPriceRow6' : '',
+}
 
 def makePDF(myPDF, myDict, Name, profile_dict):
     new_date = datetime.now()
@@ -36,6 +178,84 @@ def makePDF(myPDF, myDict, Name, profile_dict):
     
     print("Created PDF!")
 
+def readPDF(myPDF):
+    try:
+        testPDF = pdfrw.PdfReader(myPDF)
+        testPDF.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+    except:
+        print("No File Found")
+
+    newDict = data_dictInvoice
+    invoiceDict = temp_dict
+    for page in testPDF.pages:
+        annotations = page[ANNOT_KEY]
+        for annotation in annotations:
+            if annotation[SUBTYPE_KEY] == WIDGET_SUBTYPE_KEY:
+                if annotation[ANNOT_FIELD_KEY]:
+                    key = annotation[ANNOT_FIELD_KEY][1:-1]
+                    value = annotation[ANNOT_VAL_KEY]
+                    final = re.sub(r'[()]', '', str(value))
+                    #print(key)
+                    #print(final)
+                
+                    if key in newDict.keys():
+                        newDict[key] = final
+    invoiceDict["patientPhone"] = newDict["CUST PHONE Row1"]
+    invoiceDict["patientOrderDate"] = newDict["ORDER DATERow1"]
+    invoiceDict["patientFirstName"] = newDict["SHIP TORow1"].partition("\n")[0].partition(" ")[0]
+    invoiceDict["patientLastName"] = newDict["SHIP TORow1"].partition("\n")[0].partition(" ")[2]
+    invoiceDict["patientAddress"] = newDict["SHIP TORow1"].partition("\n")[2].partition("\n")[0]
+    invoiceDict["patientCity"] = newDict["SHIP TORow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[0]
+    invoiceDict["patientState"] = newDict["SHIP TORow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[2].partition(" ")[0]
+    invoiceDict["patientZip"] = newDict["SHIP TORow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[2].partition(" ")[2]
+    invoiceDict["patientMBI"] = newDict["INSURANCE INFORMATIONRow1"].partition("\n")[0]
+    invoiceDict["patientPreauthorization"] = newDict["INSURANCE INFORMATIONRow1"].partition("\n")[2]
+    
+    invoiceDict["UserName"] = newDict["SALESPERSONRow1"]
+    invoiceDict["account"] = newDict["ACCN Row1"]
+    
+    invoiceDict["itemRow1Description"] = newDict["DESCRIPTIONRow1"]
+    invoiceDict["itemRow1CPT"] = newDict["BILLING CODERow1"]
+    invoiceDict["itemRow1Qty"] = newDict["QTYRow1"]
+    invoiceDict["itemRow1Price"] = newDict["UnitPriceRow1"]
+
+    invoiceDict["itemRow2Description"] = newDict["DESCRIPTIONRow2"]
+    invoiceDict["itemRow2CPT"] = newDict["BILLING CODERow2"]
+    invoiceDict["itemRow2Qty"] = newDict["QTYRow2"]
+    invoiceDict["itemRow2Price"] = newDict["UnitPriceRow2"]
+
+    invoiceDict["itemRow3Description"] = newDict["DESCRIPTIONRow3"]
+    invoiceDict["itemRow3CPT"] = newDict["BILLING CODERow3"]
+    invoiceDict["itemRow3Qty"] = newDict["QTYRow3"]
+    invoiceDict["itemRow3Price"] = newDict["UnitPriceRow3"]
+
+    invoiceDict["itemRow4Description"] = newDict["DESCRIPTIONRow4"]
+    invoiceDict["itemRow4CPT"] = newDict["BILLING CODERow4"]
+    invoiceDict["itemRow4Qty"] = newDict["QTYRow4"]
+    invoiceDict["itemRow4Price"] = newDict["UnitPriceRow4"]
+
+    invoiceDict["itemRow5Description"] = newDict["DESCRIPTIONRow5"]
+    invoiceDict["itemRow5CPT"] = newDict["BILLING CODERow5"]
+    invoiceDict["itemRow5Qty"] = newDict["QTYRow5"]
+    invoiceDict["itemRow5Price"] = newDict["UnitPriceRow5"]
+
+    invoiceDict["itemRow6Description"] = newDict["DESCRIPTIONRow6"]
+    invoiceDict["itemRow6CPT"] = newDict["BILLING CODERow6"]
+    invoiceDict["itemRow6Qty"] = newDict["QTYRow6"]
+    invoiceDict["itemRow6Price"] = newDict["UnitPriceRow6"]
+    
+    invoiceDict["patientPCPFirstName"] = newDict["DOCTORRow1"].partition("\n")[0].partition(" ")[0]
+    invoiceDict["patientPCPLastName"] = newDict["DOCTORRow1"].partition("\n")[0].partition(" ")[2]
+    invoiceDict["patientPCPAddress"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[0]
+    invoiceDict["patientPCPCity"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[0]
+    invoiceDict["patientPCPState"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[2].partition(" ")[0]
+    invoiceDict["patientPCPZip"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[2].partition("\n")[0].partition(" ")[2].partition(" ")[2]
+    invoiceDict["patientPCPPhone"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[2].partition("\n")[2].partition("\n")[0]
+    invoiceDict["patientPCPNPI"] = newDict["DOCTORRow1"].partition("\n")[2].partition("\n")[2].partition("\n")[2].partition("\n")[2]
+
+    return invoiceDict
+
+
 def formatInput(profile_dict):
     new_date = datetime.now()
     some_date = new_date.strftime("%B.%d.%Y--%I.%M.%S%p ")
@@ -46,6 +266,7 @@ def formatInput(profile_dict):
             'CUST PHONE Row1' : profile_dict['patientPhone'],
             'ORDER DATERow1' : profile_dict['patientOrderDate'],
             'DELIVERY DATERow1' : profile_dict['patientOrderDate'],
+
             'SHIP TORow1' : (profile_dict['patientFirstName'] + " " + profile_dict['patientLastName'] + " \n" + 
                         profile_dict['patientAddress'] + "\n" + 
                         profile_dict['patientCity'] + " " + profile_dict['patientState'] + " " + profile_dict['patientZip']),
@@ -53,12 +274,15 @@ def formatInput(profile_dict):
             'INSURANCE INFORMATIONRow1' : ("ID: " + profile_dict['patientMBI'] + "\n"+ profile_dict['patientPreauthorization']),
             'SALESPERSONRow1' : profile_dict['UserName'].upper(),
             'ACCN Row1' : profile_dict['account'].upper(),
+
             #'MANUFRow1' : profile_dict['itemRow1CPT'],
             #'ITEMLOTRow1' : profile_dict['itemRow1CPT'],
+
             'DESCRIPTIONRow1' : profile_dict['itemRow1Description'].upper(),
             'BILLING CODERow1' : profile_dict['itemRow1CPT'].upper(),
             'QTYRow1' : profile_dict['itemRow1Qty'],
             'UnitPriceRow1' : profile_dict['itemRow1Price'],
+
             'DOCTORRow1' : (profile_dict['patientPCPFirstName'] + " " + profile_dict['patientPCPLastName'] + " \n" + 
                         profile_dict['patientPCPAddress'] + "\n" + 
                         profile_dict['patientPCPCity'] + " " + profile_dict['patientPCPState'] + " " + profile_dict['patientPCPZip'] + " \n" +
@@ -164,17 +388,39 @@ def formatInput(profile_dict):
 
 directory = sys.executable#
 baseDir = os.path.dirname(directory)
-pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
-pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
+try:
+    #pdf_path = ("./src/BlankInvoice(edit).pdf")
+    pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
+    pdf = pdfrw.PdfReader(pdf_path)
+    pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+except:
+    print("No File Found")
+try:
+    #pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+    pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
+    pdf1 = pdfrw.PdfReader(pdf_path1)
+    pdf1.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+except:
+    print("No File Found")
 
-#pdf_path = ("./src/BlankInvoice(edit).pdf")
+try:
+    #testPDFPath = ("src/testPDF.pdf")
+    testPDFPath = (baseDir + "/src/" + "testPDF.pdf")
+    testPDF = pdfrw.PdfReader(testPDFPath)
+    testPDF.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+except:
+    print("No File Found")
+
+
+
+
 
 #pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
 #pdf_path = ""
-pdf = pdfrw.PdfReader(pdf_path)
-pdf1 = pdfrw.PdfReader(pdf_path1)
-pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
-pdf1.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
+
+
+
+
 
 ANNOT_KEY = '/Annots'
 ANNOT_FIELD_KEY = '/T'
@@ -182,6 +428,8 @@ ANNOT_VAL_KEY = '/V'
 ANNOT_RECT_KEY = '/Rect'
 SUBTYPE_KEY = '/Subtype'
 WIDGET_SUBTYPE_KEY = '/Widget'
+
+#print(readPDF(testPDF))
 #test_dict = {"test":"test"}
 #new_date = datetime.now()
 #some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")

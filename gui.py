@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter import filedialog
 from typing import Counter
 import pickle
-from PDFCreator import formatInput
+from PDFCreator import formatInput, readPDF
 from DatabaseTest import searchMedicalCPT, searchMedicareCPT, searchMedcalCPT2, searchMedicareCPT2
 from npiSearch import getDrInfo
 from searchICD10 import getICDInfo
@@ -889,11 +889,124 @@ def getProfileFromFile():
         messagebox.showinfo(title="Canceled", message="The dialog has been canceled")
 
 
+def getProfileFromPDF():
+    try:
+        fileOfIds = filedialog.askopenfilename(filetypes=[("PDF File", ".pdf")])
+        #print(fileOfIds)
+        b = readPDF(fileOfIds)
+        print(b)
+        clearAll()
+
+        userName.insert(0,b["UserName"])
+        value_inside_insurance.set(b["account"])
+        
+        #Set patient info from forms
+        #invoiceCheck.set(b['makeInvoice'])
+        #intakeCheck.set(b['makeIntake'])
+        
+        patientFirstNameInput.insert(0,b['patientFirstName'])
+        patientLastNameInput.insert(0,b['patientLastName'])
+        patientAddressInput.insert(0,b['patientAddress'])
+        patientAddressCityInput.insert(0,b['patientCity'])
+        value_inside_patient.set(b['patientState'])
+        patientAddressZipCodeInput.insert(0,b['patientZip'])
+        patientPhoneNumberInput.insert(0,b['patientPhone'])
+        orderDateInput.insert(0,b['patientOrderDate'])
+        patientInsuranceInput.insert(0,b['patientMBI'])
+        patientPreauthorizationInput.insert(0,b['patientPreauthorization'])
+        patientDateOfBirth.insert(0,b["patientDateOfBirth"])
+
+        #Set doctor info from forms
+        patientPCPFirstNameInput.insert(0,b['patientPCPFirstName'])
+        patientPCPLastNameInput.insert(0,b['patientPCPLastName'])
+        patientPCPAddressInput.insert(0,b['patientPCPAddress'])
+        patientPCPAddressCityInput.insert(0,b['patientPCPCity'])
+        value_inside_doctor.set(b['patientPCPState'])
+        patientPCPAddressZipCodeInput.insert(0,b['patientPCPZip'])
+        patientPCPPhoneNumberInput.insert(0,b['patientPCPPhone'])
+        patientPCPNPIInput.insert(0,b['patientPCPNPI'])
+        
+        #Set Cpt Row1 info from forms 
+        itemRow1Cpt.insert(0,b['itemRow1CPT'] )
+        itemRow1Modifier1.insert(0,b['itemRow1Modifier1'])
+        itemRow1Modifier2.insert(0,b['itemRow1Modifier2'])
+        itemRow1Modifier3.insert(0,b['itemRow1Modifier3'])
+        itemRow1Modifier4.insert(0,b['itemRow1Modifier4'])
+        itemRow1Description.insert(0,b['itemRow1Description'])
+        itemRow1Qty.insert(0,b['itemRow1Qty'])
+        itemRow1Price.insert(0,b['itemRow1Price'])
+
+        #Set Cpt Row2 info from forms
+        itemRow2Cpt.insert(0,b['itemRow2CPT'])
+        itemRow2Modifier1.insert(0,b['itemRow2Modifier1'])
+        itemRow2Modifier2.insert(0,b['itemRow2Modifier2'])
+        itemRow2Modifier3.insert(0,b['itemRow2Modifier3'])
+        itemRow2Modifier4.insert(0,b['itemRow2Modifier4'])
+        itemRow2Description.insert(0,b['itemRow2Description'])
+        itemRow2Qty.insert(0,b['itemRow2Qty'])
+        itemRow2Price.insert(0,b['itemRow2Price'])
+
+        #Set Cpt Row3 info from forms
+        itemRow3Cpt.insert(0,b['itemRow3CPT'])
+        itemRow3Modifier1.insert(0,b['itemRow3Modifier1'])
+        itemRow3Modifier2.insert(0,b['itemRow3Modifier2'])
+        itemRow3Modifier3.insert(0,b['itemRow3Modifier3'])
+        itemRow3Modifier4.insert(0,b['itemRow3Modifier4'])
+        itemRow3Description.insert(0,b['itemRow3Description'])
+        itemRow3Qty.insert(0,b['itemRow3Qty'])
+        itemRow3Price.insert(0,b['itemRow3Price'])
+
+        #Set Cpt Row4 info from forms
+        itemRow4Cpt.insert(0,b['itemRow4CPT'])
+        itemRow4Modifier1.insert(0,b['itemRow4Modifier1'])
+        itemRow4Modifier2.insert(0,b['itemRow4Modifier2'])
+        itemRow4Modifier3.insert(0,b['itemRow4Modifier3'])
+        itemRow4Modifier4.insert(0,b['itemRow4Modifier4'])
+        itemRow4Description.insert(0,b['itemRow4Description'])
+        itemRow4Qty.insert(0,b['itemRow4Qty'])
+        itemRow4Price.insert(0,b['itemRow4Price'])
+
+        #Set Cpt Row5 info from forms 
+        itemRow5Cpt.insert(0,b['itemRow5CPT'])
+        itemRow5Modifier1.insert(0,b['itemRow5Modifier1'])
+        itemRow5Modifier2.insert(0,b['itemRow5Modifier2'])
+        itemRow5Modifier3.insert(0,b['itemRow5Modifier3'])
+        itemRow5Modifier4.insert(0,b['itemRow5Modifier4'])
+        itemRow5Description.insert(0,b['itemRow5Description'])
+        itemRow5Qty.insert(0,b['itemRow5Qty'])
+        itemRow5Price.insert(0,b['itemRow5Price'])
+
+        #Set Cpt Row6 info from forms 
+        itemRow6Cpt.insert(0,b['itemRow6CPT'])
+        itemRow6Modifier1.insert(0,b['itemRow6Modifier1'])
+        itemRow6Modifier2.insert(0,b['itemRow6Modifier2'])
+        itemRow6Modifier3.insert(0,b['itemRow6Modifier3'])
+        itemRow6Modifier4.insert(0,b['itemRow6Modifier4'])
+        itemRow6Description.insert(0,b['itemRow6Description'])
+        itemRow6Qty.insert(0,b['itemRow6Qty'])
+        itemRow6Price.insert(0,b['itemRow6Price'])
+
+        #Set diagnosis codes and descriptions from forms
+        diagnosisCodeRow1.insert(0,b['diagnosisCodeRow1'])
+        diagnosisCodeRow2.insert(0,b['diagnosisCodeRow2'])
+        diagnosisCodeRow3.insert(0,b['diagnosisCodeRow3'])
+        diagnosisCodeRow4.insert(0,b['diagnosisCodeRow4'])
+
+        diagnosisCodeRow1Description.insert(0,b['diagnosisCodeRow1Description'])
+        diagnosisCodeRow2Description.insert(0,b['diagnosisCodeRow2Description'])
+        diagnosisCodeRow3Description.insert(0,b['diagnosisCodeRow3Description'])
+        diagnosisCodeRow4Description.insert(0,b['diagnosisCodeRow4Description'])
+
+    except:
+        messagebox.showinfo(title="Canceled", message="The dialog has been canceled")
+
+
 
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=clearAll)
 filemenu.add_command(label="Open", command=getProfileFromFile)
+filemenu.add_command(label="Open PDF", command=getProfileFromPDF)
 #filemenu.add_command(label="Save", command=donothing)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
