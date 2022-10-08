@@ -891,7 +891,7 @@ def getProfileFromFile():
 
 def getProfileFromPDF():
     try:
-        fileOfIds = filedialog.askopenfilename(filetypes=[("PDF File", ".pdf")])
+        fileOfIds = filedialog.askopenfilename(filetypes=[("PDF File", "Invoice.pdf")])
         #print(fileOfIds)
         b = readPDF(fileOfIds)
         print(b)
@@ -903,7 +903,7 @@ def getProfileFromPDF():
         #Set patient info from forms
         #invoiceCheck.set(b['makeInvoice'])
         #intakeCheck.set(b['makeIntake'])
-        
+
         patientFirstNameInput.insert(0,b['patientFirstName'])
         patientLastNameInput.insert(0,b['patientLastName'])
         patientAddressInput.insert(0,b['patientAddress'])

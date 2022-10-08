@@ -4,11 +4,16 @@ import sys
 
 directory = sys.executable
 baseDir = os.path.dirname(directory)
-medical = sqlite3.connect(baseDir + "/src/" + 'Medi-CalRatesDB1.db')
-medicare = sqlite3.connect(baseDir + "/src/" + 'MedicareRatesDB1.db')
 
-#medical = sqlite3.connect('./src/Medi-CalRatesDB1.db')
-#medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
+
+try:
+    medical = sqlite3.connect(baseDir + "/src/" + 'Medi-CalRatesDB1.db')
+except:
+    medical = sqlite3.connect('./src/Medi-CalRatesDB1.db')
+try:
+    medicare = sqlite3.connect(baseDir + "/src/" + 'MedicareRatesDB1.db')
+except:
+    medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
 
 
 def searchMedcalCPT2(query, options):

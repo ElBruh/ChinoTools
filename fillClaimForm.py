@@ -33,16 +33,29 @@ def fillClaimFormFunction():
     
     directory = sys.executable
     baseDir = os.path.dirname(directory)
-    DRIVER_PATH = baseDir + "\\src\\chromedriver.exe"
-    print(DRIVER_PATH)
-
     chrome_options = Options()
-    chrome_options.add_argument("user-data-dir=C:\\src\\selenium") 
+
+    try:
+        DRIVER_PATH = baseDir + "\\src\\chromedriver.exe"
+        chrome_options.add_argument("user-data-dir=C:\\src\\selenium") 
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        print("Prod Mode")
+    except:
+        DRIVER_PATH = "src/chromedriver.exe"
+        chrome_options.add_argument("src/selenium") 
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        print("Testing Mode")
+    #print(DRIVER_PATH)
+
+    
+    
     #chrome_options.add_argument("user-data-dir=C:\\Src\\ChinoTools\\selenium") 
     #chrome_options.add_argument("user-data-dir=C:{}\\selenium".format(baseDir))
-    chrome_options.add_experimental_option("detach", True)
+    
     #chrome_options.add_argument("executable_path={}".format(DRIVER_PATH))
-    driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+    #driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
 
     #driver = webdriver.Chrome(executable_path=DRIVER_PATH)
     driver.get('https://www.officeally.com/slogin.aspx')
@@ -60,16 +73,16 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_LAST_NAME').send_keys(b["patientLastName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_FIRST_NAME').send_keys(b["patientFirstName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRI_PATIENT_ID').send_keys(b['patientMBI'])    
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Month').send_keys('1')
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Day').send_keys('1')
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Year').send_keys('2000')
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Month').send_keys(b['patientDateOfBirth'].partition("/")[0])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Day').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("-")[0])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Year').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("-")[2])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_STREET_ADDR').send_keys(b["patientAddress"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_CITY').send_keys(b["patientCity"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_STATE').send_keys(b["patientState"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_ZIP').send_keys(b['patientZip'])    
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_AreaCode').send_keys('909')
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Prefix').send_keys('464')
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Number').send_keys('1500')
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_AreaCode').send_keys(b['patientPhone'].partition("-")[0])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Prefix').send_keys(b['patientPhone'].partition("-")[2].partition("-")[0])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Number').send_keys(b['patientPhone'].partition("-")[2].partition("-")[2])
 
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_OrderFirst0212').send_keys(b["patientPCPFirstName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_OrderLast0212').send_keys(b["patientPCPLastName"])

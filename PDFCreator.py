@@ -194,7 +194,9 @@ def readPDF(myPDF):
                 if annotation[ANNOT_FIELD_KEY]:
                     key = annotation[ANNOT_FIELD_KEY][1:-1]
                     value = annotation[ANNOT_VAL_KEY]
-                    final = re.sub(r'[()]', '', str(value))
+                    first = re.sub(r'[()]', '', str(value))
+                    second = re.sub(r'[\\]', '', str(first))
+                    final = re.sub(r'[<>]', '', str(second))
                     #print(key)
                     #print(final)
                 
@@ -389,27 +391,28 @@ def formatInput(profile_dict):
 directory = sys.executable#
 baseDir = os.path.dirname(directory)
 try:
-    #pdf_path = ("./src/BlankInvoice(edit).pdf")
     pdf_path = (baseDir + "/src/" + "BlankInvoice(edit).pdf")
     pdf = pdfrw.PdfReader(pdf_path)
     pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 except:
-    print("No File Found")
+    pdf_path = ("./src/BlankInvoice(edit).pdf")
+    print("Testing File")
 try:
-    #pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+    
     pdf_path1 = (baseDir + "/src/" + "OrderIntakeSheet(edit).pdf")
     pdf1 = pdfrw.PdfReader(pdf_path1)
     pdf1.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 except:
-    print("No File Found")
+    pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+    print("Testing File")
 
 try:
-    #testPDFPath = ("src/testPDF.pdf")
     testPDFPath = (baseDir + "/src/" + "testPDF.pdf")
     testPDF = pdfrw.PdfReader(testPDFPath)
     testPDF.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 except:
-    print("No File Found")
+    testPDFPath = ("src/testPDF.pdf")
+    print("Testing File")
 
 
 
