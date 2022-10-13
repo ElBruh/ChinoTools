@@ -16,10 +16,11 @@ import sys
 #root.withdraw()
 
 
-def fillClaimFormFunction():
-    fileOfIds = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
-    with open(fileOfIds, 'rb') as handle:
-        b = pickle.load(handle)
+def fillClaimFormFunction(b):
+    print(b)
+    #fileOfIds = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
+    #with open(fileOfIds, 'rb') as handle:
+    #    b = pickle.load(handle)
     #fileOfIds = open("TestMedicareClaims.txt", "r")
     #fileOfIds = open("IEHPCLAIMS.txt", "r")
     print(b['patientFirstName'])
@@ -69,13 +70,18 @@ def fillClaimFormFunction():
     time.sleep(1)
     driver.switch_to.frame("Iframe9")
 
-    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_INSURANCETYPE1").click()
+    if(b['account'] == "Medicare"):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_INSURANCETYPE1").click()
+    else:
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_INSURANCETYPE7").click()
+
+
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_LAST_NAME').send_keys(b["patientLastName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_FIRST_NAME').send_keys(b["patientFirstName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRI_PATIENT_ID').send_keys(b['patientMBI'])    
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Month').send_keys(b['patientDateOfBirth'].partition("/")[0])
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Day').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("-")[0])
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Year').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("-")[2])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Day').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("/")[0])
+    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PATIENT_BIRTHDATE_Year').send_keys(b['patientDateOfBirth'].partition("/")[2].partition("/")[2])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_STREET_ADDR').send_keys(b["patientAddress"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_CITY').send_keys(b["patientCity"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_STATE').send_keys(b["patientState"])
@@ -83,11 +89,24 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_AreaCode').send_keys(b['patientPhone'].partition("-")[0])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Prefix').send_keys(b['patientPhone'].partition("-")[2].partition("-")[0])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PHONE_Number').send_keys(b['patientPhone'].partition("-")[2].partition("-")[2])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_GENDER").send_keys(b['patientGender'])
+
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Month").send_keys(b['patientOrderDate'].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Day").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Year").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
 
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_OrderFirst0212').send_keys(b["patientPCPFirstName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_OrderLast0212').send_keys(b["patientPCPLastName"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_REFER_PHYSICIAN_NPI').send_keys(b["patientPCPNPI"])
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_selReferringProviderQual').send_keys("DK - Ordering Provider")
+
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Month").clear()
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Day").clear()
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Year").clear()
+    
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Month").send_keys(b['patientOrderDate'].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Day").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Year").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
 
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRIOR_AUTH_NUMBER').send_keys(b["patientPreauthorization"])
 
@@ -95,6 +114,14 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_2").send_keys(b["diagnosisCodeRow2"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_3").send_keys(b["diagnosisCodeRow3"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_4").send_keys(b["diagnosisCodeRow4"])
+
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH0").send_keys(b['patientOrderDate'].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY0").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR0").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH0").send_keys(b['patientOrderDate'].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY0").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR0").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
 
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE0").send_keys(b["itemRow1CPT"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC0").send_keys("12")
@@ -106,6 +133,14 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS0").send_keys(b["itemRow1Qty"])
 
     if(b["itemRow2CPT"] != ""):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH1").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY1").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR1").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH1").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY1").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR1").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+        
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE1").send_keys(b["itemRow2CPT"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC1").send_keys("12")
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_A1").send_keys(b["itemRow2Modifier1"])
@@ -116,6 +151,14 @@ def fillClaimFormFunction():
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS1").send_keys(b["itemRow2Qty"])
 
     if(b["itemRow3CPT"] != ""):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH2").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY2").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR2").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH2").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY2").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR2").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+        
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE2").send_keys(b["itemRow3CPT"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC2").send_keys("12")
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_A2").send_keys(b["itemRow3Modifier1"])
@@ -126,6 +169,14 @@ def fillClaimFormFunction():
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS2").send_keys(b["itemRow3Qty"])
 
     if(b["itemRow4CPT"] != ""):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH3").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY3").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR3").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH3").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY3").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR3").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE3").send_keys(b["itemRow4CPT"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC3").send_keys("12")
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_A3").send_keys(b["itemRow4Modifier1"])
@@ -136,6 +187,14 @@ def fillClaimFormFunction():
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS3").send_keys(b["itemRow4Qty"])
 
     if(b["itemRow5CPT"] != ""):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH4").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY4").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR4").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH4").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY4").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR4").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE4").send_keys(b["itemRow5CPT"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC4").send_keys("12")
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_A4").send_keys(b["itemRow5Modifier1"])
@@ -146,6 +205,14 @@ def fillClaimFormFunction():
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS4").send_keys(b["itemRow5Qty"])
 
     if(b["itemRow6CPT"] != ""):
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_MONTH5").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_DAY5").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_FM_DATE_OF_SVC_YEAR5").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_MONTH5").send_keys(b['patientOrderDate'].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_DAY5").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[0])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_TO_DATE_OF_SVC_YEAR5").send_keys(b['patientOrderDate'].partition("/")[2].partition("/")[2])
+
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_CPT_CODE5").send_keys(b["itemRow6CPT"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_PLACE_OF_SVC5").send_keys("12")
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_A5").send_keys(b["itemRow6Modifier1"])
@@ -162,7 +229,6 @@ def fillClaimFormFunction():
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_PNT_REL_TO_INSRD1").click()
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_OUTSIDE_LAB2").click()
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ACCEPT_SIGNATURE1").click()
-    driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_GENDER').send_keys("Male")
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRI_FECA_GRP_NUM').send_keys("None")
 
 

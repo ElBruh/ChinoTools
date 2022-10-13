@@ -20,8 +20,9 @@ temp_dict ={
     'patientZip':'',
     'patientPhone':'',
     'patientOrderDate':'',
-    'patientDateOfBirth': '',    
-    'patientMBI':'',
+    'patientDateOfBirth': '',
+    'patientGender': '',    
+    'patientMBI': '',
     'patientPreauthorization':'',
     'patientReferralName':'',
     'patientPCPFirstName':'',
@@ -147,7 +148,10 @@ data_dictInvoice = {
     'UnitPriceRow6' : '',
 }
 
+#def saveProfile(profile_dict):
+
 def makePDF(myPDF, myDict, Name, profile_dict):
+    print("made it to makePDF")
     new_date = datetime.now()
     some_date = new_date.strftime("%B.%d.%Y--%I.%M.%S%p ")
     
@@ -259,6 +263,7 @@ def readPDF(myPDF):
 
 
 def formatInput(profile_dict):
+    print(profile_dict["patientGender"])
     new_date = datetime.now()
     some_date = new_date.strftime("%B.%d.%Y--%I.%M.%S%p ")
     moddedPDF = pdf
@@ -337,7 +342,7 @@ def formatInput(profile_dict):
             'PatientAddress':profile_dict['patientAddress'],
             'PatientCityState':profile_dict['patientCity'] + " " + profile_dict['patientState'],
             'PatientZip':profile_dict['patientZip'],
-            'PatientDOB':profile_dict['patientDateOfBirth'],
+            'PatientDOB':profile_dict['patientDateOfBirth'] + " " + profile_dict['patientGender'],
             'InsuranceInformation': profile_dict['account'].upper(),
             'MBI':profile_dict['patientMBI'] + "\n",
             'MembersName':profile_dict['patientFirstName'] + " " + profile_dict["patientLastName"],
@@ -396,6 +401,7 @@ try:
     pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 except:
     pdf_path = ("./src/BlankInvoice(edit).pdf")
+    pdf = pdfrw.PdfReader(pdf_path)
     print("Testing File")
 try:
     
@@ -404,6 +410,7 @@ try:
     pdf1.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 except:
     pdf_path1 = "./src/OrderIntakeSheet(edit).pdf"
+    pdf1 = pdfrw.PdfReader(pdf_path1)
     print("Testing File")
 
 try:

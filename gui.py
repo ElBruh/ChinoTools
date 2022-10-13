@@ -1,3 +1,4 @@
+from json import tool
 import profile
 from tkinter import *
 from tkinter import messagebox
@@ -15,7 +16,7 @@ default_item_input_width = 10
 default_ICD_Description_width = 65
 default_modifier_width = 5
 root = Tk()
-
+currentProfile = ''
 
 
 root.title("Create Patient Profile")
@@ -34,7 +35,8 @@ profile_dict ={
     'patientZip':'',
     'patientPhone':'',
     'patientOrderDate':'',
-    'patientDateOfBirth': '',    
+    'patientDateOfBirth': '',
+    'patientGender': '',    
     'patientMBI':'',
     'patientPreauthorization':'',
     'patientReferralName':'',
@@ -213,6 +215,8 @@ def clearICD():
     diagnosisCodeRow4Description.delete(0,END)
 
 def clearAll():
+    global currentProfile
+    currentProfile = ''
     userName.delete(0,END)
     clearICD()
     clearCpt()
@@ -233,10 +237,13 @@ def getICDInfoFromPY():
 
         try:
             tempDict = getICDInfo(diagnosisCodeRow1.get())
-            diagnosisCodeRow1Description.delete(0,END)
-            diagnosisCodeRow1.delete(0,END)
-            diagnosisCodeRow1Description.insert(0, "-" +  tempDict['Description'])
-            diagnosisCodeRow1.insert(0,tempDict['Name'])
+            if(tempDict['Valid'] == "true"):
+                diagnosisCodeRow1Description.delete(0,END)
+                diagnosisCodeRow1.delete(0,END)
+                diagnosisCodeRow1Description.insert(0, "-" +  tempDict['Description'])
+                diagnosisCodeRow1.insert(0,tempDict['Name'])
+            else:
+                messagebox.showerror(title="Not Billable", message= (tempDict["Note"] + "\n{}: {} is not billable".format(tempDict['Name'], tempDict['Description'],) + "\nConsider using: {}: {}".format(tempDict["ConsiderationName"], tempDict["ConsiderationDescription"])),)
         except:
             messagebox.showerror(title="Error", message="ICD 10 code {} Not Found!".format(diagnosisCodeRow1.get()),)
     
@@ -685,7 +692,14 @@ def sendToPDFCreator():
     profile_dict['patientMBI'] = patientInsuranceInput.get()
     profile_dict['patientPreauthorization'] = patientPreauthorizationInput.get()
     profile_dict["patientDateOfBirth"] = patientDateOfBirth.get()
-
+    
+    try:
+        if(genderCheck.get() == 0):
+            profile_dict['patientGender'] = 'Male'
+        else:
+            profile_dict['patientGender'] = 'Female'
+    except:
+        print("An error has occured in genderCheck")
     #get doctor info from forms
     profile_dict['patientPCPFirstName'] = patientPCPFirstNameInput.get()
     profile_dict['patientPCPLastName'] = patientPCPLastNameInput.get()
@@ -775,16 +789,260 @@ def sendToPDFCreator():
         messagebox.showerror(title="Error!", message="An error has occured")
     #os.system("python PDFCreator.py {} {} {} {} \"{}\" {} {} {} {} {} {} {} {}".format(a,b,c,d,e,f,g,h,i,j,k,l,m))
 
+def sendToFillClaimForm():
+    #print(e)
+    #new_date = datetime.now()
+    #some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")
+    #profile_dict["profileCreationDate"] = some_date
+    profile_dict["UserName"] = userName.get()
+    profile_dict["account"] = value_inside_insurance.get()
+    #get patient info from forms
+    profile_dict['makeInvoice'] = invoiceCheck.get()
+    profile_dict['makeIntake'] = intakeCheck.get()
+    profile_dict['patientFirstName'] = patientFirstNameInput.get()
+    profile_dict['patientLastName'] = patientLastNameInput.get()
+    profile_dict['patientAddress'] = patientAddressInput.get()
+    profile_dict['patientCity'] = patientAddressCityInput.get()
+    profile_dict['patientState'] = value_inside_patient.get()
+    profile_dict['patientZip'] = patientAddressZipCodeInput.get()
+    profile_dict['patientPhone'] = patientPhoneNumberInput.get()
+    profile_dict['patientOrderDate'] = orderDateInput.get()
+    profile_dict['patientMBI'] = patientInsuranceInput.get()
+    profile_dict['patientPreauthorization'] = patientPreauthorizationInput.get()
+    profile_dict["patientDateOfBirth"] = patientDateOfBirth.get()
+    
+    try:
+        if(genderCheck.get() == 0):
+            profile_dict['patientGender'] = 'Male'
+        else:
+            profile_dict['patientGender'] = 'Female'
+    except:
+        print("An error has occured in genderCheck")
+
+    #get doctor info from forms
+    profile_dict['patientPCPFirstName'] = patientPCPFirstNameInput.get()
+    profile_dict['patientPCPLastName'] = patientPCPLastNameInput.get()
+    profile_dict['patientPCPAddress'] = patientPCPAddressInput.get()
+    profile_dict['patientPCPCity'] = patientPCPAddressCityInput.get()
+    profile_dict['patientPCPState'] = value_inside_doctor.get()
+    profile_dict['patientPCPZip'] = patientPCPAddressZipCodeInput.get()
+    profile_dict['patientPCPPhone'] = patientPCPPhoneNumberInput.get()
+    profile_dict['patientPCPNPI'] = patientPCPNPIInput.get()
+    
+    #get Cpt Row1 info from forms 
+    profile_dict['itemRow1CPT'] = itemRow1Cpt.get()
+    profile_dict['itemRow1Modifier1'] = itemRow1Modifier1.get()
+    profile_dict['itemRow1Modifier2'] = itemRow1Modifier2.get()
+    profile_dict['itemRow1Modifier3'] = itemRow1Modifier3.get()
+    profile_dict['itemRow1Modifier4'] = itemRow1Modifier4.get()
+    profile_dict['itemRow1Description'] = itemRow1Description.get().strip()
+    profile_dict['itemRow1Qty'] = itemRow1Qty.get()
+    profile_dict['itemRow1Price'] = itemRow1Price.get()
+
+    #get Cpt Row2 info from forms
+    profile_dict['itemRow2CPT'] = itemRow2Cpt.get()
+    profile_dict['itemRow2Modifier1'] = itemRow2Modifier1.get()
+    profile_dict['itemRow2Modifier2'] = itemRow2Modifier2.get()
+    profile_dict['itemRow2Modifier3'] = itemRow2Modifier3.get()
+    profile_dict['itemRow2Modifier4'] = itemRow2Modifier4.get()
+    profile_dict['itemRow2Description'] = itemRow2Description.get().strip()
+    profile_dict['itemRow2Qty'] = itemRow2Qty.get()
+    profile_dict['itemRow2Price'] = itemRow2Price.get()
+
+    #get Cpt Row3 info from forms
+    profile_dict['itemRow3CPT'] = itemRow3Cpt.get()
+    profile_dict['itemRow3Modifier1'] = itemRow3Modifier1.get()
+    profile_dict['itemRow3Modifier2'] = itemRow3Modifier2.get()
+    profile_dict['itemRow3Modifier3'] = itemRow3Modifier3.get()
+    profile_dict['itemRow3Modifier4'] = itemRow3Modifier4.get()
+    profile_dict['itemRow3Description'] = itemRow3Description.get().strip()
+    profile_dict['itemRow3Qty'] = itemRow3Qty.get()
+    profile_dict['itemRow3Price'] = itemRow3Price.get()
+
+    #get Cpt Row4 info from forms
+    profile_dict['itemRow4CPT'] = itemRow4Cpt.get()
+    profile_dict['itemRow4Modifier1'] = itemRow4Modifier1.get()
+    profile_dict['itemRow4Modifier2'] = itemRow4Modifier2.get()
+    profile_dict['itemRow4Modifier3'] = itemRow4Modifier3.get()
+    profile_dict['itemRow4Modifier4'] = itemRow4Modifier4.get()
+    profile_dict['itemRow4Description'] = itemRow4Description.get().strip()
+    profile_dict['itemRow4Qty'] = itemRow4Qty.get()
+    profile_dict['itemRow4Price'] = itemRow4Price.get()
+
+    #get Cpt Row5 info from forms 
+    profile_dict['itemRow5CPT'] = itemRow5Cpt.get()
+    profile_dict['itemRow5Modifier1'] = itemRow5Modifier1.get()
+    profile_dict['itemRow5Modifier2'] = itemRow5Modifier2.get()
+    profile_dict['itemRow5Modifier3'] = itemRow5Modifier3.get()
+    profile_dict['itemRow5Modifier4'] = itemRow5Modifier4.get()
+    profile_dict['itemRow5Description'] = itemRow5Description.get().strip()
+    profile_dict['itemRow5Qty'] = itemRow5Qty.get()
+    profile_dict['itemRow5Price'] = itemRow5Price.get()
+
+    #get Cpt Row6 info from forms 
+    profile_dict['itemRow6CPT'] = itemRow6Cpt.get()
+    profile_dict['itemRow6Modifier1'] = itemRow6Modifier1.get()
+    profile_dict['itemRow6Modifier2'] = itemRow6Modifier2.get()
+    profile_dict['itemRow6Modifier3'] = itemRow6Modifier3.get()
+    profile_dict['itemRow6Modifier4'] = itemRow6Modifier4.get()
+    profile_dict['itemRow6Description'] = itemRow6Description.get().strip()
+    profile_dict['itemRow6Qty'] = itemRow6Qty.get()
+    profile_dict['itemRow6Price'] = itemRow6Price.get()
+
+    #get diagnosis codes and descriptions from forms
+    profile_dict['diagnosisCodeRow1'] = diagnosisCodeRow1.get()
+    profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
+    profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
+    profile_dict['diagnosisCodeRow4'] = diagnosisCodeRow4.get()
+
+    profile_dict['diagnosisCodeRow1Description'] = diagnosisCodeRow1Description.get()
+    profile_dict['diagnosisCodeRow2Description'] = diagnosisCodeRow2Description.get()
+    profile_dict['diagnosisCodeRow3Description'] = diagnosisCodeRow3Description.get()
+    profile_dict['diagnosisCodeRow4Description'] = diagnosisCodeRow4Description.get()
+    
+    
+    try:
+        fillClaimFormFunction(profile_dict)
+        #messagebox.showinfo(title="Success!", message="PDFs have been created!")
+    except:
+        messagebox.showerror(title="Error!", message="An error has occured")
+    #os.system("python PDFCreator.py {} {} {} {} \"{}\" {} {} {} {} {} {} {} {}".format(a,b,c,d,e,f,g,h,i,j,k,l,m))
+    
+def saveProfile():
+    global currentProfile
+    print(currentProfile)
+    if(currentProfile != ''):
+        #print(e)
+        #new_date = datetime.now()
+        #some_date = new_date.strftime("%B.%d.%Y--%H.%M.%S ")
+        #profile_dict["profileCreationDate"] = some_date
+        profile_dict["UserName"] = userName.get()
+        profile_dict["account"] = value_inside_insurance.get()
+        #get patient info from forms
+        profile_dict['makeInvoice'] = invoiceCheck.get()
+        profile_dict['makeIntake'] = intakeCheck.get()
+        profile_dict['patientFirstName'] = patientFirstNameInput.get()
+        profile_dict['patientLastName'] = patientLastNameInput.get()
+        profile_dict['patientAddress'] = patientAddressInput.get()
+        profile_dict['patientCity'] = patientAddressCityInput.get()
+        profile_dict['patientState'] = value_inside_patient.get()
+        profile_dict['patientZip'] = patientAddressZipCodeInput.get()
+        profile_dict['patientPhone'] = patientPhoneNumberInput.get()
+        profile_dict['patientOrderDate'] = orderDateInput.get()
+        profile_dict['patientMBI'] = patientInsuranceInput.get()
+        profile_dict['patientPreauthorization'] = patientPreauthorizationInput.get()
+        profile_dict["patientDateOfBirth"] = patientDateOfBirth.get()
+        
+        try:
+            if(genderCheck.get() == 0):
+                profile_dict['patientGender'] = 'Male'
+            else:
+                profile_dict['patientGender'] = 'Female'
+        except:
+            print("An error has occured in genderCheck")
+
+        #get doctor info from forms
+        profile_dict['patientPCPFirstName'] = patientPCPFirstNameInput.get()
+        profile_dict['patientPCPLastName'] = patientPCPLastNameInput.get()
+        profile_dict['patientPCPAddress'] = patientPCPAddressInput.get()
+        profile_dict['patientPCPCity'] = patientPCPAddressCityInput.get()
+        profile_dict['patientPCPState'] = value_inside_doctor.get()
+        profile_dict['patientPCPZip'] = patientPCPAddressZipCodeInput.get()
+        profile_dict['patientPCPPhone'] = patientPCPPhoneNumberInput.get()
+        profile_dict['patientPCPNPI'] = patientPCPNPIInput.get()
+        
+        #get Cpt Row1 info from forms 
+        profile_dict['itemRow1CPT'] = itemRow1Cpt.get()
+        profile_dict['itemRow1Modifier1'] = itemRow1Modifier1.get()
+        profile_dict['itemRow1Modifier2'] = itemRow1Modifier2.get()
+        profile_dict['itemRow1Modifier3'] = itemRow1Modifier3.get()
+        profile_dict['itemRow1Modifier4'] = itemRow1Modifier4.get()
+        profile_dict['itemRow1Description'] = itemRow1Description.get().strip()
+        profile_dict['itemRow1Qty'] = itemRow1Qty.get()
+        profile_dict['itemRow1Price'] = itemRow1Price.get()
+
+        #get Cpt Row2 info from forms
+        profile_dict['itemRow2CPT'] = itemRow2Cpt.get()
+        profile_dict['itemRow2Modifier1'] = itemRow2Modifier1.get()
+        profile_dict['itemRow2Modifier2'] = itemRow2Modifier2.get()
+        profile_dict['itemRow2Modifier3'] = itemRow2Modifier3.get()
+        profile_dict['itemRow2Modifier4'] = itemRow2Modifier4.get()
+        profile_dict['itemRow2Description'] = itemRow2Description.get().strip()
+        profile_dict['itemRow2Qty'] = itemRow2Qty.get()
+        profile_dict['itemRow2Price'] = itemRow2Price.get()
+
+        #get Cpt Row3 info from forms
+        profile_dict['itemRow3CPT'] = itemRow3Cpt.get()
+        profile_dict['itemRow3Modifier1'] = itemRow3Modifier1.get()
+        profile_dict['itemRow3Modifier2'] = itemRow3Modifier2.get()
+        profile_dict['itemRow3Modifier3'] = itemRow3Modifier3.get()
+        profile_dict['itemRow3Modifier4'] = itemRow3Modifier4.get()
+        profile_dict['itemRow3Description'] = itemRow3Description.get().strip()
+        profile_dict['itemRow3Qty'] = itemRow3Qty.get()
+        profile_dict['itemRow3Price'] = itemRow3Price.get()
+
+        #get Cpt Row4 info from forms
+        profile_dict['itemRow4CPT'] = itemRow4Cpt.get()
+        profile_dict['itemRow4Modifier1'] = itemRow4Modifier1.get()
+        profile_dict['itemRow4Modifier2'] = itemRow4Modifier2.get()
+        profile_dict['itemRow4Modifier3'] = itemRow4Modifier3.get()
+        profile_dict['itemRow4Modifier4'] = itemRow4Modifier4.get()
+        profile_dict['itemRow4Description'] = itemRow4Description.get().strip()
+        profile_dict['itemRow4Qty'] = itemRow4Qty.get()
+        profile_dict['itemRow4Price'] = itemRow4Price.get()
+
+        #get Cpt Row5 info from forms 
+        profile_dict['itemRow5CPT'] = itemRow5Cpt.get()
+        profile_dict['itemRow5Modifier1'] = itemRow5Modifier1.get()
+        profile_dict['itemRow5Modifier2'] = itemRow5Modifier2.get()
+        profile_dict['itemRow5Modifier3'] = itemRow5Modifier3.get()
+        profile_dict['itemRow5Modifier4'] = itemRow5Modifier4.get()
+        profile_dict['itemRow5Description'] = itemRow5Description.get().strip()
+        profile_dict['itemRow5Qty'] = itemRow5Qty.get()
+        profile_dict['itemRow5Price'] = itemRow5Price.get()
+
+        #get Cpt Row6 info from forms 
+        profile_dict['itemRow6CPT'] = itemRow6Cpt.get()
+        profile_dict['itemRow6Modifier1'] = itemRow6Modifier1.get()
+        profile_dict['itemRow6Modifier2'] = itemRow6Modifier2.get()
+        profile_dict['itemRow6Modifier3'] = itemRow6Modifier3.get()
+        profile_dict['itemRow6Modifier4'] = itemRow6Modifier4.get()
+        profile_dict['itemRow6Description'] = itemRow6Description.get().strip()
+        profile_dict['itemRow6Qty'] = itemRow6Qty.get()
+        profile_dict['itemRow6Price'] = itemRow6Price.get()
+
+        #get diagnosis codes and descriptions from forms
+        profile_dict['diagnosisCodeRow1'] = diagnosisCodeRow1.get()
+        profile_dict['diagnosisCodeRow2'] = diagnosisCodeRow2.get()
+        profile_dict['diagnosisCodeRow3'] = diagnosisCodeRow3.get()
+        profile_dict['diagnosisCodeRow4'] = diagnosisCodeRow4.get()
+
+        profile_dict['diagnosisCodeRow1Description'] = diagnosisCodeRow1Description.get()
+        profile_dict['diagnosisCodeRow2Description'] = diagnosisCodeRow2Description.get()
+        profile_dict['diagnosisCodeRow3Description'] = diagnosisCodeRow3Description.get()
+        profile_dict['diagnosisCodeRow4Description'] = diagnosisCodeRow4Description.get()
+        
+        with open(currentProfile, 'wb') as handle:
+            pickle.dump(profile_dict, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    else:
+        messagebox.showinfo(title="Error", message="No Patient Selected")
+
 def donothing():
     print("Nothing")
 
 def getProfileFromFile():
     try:
-        fileOfIds = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
-        with open(fileOfIds, 'rb') as handle:
+        global currentProfile 
+        currentProfile = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
+        with open(currentProfile, 'rb') as handle:
             b = pickle.load(handle)
         
-        clearAll()
+        print(currentProfile)
+        userName.delete(0,END)
+        clearICD()
+        clearCpt()
+        clearPatient()
+        clearDr()
 
         userName.insert(0,b["UserName"])
         value_inside_insurance.set(b["account"])
@@ -803,7 +1061,14 @@ def getProfileFromFile():
         patientInsuranceInput.insert(0,b['patientMBI'])
         patientPreauthorizationInput.insert(0,b['patientPreauthorization'])
         patientDateOfBirth.insert(0,b["patientDateOfBirth"])
-
+        try:
+            if(b['patientGender'] == 'Male'):
+                genderCheck.set(0)
+            else:
+                genderCheck.set(1)
+        except:
+            print("Patient has no gender!?")
+            genderCheck.set(0)
         #Set doctor info from forms
         patientPCPFirstNameInput.insert(0,b['patientPCPFirstName'])
         patientPCPLastNameInput.insert(0,b['patientPCPLastName'])
@@ -915,7 +1180,15 @@ def getProfileFromPDF():
         patientInsuranceInput.insert(0,b['patientMBI'])
         patientPreauthorizationInput.insert(0,b['patientPreauthorization'])
         patientDateOfBirth.insert(0,b["patientDateOfBirth"])
-
+        
+        try:
+            if(b['patientGender'] == 'Male'):
+                genderCheck.set(0)
+            else:
+                genderCheck.set(1)
+        except:
+            print("Patient has no gender!?")
+            genderCheck.set(0)
         #Set doctor info from forms
         patientPCPFirstNameInput.insert(0,b['patientPCPFirstName'])
         patientPCPLastNameInput.insert(0,b['patientPCPLastName'])
@@ -1004,13 +1277,16 @@ def getProfileFromPDF():
 
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
+toolmenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="New", command=clearAll)
 filemenu.add_command(label="Open", command=getProfileFromFile)
-filemenu.add_command(label="Open PDF", command=getProfileFromPDF)
+filemenu.add_command(label="Save", command=saveProfile)
 #filemenu.add_command(label="Save", command=donothing)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
+menubar.add_cascade(label="Tools", menu=toolmenu)
+toolmenu.add_command(label="Open PDF", command=getProfileFromPDF)
 root.config(menu=menubar)
 
 option_list=["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI"]
@@ -1155,7 +1431,7 @@ diagnosisCodeRow4Description = Entry(diagnosisFrame, width = default_ICD_Descrip
 
 #BUTTONS FOR FORMS
 submitButton = Button(submitFrame, text="Submit", command=sendToPDFCreator)
-fillClaimFormButton = Button(submitFrame, text="Create Claim", command = fillClaimFormFunction)
+fillClaimFormButton = Button(submitFrame, text="Create Claim", command = sendToFillClaimForm)
 searchButton = Button(itemsFrame, text="Search", command= getCPTInfo)
 searchDrNPI = Button(doctorFrame, text="Search NPI", command=getNpiInfo)
 searchICD = Button(diagnosisFrame, text="Search", command=getICDInfoFromPY)
@@ -1169,6 +1445,8 @@ clearICDForms = Button(diagnosisFrame, text="Clear", command=clearICD)
 invoiceCheck = IntVar()
 intakeCheck = IntVar()
 
+genderCheck = IntVar()
+
 rentalCheckRow1 = IntVar()
 rentalCheckRow2 = IntVar()
 rentalCheckRow3 = IntVar()
@@ -1176,10 +1454,10 @@ rentalCheckRow4 = IntVar()
 rentalCheckRow5 = IntVar()
 rentalCheckRow6 = IntVar()
 
-
-
 invoiceCheck.set(1)
 intakeCheck.set(1)
+
+genderCheck.set(0)
 
 rentalCheckRow1.set(1)
 rentalCheckRow2.set(1)
@@ -1212,6 +1490,9 @@ purchaseCheckMarkRow5 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckR
 rentalCheckMarkRow6 = Radiobutton(itemsFrame, text="RR", variable=rentalCheckRow6, value=0)
 purchaseCheckMarkRow6 = Radiobutton(itemsFrame, text="NU", variable=rentalCheckRow6, value=1)
 
+isMale = Radiobutton(patientFrame, text="Male", variable=genderCheck, value=0)
+isFemale = Radiobutton(patientFrame, text="Female", variable=genderCheck, value=1)
+
 
 #insuranceTypeMedicare.grid(column=0,row=0)
 #insuranceTypeMedical.grid(column=1,row=0)
@@ -1242,8 +1523,10 @@ patientAddressZipCodeInput.grid(column=5, row=3, padx=10)
 patientPhoneNumberLabel.grid(column=0, row=4)
 patientPhoneNumberInput.grid(column=1, row=4)
 
-patientDateOfBirthLabel.grid(column = 0, row = 5)
-patientDateOfBirth.grid(column= 1, row = 5)
+patientDateOfBirthLabel.grid(column=0, row=5)
+patientDateOfBirth.grid(column=1, row=5)
+isMale.grid(column=2, row=5)
+isFemale.grid(column=3, row=5)
 
 orderDateLabel.grid(column=0, row=6)
 orderDateInput.grid(column=1, row=6)
