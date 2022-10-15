@@ -15,14 +15,43 @@ import sys
 #root = tk.Tk()
 #root.withdraw()
 
+def addPatientToOA():
+    directory = sys.executable
+    baseDir = os.path.dirname(directory)
+    chrome_options = Options()
+
+    try:
+        DRIVER_PATH = baseDir + "\\src\\chromedriver.exe"
+        chrome_options.add_argument("user-data-dir=C:\\src\\selenium") 
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        print("Prod Mode")
+    except:
+        DRIVER_PATH = "src/chromedriver.exe"
+        chrome_options.add_argument("src/selenium") 
+        chrome_options.add_experimental_option("detach", True)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        print("Testing Mode")
+
+    driver.get('https://www.officeally.com/slogin.aspx')
+    #driver.switch_to.frame("Iframe9")
+    driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
+    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!')
+    driver.find_element(By.ID, "Login1_LoginButton").click()
+    #i = 1
+    time.sleep(1)
+
+    driver.get("https://www.officeally.com/secure_oa.asp?GOTO=OnlineEntry&TaskAction=Manage")
+
 
 def fillClaimFormFunction(b):
-    print(b)
+    #print(b)
     #fileOfIds = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
     #with open(fileOfIds, 'rb') as handle:
     #    b = pickle.load(handle)
     #fileOfIds = open("TestMedicareClaims.txt", "r")
     #fileOfIds = open("IEHPCLAIMS.txt", "r")
+    diagnosisPointers = "A"
     print(b['patientFirstName'])
 
 
@@ -110,6 +139,26 @@ def fillClaimFormFunction(b):
 
     driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_PRIOR_AUTH_NUMBER').send_keys(b["patientPreauthorization"])
 
+    
+
+
+
+    if(b["diagnosisCodeRow2"] != ""):
+        diagnosisPointers = "AB"
+        #print("AB")
+        if(b["diagnosisCodeRow3"] != ""):
+            diagnosisPointers = "ABC"
+            #print("ABC")
+            if(b["diagnosisCodeRow4"] != ""):
+                diagnosisPointers = "ABCD"
+                #print("ABCD")
+            
+        
+    
+    
+    
+    print(diagnosisPointers)
+
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_1").send_keys(b["diagnosisCodeRow1"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_2").send_keys(b["diagnosisCodeRow2"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_DIAGNOSIS_CODECMS0212_3").send_keys(b["diagnosisCodeRow3"])
@@ -129,6 +178,7 @@ def fillClaimFormFunction(b):
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B0").send_keys(b["itemRow1Modifier2"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C0").send_keys(b["itemRow1Modifier3"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D0").send_keys(b["itemRow1Modifier4"])
+    driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE0").send_keys(diagnosisPointers)
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG0").send_keys(b["itemRow1Price"])
     driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS0").send_keys(b["itemRow1Qty"])
 
@@ -147,6 +197,7 @@ def fillClaimFormFunction(b):
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B1").send_keys(b["itemRow2Modifier2"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C1").send_keys(b["itemRow2Modifier3"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D1").send_keys(b["itemRow2Modifier4"])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE1").send_keys(diagnosisPointers)
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG1").send_keys(b["itemRow2Price"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS1").send_keys(b["itemRow2Qty"])
 
@@ -165,6 +216,7 @@ def fillClaimFormFunction(b):
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B2").send_keys(b["itemRow3Modifier2"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C2").send_keys(b["itemRow3Modifier3"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D2").send_keys(b["itemRow3Modifier4"])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE2").send_keys(diagnosisPointers)
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG2").send_keys(b["itemRow3Price"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS2").send_keys(b["itemRow3Qty"])
 
@@ -183,6 +235,7 @@ def fillClaimFormFunction(b):
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B3").send_keys(b["itemRow4Modifier2"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C3").send_keys(b["itemRow4Modifier3"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D3").send_keys(b["itemRow4Modifier4"])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE3").send_keys(diagnosisPointers)
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG3").send_keys(b["itemRow4Price"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS3").send_keys(b["itemRow4Qty"])
 
@@ -201,6 +254,7 @@ def fillClaimFormFunction(b):
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B4").send_keys(b["itemRow5Modifier2"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C4").send_keys(b["itemRow5Modifier3"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D4").send_keys(b["itemRow5Modifier4"])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE4").send_keys(diagnosisPointers)
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG4").send_keys(b["itemRow5Price"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS4").send_keys(b["itemRow5Qty"])
 
@@ -219,6 +273,7 @@ def fillClaimFormFunction(b):
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_B5").send_keys(b["itemRow6Modifier2"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_C5").send_keys(b["itemRow6Modifier3"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_MODIFIER_D5").send_keys(b["itemRow6Modifier4"])
+        driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_DIAG_CODE5").send_keys(diagnosisPointers)
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_DOS_CHRG5").send_keys(b["itemRow6Price"])
         driver.find_element(By.ID, "ctl00_phFolderContent_ucHCFA_ucHCFALineItem_ucClaimLineItem_UNITS5").send_keys(b["itemRow6Qty"])
 
@@ -233,6 +288,7 @@ def fillClaimFormFunction(b):
 
 
     driver.find_element(By.ID, "lnkPatientCopy").click()
+
 
 
 

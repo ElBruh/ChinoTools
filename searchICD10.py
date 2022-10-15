@@ -26,7 +26,7 @@ def getICDInfo(icd):
     #params["code"] = icd
     resp = requests.get("https://www.hipaaspace.com/api/icd10/search?q={}&rt=json&token={}".format(icd, token))
     data = resp.json()
-    print(data)
+    #print(data)
     
   
     icdDict["Name"] = data["ICD10"][0]["Code"]
@@ -36,17 +36,20 @@ def getICDInfo(icd):
 
     for hcpcs in data["ICD10"]:
         if(hcpcs["ValidForSubmissionOnUB04"] == "true"):
-            print(hcpcs["Code"])
-            print(hcpcs["Description"])
+            #print(hcpcs["Code"])
+            #print(hcpcs["Description"])
             icdDict["ConsiderationName"] = hcpcs["Code"]
             icdDict["ConsiderationDescription"] = hcpcs["Description"]
             break
+        else:
+            icdDict["ConsiderationName"] = ''
+            icdDict["ConsiderationDescription"] = ''
     #if(icdDict["Valid"] == "False"):
     #    raise ValueError("Icd 10 code is not valid for billing")
     #    return icdDict
     
     #print(icdDict["Description"])
-    print(icdDict)
+   #print(icdDict)
     return icdDict
     
 
