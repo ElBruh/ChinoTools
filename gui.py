@@ -400,6 +400,7 @@ def getCPTInfo():
                     itemRow1Modifier3.insert(0,"KX")
                     itemRow1Modifier4.delete(0,END)
             except:
+                #temp_Dict = searchMedicareCPT2(itemRow1Cpt.get(), 2)
                 if(rentalCheckRow1.get() == 0):
                     messagebox.showerror(title="Error", message="CPT code ({} RR) Not Found In Medicare Fee Schedule".format(itemRow1Cpt.get()),)
                 else:

@@ -16,6 +16,7 @@ except:
     medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
 
 
+
 def searchMedcalCPT2(query, options):
     found={
         'ItemValue':'',
@@ -33,26 +34,37 @@ def searchMedcalCPT2(query, options):
     return found
 
 def searchMedicareCPT2(query, options):
+    #print(query)
     found={
         'ItemValue':'',
         'itemDescription':'',
         }
     
+    
     if(options == 1):
+        print("In NU")
             #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'NU' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
-        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE ? AND Mod = 'NU'", (query,))
+        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}' AND Mod IS 'NU'".format(query))
             #cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
-            
+        s = cur1.fetchone()
+        if(s == None):
+            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}'".format(query))
+            s = cur1.fetchone()
+        
     else:
+        print("In RR")
             #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'RR' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
-        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE ? AND Mod = 'RR'", (query,))
-            #cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
+        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}' AND Mod IS 'RR'".format(query))
+        s = cur1.fetchone()
+        if(s == None):
+            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}'".format(query))
+            s = cur1.fetchone()
 
-    s = cur1.fetchone()
-    print(s)
+    
+    
     found["ItemValue"] = s[0]
     found["itemDescription"] = s[1]
-    
+    print(s)
     return found
 
 def searchMedicalCPT(query, options):
