@@ -1,0 +1,187 @@
+Billing Code (HCPCS),Description,Category,MAPC per Unit of Measure (UOM),Quantity Limits Without Authorization
+A4230,"Infusion set for external insulin pump\, non needle cannula type",Diabetic Supply,$10.07,24 per 27-day period
+A4231,"Infusion set for external insulin pump\, needle type",Diabetic Supply,$5.10,24 per 27-day period
+A4232,"Syringe with needle for external insulin pump\, sterile\, 3cc",Diabetic Supply,$2.09,24 per 27-day period
+A4245,Alcohol wipes or 70% isopropyl alcohol swabsticks,Miscellaneous,$0.0144,200 per 27-day period
+A4310,Insertion tray without drainage bag and without catheter (accessories only),Urological Supply,$7.33,9 per 81-day period
+A4311,"Insertion tray without drainage bag with indwelling catheter\, foley type\, two-way latex with coating (teflon\, silicone\, silicone elastomer or hydrophilic\, etc.)",Urological Supply,$14.10,9 per 81-day period
+A4312,"Insertion tray without drainage bag with indwelling catheter\, foley type\, two-way\, all silicone",Urological Supply,$17.14,9 per 81-day period
+A4313,"Insertion tray without drainage bag with indwelling catheter\, foley type\, three-way\, for continuous irrigation",Urological Supply,$17.59,9 per 81-day period
+A4314,"Insertion tray with drainage bag with indwelling catheter\, foley type\, two-way latex with coating (teflon\, silicone\, silicone elastomer or hydrophilic\, etc.)",Urological Supply,$24.03,9 per 81-day period
+A4315,"Insertion tray with drainage bag with indwelling catheter\, foley type\, two-way\, all silicone",Urological Supply,$25.07,9 per 81-day period
+A4316,"Insertion tray with drainage bag with indwelling catheter\, foley type\, three-way\, for continuous irrigation",Urological Supply,$26.98,9 per 81-day period
+A4320,"Irrigation tray with bulb or piston syringe\, any purpose",Urological Supply,$4.30,90 per 81-day period
+A4322,"Irrigation syringe\, bulb or piston\, each",Miscellaneous,$2.89,90 per 81-day period
+A4326,"Male external catheter with integral collection chamber\,  any type\, each",Urological Supply,$9.35,90 per 81-day period
+A4328,"Female external urinary collection device; pouch\, each",Urological Supply,$9.93,90 per 81-day period
+A4331,"Extension drainage tubing\, any type\, any length\, with connector/adaptor\, for use with urinary leg bag or urostomy pouch\, each",Urological Supply,$3.02,12 per 81-day period
+A4332,"Lubricant\, individual sterile packet",Miscellaneous,$0.0290,240 grams per 27-day period
+A4333,"Urinary catheter anchoring device\, adhesive skin attachment\, each",Urological Supply,$7.50,18 per 81-day period
+A4334,"Urinary catheter anchoring device\, leg strap\, each",Urological Supply,$4.68,18 per 81-day period
+A4338,"Indwelling catheter; foley type\, two-way latex with coating (teflon\, silicone\, silicone elastomer\, or hydrophilic\, etc.)\, each",Urological Supply,$9.32,105 per 81-day period
+A4340,"Indwelling catheter; specialty type\, eg; coude\, mushroom\, wing\, etc.)\, each",Urological Supply,$23.00,105 per 81-day period
+A4344,"Indwelling catheter\, foley type\, two-way\, all silicone\, each",Urological Supply,$13.00,105 per 81-day period
+A4346,"Indwelling catheter; foley type\, three way for continuous irrigation\, each",Urological Supply,$15.00,105 per 81-day period
+A4349,"Male external catheter\, with or without adhesive\, disposable\, each",Urological Supply,$1.50,105 per 81-day period
+A4354,Insertion tray with drainage bag but without catheter,Urological Supply,$11.21,9 per 81-day period
+A4355,"Irrigation tubing set for continuous bladder irrigation through a three-way indwelling foley catheter\, each",Urological Supply,$8.46,18 per 81-day period
+A4356,"External urethral clamp or compression device (not to be used for catheter clamp)\, each",Urological Supply,$48.00,Not available
+A4357,"Bedside drainage bag\, day or night\, with or without anti-reflux device\, with or without tube\, each",Urological Supply,$9.22,9 per 81-day period
+A4358,"Urinary drainage bag\, leg or abdomen\, vinyl\, with or without tube\, with straps\, each",Urological Supply,$6.20,18 per 81-day period
+A4361,"Ostomy faceplate\, each",Ostomy Supply,$13.45,3 per 81-day period
+A4362,"Skin barrier; solid 4\"" x 4\"" or equivalent\, each",Ostomy Supply,$3.90,90 per 81-day period
+A4363,"Ostomy clamp\, any type\, replacement only\, each",Ostomy Supply,$2.00,6 per 81-day period
+A4364,"Adhesive\, liquid or equal\, any type",Ostomy Supply,$0.2510,360 per 81-day period
+A4367,"Ostomy belt\, each",Ostomy Supply,$7.50,3 per 81-day period
+A4368,"Ostomy filter\, any type\, each",Ostomy Supply,$0.30,90 per 81-day period
+A4369,"Ostomy skin barrier\, liquid (spray/brush etc)",Ostomy Supply,$0.07,180 milliliters per 81-day period
+A4371,"Ostomy skin barrier\, powder",Ostomy Supply,$0.2483,180 gm per 81-day period
+A4373,"Ostomy skin barrier with flange (solid\, flexible or accordian)\, with built-in convexity\, any size\, each",Ostomy Supply,$6.36,90 per 81-day period
+A4385,"Ostomy skin barrier\, solid 4\"" x 4\"" or equivalent\, extended wear\, without built-in convexity\, each",Ostomy Supply,$5.00,90 per 81-day period
+A4387,"Ostomy pouch\, closed with barrier attached\, with built-in convexity (1-Pc)\, each",Ostomy Supply,$3.72,90 per 81-day period
+A4388,"Ostomy pouch\, drainable with extended wear barrier attached\, (1-Pc)\, each",Ostomy Supply,$4.50,90 per 81-day period
+A4389,"Ostomy pouch\, drainable with barrier attached\, with built-in convexity (1-Pc)\, each",Ostomy Supply,$8.87,90 per 81-day period
+A4390,"Ostomy pouch\, drainable with extended wear barrier attached\, with built-in convexity (1-Pc)\, each",Ostomy Supply,$9.50,90 per 81-day period
+A4391,"Ostomy pouch\, urinary with extended wear barrier attached (1-Pc)\, each",Ostomy Supply,$6.91,90 per 81-day period
+A4392,"Ostomy pouch\, urinary with standard wear barrier attached\, with built-in convexity (1-Pc) each",Ostomy Supply,$7.66,90 per 81-day period
+A4393,"Ostomy pouch\, urinary with extended wear barrier attached\, with built-in convexity (1-Pc)\, each",Ostomy Supply,$9.00,90 per 81-day period
+A4394,"Ostomy deodorant with or without lubricant\,  for use in ostomy pouch",Ostomy Supply,$0.0781,720 milliliters per 81-day period
+A4398,"Ostomy irrigation supply; bag\, each",Ostomy Supply,$14.50,1 per 81-day period
+A4399,"Ostomy irrigation supply; cone/catheter\, with or without brush",Ostomy Supply,$11.00,1 per 81-day period
+A4400,Ostomy irrigation set,Ostomy Supply,$50.00,1 per 81-day period
+A4402,Lubricant,Ostomy/Urological Supply,$0.0208,240 grams per 27-day
+A4404,"Ostomy ring\, each",Ostomy Supply,$1.73,30 per 81-day period
+A4405,"Ostomy skin barrier\, non-pectin based\, paste",Ostomy Supply,$0.10,360 gm per 81-day period
+A4406,"Ostomy skin barrier\, pectin-based\, paste",Ostomy Supply,$0.20,360 gm per 81-day period
+A4407,"Ostomy skin barrier with flange (solid\, flexible\, or accordion)\, extended wear\, with built-in convexity\, 4\"" x 4\"" or smaller\, each",Ostomy Supply,$9.00,90 per 81-day period
+A4408,"Ostomy skin barrier with flange (solid\, flexible or accordion)\, extended wear\, with built-in convexity\, larger than 4\"" x 4\""\, each",Ostomy Supply,$9.00,90 per 81-day period
+A4409,"Ostomy skin barrier with flange (solid\, flexible or accordion)\, extended wear\, without built-in convexity\, 4\"" x 4\"" or smaller\, each",Ostomy Supply,$6.74,90 per 81-day period
+A4410,"Ostomy skin barrier with flange (solid\, flexible or accordion)\, extended wear\, without built-in convexity\, larger than 4\"" x 4\""\, each",Ostomy Supply,$7.00,90 per 81-day period
+A4411,"Ostomy skin barrier solid 4\"" x 4\"" or equiv. extended wear\, with built-in convexity\, each",Ostomy Supply,$5.34,90 per 81-day period
+A4412,"Ostomy pouch\, drainable\, high output\, for use on a barrier with flange (2-Pc system) without filter\, each",Ostomy Supply,$6.00,90 per 81-day period
+A4413,"Ostomy pouch\, drainable\, high output\, for use on a barrier with flange (2-Pc system) with filter\, each",Ostomy Supply,$5.50,90 per 81-day period
+A4414,"Ostomy skin barrier with flange (solid\, flexible or accordion)\, without built-in convexity\, 4\"" x 4\"" or smaller\, each",Ostomy Supply,$5.00,90 per 81-day period
+A4415,"Ostomy skin barrier with flange (solid\, flexible or accordion)\, without built-in convexity\, larger than 4\"" x 4\""\, each",Ostomy Supply,$5.50,90 per 81-day period
+A4416,"Ostomy pouch\, closed with barrier attached\, with filter (1-Pc)\, each",Ostomy Supply,$2.70,180 per 81-day period
+A4417,"Ostomy pouch\, closed with barrier attached\, with built-in convexity\, with filter (1-Pc)\, each",Ostomy Supply,$3.72,180 per 81-day period
+A4418,"Ostomy pouch\, closed without barrier attached\, with filter (1-Pc)\, each",Ostomy Supply,$2.55,180 per 81-day period
+A4419,"Ostomy pouch\, closed; for use on barrier with non-locking flange\, with filter (2-Pc)\, each",Ostomy Supply,$1.67,180 per 81-day period
+A4422,"Ostomy absorbent material (sheet\, pad\, crystal packet) for use in ostomy pouch to thicken liquid stomal output\, each",Ostomy Supply,$0.22,150 packets per 81-day period
+A4423,"Ostomy pouch\, closed; for use on barrier with locking flange\, with filter (2-Pc)\, each",Ostomy Supply,$1.90,180 per 81-day period
+A4424,"Ostomy pouch\, drainable\, with barrier attached with filter (1-Pc)\, each",Ostomy Supply,$4.80,90 per 81-day period
+A4425,"Ostomy pouch\, drainable; for use on barrier with non-locking flange\, with filter (2-Pc system)\, each",Ostomy Supply,$3.00,90 per 81-day period
+A4426,"Ostomy pouch\, drainable; for use on barrier with locking flange (2-Pc system)\, each",Ostomy Supply,$2.54,90 per 81-day period
+A4427,"Ostomy pouch\, drainable; for use on barrier with locking flange with filter (2-Pc system) each",Ostomy Supply,$2.54,90 per 81-day period
+A4428,"Ostomy pouch\, urinary with extended wear barrier attached\, with faucet-type tap\, with valve (1-Pc)\, each",Ostomy Supply,$6.77,90 per 81-day period
+A4430,"Ostomy pouch\, urinary with extended wear barrier attached\, with built-in convexity\, with faucet-type tap\, with valve (1-Pc)\, each",Ostomy Supply,$8.50,90 per 81-day period
+A4431,"Ostomy pouch\, urinary with barrier attached\, with faucet-type tap\, with valve (1-Pc)\, each",Ostomy Supply,$7.00,90 per 81-day period
+A4432,"Ostomy pouch\, urinary; for use on barrier with non-locking flange\, with faucet-type tap\, with valve (2-Pc)\, each",Ostomy Supply,$3.75,90 per 81-day period
+A4433,"Ostomy pouch\, urinary; for use on barrier with locking flange (2-Pc)\, each",Ostomy Supply,$3.20,90 per 81-day period
+A4436,"Irrigation supply; sleeve\, reusable\, per month",Ostomy Supply,$4.98,12 per 81-day-period
+A4437,"Irrigation supply; sleeve\, disposable\, per month",Ostomy Supply,$4.98,12 per 81-day-period
+A4455,"Adhesive remover/solvent (for tape\, cement or other adhesive)",Ostomy Supply,$0.1962,Not available
+A4456,"Adhesive remover wipes\, any type\, each",Ostomy Supply,$0.22,100 wipes per 81-day period
+A4628,"Oropharyngeal suction catheter\, each",Tracheostomy Supply,$3.80,15 per 81-day period
+A4927,"Gloves\, non-sterile",Miscellaneous,$0.18,200 per claim and no more than one claim per 27-day period
+A4931,"Thermometer\, oral\, reusable",Miscellaneous,$2.05,one per 365-day period
+A4932,"Thermometer\, rectal\, reusable",Miscellaneous,$2.05,one per 365-day period
+A5051,"Ostomy pouch\, closed with barrier attached (1-Pc) each",Ostomy Supply,$2.33,180 per 81-day period
+A5054,"Ostomy pouch\, closed; for use on barrier with flange (2-Pc)\, each",Ostomy Supply,$1.67,180 per 81-day period
+A5055,Stoma cap,Ostomy Supply,$1.80,90 per 81-day period
+A5056,"Ostomy pouch\, drainable\, with extended wear barrier attached\, with filter\, (1-Pc)\, each",Ostomy Supply,$5.26,90 per 81-day period
+A5057,"Ostomy pouch\, drainable\, with extended wear barrier attached\, with built-in convexity\, with filter (1-Pc)\, each",Ostomy Supply,$10.81,90 per 81-day period
+A5061,"Ostomy pouch\, drainable with barrier attached (1-Pc)\, each",Ostomy Supply,$4.30,90 per 81-day period
+A5062,"Ostomy pouch drainable without barrier attached (1-Pc)\, each",Ostomy Supply,$4.30,90 per 81-day period
+A5063,"Ostomy pouch\, drainable; for use on barrier with flange (2-pc system)\, each",Ostomy Supply,$2.75,90 per 81-day period
+A5071,"Ostomy pouch\, urinary with barrier attached (1-Pc)\, each",Ostomy Supply,$6.77,90 per 81-day period
+A5073,"Ostomy pouch\, urinary; for use on barrier with flange (2-Pc)\, each",Ostomy Supply,$3.20,90 per 81-day period
+A5093,Ostomy accessory; convex insert,Ostomy Supply,$2.00,30 per 81-day period
+A5102,"Bedside drainage bottle with or without tubing\, rigid or expandable\, each",Urological Supply,$21.30,15 per 81-day period
+A5112,"Urinary drainage bag\, leg or abdomen\, latex\, with or without tube\, with straps\, each",Urological Supply,$27.00,18 per 81-day period
+A5113,"Leg strap; latex\, replacement only\, per set",Urological Supply,$3.80,18 per 81-day period
+A5114,"Leg strap; foam or fabric\,  replacement only\, per set",Urological Supply,$6.50,18 per 81-day period
+A5120,"Skin barrier; wipes or swabs\, each",Ostomy Supply,$0.20,100 wipes per 81-day period
+A5121,"Skin barrier; solid 6\"" x 6\"" or equivalent\, each",Ostomy Supply,$7.83,90 per 81-day period
+A5122,"Skin barrier; solid 8\"" x 8\"" or equivalent\, each",Ostomy Supply,$16.25,90 per 81-day period
+A5131,"Appliance cleaner\, ostomy appliances",Ostomy Supply,$0.03,1440 milliliters per 81-day period
+A5200,"Percutaneous catheter/tube anchoring device\, adhesive skin attachment",Urological Supply,$10.67,18 per 81-day period
+A6010,"Collagen based wound filler\, dry form\, sterile\, per gram of collagen",Wound Care Supply,$23.19,"10 gm per wound per 15-day period\, up to 90-day duration of therapy"
+A6021,"Collagen dressing\, sterile\, size 16 square inches or less\, each",Wound Care Supply,$15.74,"10 per wound per 27-day period\, up to 90-day duration of therapy "
+A6022,"Collagen dressing\, sterile\, size more than 16 square inches but less than or equal to 48 square inches\, each",Wound Care Supply,$15.74,"10 per wound per 27-day period\, up to 90-day duration of therapy "
+A6196,"Alginate or other fiber gelling dressing\, wound cover\, sterile\, pad size 16 square inches or less\, each dressing",Wound Care Supply,$5.29,"30 per wound per 27-day period\, up to 90-day duration of therapy  "
+A6197,"Alginate or other fiber gelling dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, each dressing",Wound Care Supply,$12.31,"30 per wound per 27-day period\, up to 90-day duration of therapy  "
+A6199,"Alginate or other fiber gelling dressing\, wound filler\, sterile",Wound Care Supply,$0.66,"180 inches per wound per 27-day period\, up to 90-day duration of therapy   "
+A6203,"Composite dressing\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$2.52,12 per wound per 27-day period
+A6204,"Composite dressing\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$4.48,12 per wound per 27-day period
+A6206,"Contact layer\, sterile\, 16 square inches or less\, each dressing",Wound Care Supply,$7.52,4 per wound per 27-day period
+A6207,"Contact layer\, sterile\, more than 16 square inches but less than or equal to 48 square inches\, each dressing",Wound Care Supply,$11.82,4 per wound per 27-day period
+A6208,"Contact layer\, sterile\, more than 48 square inches\, each dressing",Wound Care Supply,$33.61,4 per wound per 27-day period
+A6209,"Foam dressing\, wound cover\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$5.59,12 per wound per 27-day period
+A6210,"Foam dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$14.92,12 per wound per 27-day period
+A6211,"Foam dressing\, wound cover\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$23.49,12 per wound per 27-day period
+A6212,"Foam dressing\, wound cover\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$8.00,12 per wound per 27-day period
+A6213,"Foam dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$14.05,12 per wound per 27-day period
+A6216,"Gauze\, non-impregnated\, non-sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$0.04,200 per wound per 27-day period
+A6217,"Gauze\, non-impregnated\, non-sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.08,200 per wound per 27-day period
+A6218,"Gauze\, non-impregnated\, non-sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.25,200 per wound per 27-day period
+A6219,"Gauze\, non-impregnated\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$0.76,50 per wound per 27-day period
+A6220,"Gauze\, non-impregnated\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$2.06,50 per wound per 27-day period
+A6221,"Gauze\, non-impregnated\, sterile\, pad size more than 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$2.06,50 per wound per 27-day period
+A6222,"Gauze\, impregnated with other than water\, normal saline\, or hydrogel\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$1.70,50 per wound per 27-day period
+A6223,"Gauze\, impregnated with other than water\, normal saline\, or hydrogel\, sterile\, pad size more than 16 square inches\, but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$1.94,50 per wound per 27-day period
+A6224,"Gauze\, impregnated with other than water\, normal saline\, or hydrogel\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$2.89,50 per wound per 27-day period
+A6228,"Gauze\, impregnated\, water or normal saline\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$0.04,200 per wound per 27-day period
+A6229,"Gauze\, impregnated\, water or normal saline\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.08,200 per wound per 27-day period
+A6230,"Gauze\, impregnated\, water or normal saline\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.25,200 per wound per 27-day period
+A6231,"Gauze\, impregnated\, hydrogel\, for direct wound contact\, sterile\, pad size 16 square inches or less\, each dressing",Wound Care Supply,$3.51,30 per wound per 27-day period
+A6232,"Gauze\, impregnated\, hydrogel\, for direct wound contact\, sterile\, pad size greater than 16 square inches\, but less than or equal to 48 square inches\, each dressing",Wound Care Supply,$5.50,30 per wound per 27-day period
+A6233,"Gauze\, impregnated\, hydrogel\, for direct wound contact\, sterile\, pad size more than 48 square inches\, each dressing",Wound Care Supply,$15.35,30 per wound per 27-day period
+A6234,"Hydrocolloid dressing\, wound cover\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$5.61,12 per wound per 27-day period
+A6235,"Hydrocolloid dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$12.50,12 per wound per 27-day period
+A6236,"Hydrocolloid dressing\, wound cover\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$20.41,12 per wound per 27-day period
+A6237,"Hydrocolloid dressing\, wound cover\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$6.32,12 per wound per 27-day period
+A6238,"Hydrocolloid dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$17.07,12 per wound per 27-day period
+A6240,"Hydrocolloid dressing\, wound filler\, paste\, sterile",Wound Care Supply,$0.33,360 grams per wound per 27-day period
+A6241,"Hydrocolloid dressing\, wound filler\, dry form\, sterile\, per gram",Wound Care Supply,$1.94,90 grams per wound per 27-day period
+A6242,"Hydrogel dressing\, wound cover\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$4.54,30 per wound per 27-day period
+A6243,"Hydrogel dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$9.23,30 per wound per 27-day period
+A6244,"Hydrogel dressing\, wound cover\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$29.42,30 per wound per 27-day period
+A6245,"Hydrogel dressing\, wound cover\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$5.82,12 per wound per 27-day period
+A6246,"Hydrogel dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$7.94,12 per wound per 27-day period
+A6247,"Hydrogel dressing\, wound cover\, sterile\, pad size more than 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$19.02,12 per wound per 27-day period
+A6248,"Hydrogel dressing\, wound filler\, gel",Wound Care Supply,$0.40,90 milliliters per wound per 27-day period
+A6254,"Specialty absorptive dressing\, wound cover\, sterile\, pad size 16 square inches or less\, with any size adhesive border\, each dressing",Wound Care Supply,$1.21,12 per wound per 27-day period
+A6255,"Specialty absorptive dressing\, wound cover\, sterile\, pad size more than 16 square inches but less than or equal to 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$2.42,12 per wound per 27-day period
+A6256,"Specialty absorptive dressing\, wound cover\, sterile\, pad size more than 48 square inches\, with any size adhesive border\, each dressing",Wound Care Supply,$5.07,12 per wound per 27-day period
+A6257,"Transparent film\, sterile\, 16 square inches or less\, each dressing",Wound Care Supply,$1.15,12 per wound per 27-day period
+A6258,"Transparent film\, sterile\, more than 16 square inches but less than or equal to 48 square inches\, each dressing",Wound Care Supply,$3.29,12 per wound per 27-day period
+A6259,"Transparent film\, sterile\, more than 48 square inches\, each dressing",Wound Care Supply,$8.19,12 per wound per 27-day period
+A6266,"Gauze\, impregnated\, other than water\, normal saline\, or zinc paste\, sterile\, any width\, per linear yard",Wound Care Supply,$1.54,25 per wound per 27-day period
+A6402,"Gauze\, non-impregnated\, sterile\, pad size 16 square inches or less\, without adhesive border\, each dressing",Wound Care Supply,$0.10,200 per wound per 27-day period
+A6403,"Gauze\, non-impregnated\, sterile\, pad size more than 16 square inches less than or equal to 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.34,200 per wound per 27-day period
+A6404,"Gauze\, non-impregnated\, sterile\, pad size more than 48 square inches\, without adhesive border\, each dressing",Wound Care Supply,$0.34,200 per wound per 27-day period
+A6407,"Packing strips\, non-impregnated\, sterile\, up to 2 inches in width\, per linear yard",Wound Care Supply,$1.40,30 per wound per 27-day period
+A6410,"Eye pad\, sterile\, each",Wound Care Supply,$0.31,100 per wound per 27-day period
+A6411,"Eye pad\, non-sterile\, each",Wound Care Supply,$0.15,100 per wound per 27-day period
+A6442,"Conforming bandage\, non-elastic\, knitted/woven\, non-sterile\, width less than three inches\, per yard",Wound Care Supply,$0.14,90 per wound per 27-day period
+A6443,"Conforming bandage\, non-elastic\, knitted/woven\, non-sterile\, width greater than or equal to three inches and less than five inches\, per yard",Wound Care Supply,$0.23,90 per wound per 27-day period
+A6444,"Conforming bandage\, non-elastic\, knitted/woven\, non-sterile\, width greater than or equal to 5 inches\, per yard",Wound Care Supply,$0.45,90 per wound per 27-day period
+A6445,"Conforming bandage\, non-elastic\, knitted/woven\, sterile\, width less than three inches\, per yard",Wound Care Supply,$0.26,90 per wound per 27-day period
+A6446,"Conforming bandage\, non-elastic\, knitted/woven\, sterile\, width greater than or equal to three inches and less than five inches\, per yard",Wound Care Supply,$0.33,90 per wound per 27-day period
+A6447,"Conforming bandage\, non-elastic\, knitted/woven\, sterile\, width greater than or equal to five inches\, per yard",Wound Care Supply,$0.54,90 per wound per 27-day period
+A6453,"Self-adherent bandage\, elastic\, non-knitted/non-woven\, width less than three inches\, per yard",Wound Care Supply,$0.49,30 per wound per 27-day period
+A6454,"Self-adherent bandage\, elastic\, non-knitted/non-woven\, width greater than or equal to three inches and less than five inches\, per yard",Wound Care Supply,$0.62,30 per wound per 27-day period
+A6455,"Self-adherent bandage\, elastic\, non-knitted/non-woven\, width greater than or equal to five inches\, per yard",Wound Care Supply,$1.11,30 per wound per 27-day period
+A7002,"Tubing\, used with suction pump\, each",Respiratory Supply,$3.10,30 per 81-day period
+A7013,"Filter\, disposable\, used with aerosol compressor or ultrasonic generator",Respiratory Supply,$0.8300,6 per 81-day period
+A7016,"Dome and mouthpiece\, used with small volume ultrasonic nebulizer",Respiratory Supply,$8.8800,2 per 350-day period
+B4034,Enteral feeding supply kit; syringe fed,Enteral Feeding Supply,$3.02,31 per 27-day period
+B4035,Enteral feeding supply kit; pump fed,Enteral Feeding Supply,$3.85,31 per 27-day period
+B4036,Enteral feeding supply kit; gravity fed,Enteral Feeding Supply,$2.66,31 per 27-day period
+B4081,Nasogastric tubing with stylet,Enteral Feeding Supply,$16.37,6 per 365-day period
+B4082,Nasogastric tubing without stylet,Enteral Feeding Supply,$11.99,6 per 365-day period
+B4083,Stomach tube - levine type,Enteral Feeding Supply,$1.82,6 per 365-day period
+B4087,"Gastrostomy/jejunostomy tube\, standard\, any material\, any type\, each",Enteral Feeding Supply,$74.39,6 per 365-day period
+B4088,"Gastrostomy/jejunostomy tube\, low-profile\, any material\, any type\, each",Enteral Feeding Supply,$119.79,6 per 365-day period
+B9998,Extension set for enteral feeding,Enteral Feeding Supply,$10.1300,6 per 27-day period
+J7131,"Hypertonic saline solution\, 1milliliters",Miscellaneous,$0.1659,Not available

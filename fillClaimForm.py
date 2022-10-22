@@ -36,7 +36,7 @@ def addPatientToOA():
     driver.get('https://www.officeally.com/slogin.aspx')
     #driver.switch_to.frame("Iframe9")
     driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!')
+    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!^')
     driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
