@@ -14,7 +14,14 @@ try:
     medicare = sqlite3.connect(baseDir + "/src/" + 'MedicareRatesDB1.db')
 except:
     medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
+try:
+    patientProfile = sqlite3.connect(baseDir + "/src/" + "patientProfiles.db")
+except:
+    patientProfile = sqlite3.connect("./src/patientProfiles.db")
 
+
+def openPatientDB():
+    cur3.execute("")
 
 
 def searchMedcalCPT2(query, options):
@@ -113,4 +120,4 @@ def searchMedicareCPT(query, options):
 
 cur = medical.cursor()
 cur1 = medicare.cursor()
-
+cur3 = patientProfile.cursor()

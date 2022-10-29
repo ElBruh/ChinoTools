@@ -36,12 +36,29 @@ def addPatientToOA():
     driver.get('https://www.officeally.com/slogin.aspx')
     #driver.switch_to.frame("Iframe9")
     driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!^')
+    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!')
     driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
 
     driver.get("https://www.officeally.com/secure_oa.asp?GOTO=OnlineEntry&TaskAction=Manage")
+    driver.switch_to.frame("Iframe9")
+
+    tablerows = driver.find_element(By.ID, "Table1").find_elements(By.TAG_NAME, "td")
+    for i,  row in enumerate(tablerows):
+        #print(i)
+        #print(row.text)
+        if(row.text == "Add" and i == 11):
+            print(row)
+            row.click()
+    
+    driver.find_element(By.ID, "INSURANCETYPE7").click()
+    #windowsNames = driver.window_handles
+    #driver.switch_to.window(windowsNames[-1])
+    #driver.find_element(By.ID, "ctl03_popupBase_txtSearch").send_keys("Espinoza")
+    #driver.find_element(By.NAME, "ctl03$popupBase$btnSearch").click()
+    
+    
 
 
 def fillClaimFormFunction(b):
@@ -91,7 +108,7 @@ def fillClaimFormFunction(b):
     driver.get('https://www.officeally.com/slogin.aspx')
     #driver.switch_to.frame("Iframe9")
     driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!^!')
+    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!')
     driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
@@ -291,7 +308,7 @@ def fillClaimFormFunction(b):
 
 
 
-
+#addPatientToOA()
 
 #DOSMonth = driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Month').send_keys('value')
 #DOSDay = driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Day').send_keys('value')
