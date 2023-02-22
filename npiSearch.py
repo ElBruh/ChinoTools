@@ -47,3 +47,6 @@ def getDrInfo(npi):
     return doctorDict
 
 #items = json.loads(data)
+#print("Enter the NPI You want to search: ")
+#npi = input()
+#print(getDrInfo(npi))

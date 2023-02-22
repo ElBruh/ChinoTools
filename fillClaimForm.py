@@ -40,7 +40,7 @@ def addPatientToOA():
     driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
-
+    
     driver.get("https://www.officeally.com/secure_oa.asp?GOTO=OnlineEntry&TaskAction=Manage")
     driver.switch_to.frame("Iframe9")
 
@@ -70,7 +70,7 @@ def fillClaimFormFunction(b):
     #fileOfIds = open("IEHPCLAIMS.txt", "r")
     diagnosisPointers = "A"
     print(b['patientFirstName'])
-
+    #print("Testing Mode")
 
 
     #DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
@@ -108,7 +108,7 @@ def fillClaimFormFunction(b):
     driver.get('https://www.officeally.com/slogin.aspx')
     #driver.switch_to.frame("Iframe9")
     driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    driver.find_element(By.ID, "Login1_Password").send_keys('Advancemedical$2021!^!!')
+    driver.find_element(By.ID, "Login1_Password").send_keys('ChinoMedical$2023!^')
     driver.find_element(By.ID, "Login1_LoginButton").click()
     #i = 1
     time.sleep(1)
@@ -307,7 +307,7 @@ def fillClaimFormFunction(b):
     driver.find_element(By.ID, "lnkPatientCopy").click()
 
 
-
+#fillClaimFormFunction({"patientFirstName":"Bruh"})
 #addPatientToOA()
 
 #DOSMonth = driver.find_element(By.ID, 'ctl00_phFolderContent_ucHCFA_P_SIG_ON_FILE_DATE_Month').send_keys('value')
