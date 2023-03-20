@@ -112,6 +112,7 @@ profile_dict ={
 
 }
 
+
 patientFrame = LabelFrame(root, text='Patient',  bd=2, relief=RIDGE)
 doctorFrame = LabelFrame(root, text='Doctor', bd=2, relief=RIDGE)
 submitFrame = Frame(root, relief=RIDGE)
@@ -230,6 +231,13 @@ def setInsuranceType(*args):
         InsuranceType.set(1)
     
     print(InsuranceType.get())
+
+def insert_data(input_field, data):
+    try:
+        input_field.delete(0, 'end')
+        input_field.insert(0, data)
+    except Exception as e:
+        print(f"Error while inserting data into the input field: {e}")
 
 def getICDInfoFromPY():
     
@@ -1171,125 +1179,115 @@ def getProfileFromFile():
         messagebox.showinfo(title="Canceled", message="The dialog has been canceled")
 
 
+
+
 def getProfileFromPDF():
     try:
         fileOfIds = filedialog.askopenfilename(filetypes=[("PDF File", "Invoice.pdf")])
-        #print(fileOfIds)
-        b = readPDF(fileOfIds)
-        print(b)
+        profile_data = readPDF(fileOfIds)
+        print(profile_data)
         clearAll()
 
-        userName.insert(0,b["UserName"])
-        value_inside_insurance.set(b["account"])
-        
-        #Set patient info from forms
-        #invoiceCheck.set(b['makeInvoice'])
-        #intakeCheck.set(b['makeIntake'])
+        input_fields = [
+            (userName, "UserName"),
+            (patientFirstNameInput, "patientFirstName"),
+            (patientLastNameInput, "patientLastName"),
+            (patientAddressInput, "patientAddress"),
+            (patientAddressCityInput, "patientCity"),
+            (patientAddressZipCodeInput, "patientZip"),
+            (patientPhoneNumberInput, "patientPhone"),
+            (orderDateInput, "patientOrderDate"),
+            (patientInsuranceInput, "patientMBI"),
+            (patientPreauthorizationInput, "patientPreauthorization"),
+            (patientDateOfBirth, "patientDateOfBirth"),
+            (patientPCPFirstNameInput, "patientPCPFirstName"),
+            (patientPCPLastNameInput, "patientPCPLastName"),
+            (patientPCPAddressInput, "patientPCPAddress"),
+            (patientPCPAddressCityInput, "patientPCPCity"),
+            (patientPCPAddressZipCodeInput, "patientPCPZip"),
+            (patientPCPPhoneNumberInput, "patientPCPPhone"),
+            (patientPCPNPIInput, "patientPCPNPI"),
+            
+            (itemRow1Cpt, "itemRow1CPT"),
+            (itemRow1Modifier1, "itemRow1Modifier1"),
+            (itemRow1Modifier2, "itemRow1Modifier2"),
+            (itemRow1Modifier3, "itemRow1Modifier3"),
+            (itemRow1Modifier4, "itemRow1Modifier4"),
+            (itemRow1Description, "itemRow1Description"),
+            (itemRow1Qty, "itemRow1Qty"),
+            (itemRow1Price, "itemRow1Price"),
 
-        patientFirstNameInput.insert(0,b['patientFirstName'])
-        patientLastNameInput.insert(0,b['patientLastName'])
-        patientAddressInput.insert(0,b['patientAddress'])
-        patientAddressCityInput.insert(0,b['patientCity'])
-        value_inside_patient.set(b['patientState'])
-        patientAddressZipCodeInput.insert(0,b['patientZip'])
-        patientPhoneNumberInput.insert(0,b['patientPhone'])
-        orderDateInput.insert(0,b['patientOrderDate'])
-        patientInsuranceInput.insert(0,b['patientMBI'])
-        patientPreauthorizationInput.insert(0,b['patientPreauthorization'])
-        patientDateOfBirth.insert(0,b["patientDateOfBirth"])
+            (itemRow2Cpt, "itemRow2CPT"),
+            (itemRow2Modifier1, "itemRow2Modifier1"),
+            (itemRow2Modifier2, "itemRow2Modifier2"),
+            (itemRow2Modifier3, "itemRow2Modifier3"),
+            (itemRow2Modifier4, "itemRow2Modifier4"),
+            (itemRow2Description, "itemRow2Description"),
+            (itemRow2Qty, "itemRow2Qty"),
+            (itemRow2Price, "itemRow2Price"),
+
+            (itemRow3Cpt, "itemRow3CPT"),
+            (itemRow3Modifier1, "itemRow3Modifier1"),
+            (itemRow3Modifier2, "itemRow3Modifier2"),
+            (itemRow3Modifier3, "itemRow3Modifier3"),
+            (itemRow3Modifier4, "itemRow3Modifier4"),
+            (itemRow3Description, "itemRow3Description"),
+            (itemRow3Qty, "itemRow3Qty"),
+            (itemRow3Price, "itemRow3Price"),
+
+            (itemRow4Cpt, "itemRow4CPT"),
+            (itemRow4Modifier1, "itemRow4Modifier1"),
+            (itemRow4Modifier2, "itemRow4Modifier2"),
+            (itemRow4Modifier3, "itemRow4Modifier3"),
+            (itemRow4Modifier4, "itemRow4Modifier4"),
+            (itemRow4Description, "itemRow4Description"),
+            (itemRow4Qty, "itemRow4Qty"),
+            (itemRow4Price, "itemRow4Price"),
+
+            (itemRow5Cpt, "itemRow5CPT"),
+            (itemRow5Modifier1, "itemRow5Modifier1"),
+            (itemRow5Modifier2, "itemRow5Modifier2"),
+            (itemRow5Modifier3, "itemRow5Modifier3"),
+            (itemRow5Modifier4, "itemRow5Modifier4"),
+            (itemRow5Description, "itemRow5Description"),
+            (itemRow5Qty, "itemRow5Qty"),
+            (itemRow5Price, "itemRow5Price"),
+
+            (itemRow6Cpt, "itemRow6CPT"),
+            (itemRow6Modifier1, "itemRow6Modifier1"),
+            (itemRow6Modifier2, "itemRow6Modifier2"),
+            (itemRow6Modifier3, "itemRow6Modifier3"),
+            (itemRow6Modifier4, "itemRow6Modifier4"),
+            (itemRow6Description, "itemRow6Description"),
+            (itemRow6Qty, "itemRow6Qty"),
+            (itemRow6Price, "itemRow6Price"),
+
+            (diagnosisCodeRow1, "diagnosisCodeRow1"),
+            (diagnosisCodeRow1Description, "diagnosisCodeRow1Description"),
+            (diagnosisCodeRow2, "diagnosisCodeRow2"),
+            (diagnosisCodeRow2Description, "diagnosisCodeRow2Description"),
+            (diagnosisCodeRow3, "diagnosisCodeRow3"),
+            (diagnosisCodeRow3Description, "diagnosisCodeRow3Description"),
+            (diagnosisCodeRow4, "diagnosisCodeRow4"),
+            (diagnosisCodeRow4Description, "diagnosisCodeRow4Description"),
+        ]
         
-        try:
-            if(b['patientGender'] == 'Male'):
-                genderCheck.set(0)
-            else:
-                genderCheck.set(1)
-        except:
-            print("Patient has no gender!?")
+        for field, key in input_fields:
+            insert_data(field, profile_data.get(key, ""))
+
+        patient_gender = profile_data.get("patientGender", "").lower()
+        if patient_gender == "male":
             genderCheck.set(0)
-        #Set doctor info from forms
-        patientPCPFirstNameInput.insert(0,b['patientPCPFirstName'])
-        patientPCPLastNameInput.insert(0,b['patientPCPLastName'])
-        patientPCPAddressInput.insert(0,b['patientPCPAddress'])
-        patientPCPAddressCityInput.insert(0,b['patientPCPCity'])
-        value_inside_doctor.set(b['patientPCPState'])
-        patientPCPAddressZipCodeInput.insert(0,b['patientPCPZip'])
-        patientPCPPhoneNumberInput.insert(0,b['patientPCPPhone'])
-        patientPCPNPIInput.insert(0,b['patientPCPNPI'])
-        
-        #Set Cpt Row1 info from forms 
-        itemRow1Cpt.insert(0,b['itemRow1CPT'] )
-        itemRow1Modifier1.insert(0,b['itemRow1Modifier1'])
-        itemRow1Modifier2.insert(0,b['itemRow1Modifier2'])
-        itemRow1Modifier3.insert(0,b['itemRow1Modifier3'])
-        itemRow1Modifier4.insert(0,b['itemRow1Modifier4'])
-        itemRow1Description.insert(0,b['itemRow1Description'])
-        itemRow1Qty.insert(0,b['itemRow1Qty'])
-        itemRow1Price.insert(0,b['itemRow1Price'])
+        elif patient_gender == "female":
+            genderCheck.set(1)
+        else:
+            print("Patient has no gender or it's not recognized")
+            genderCheck.set(0)
 
-        #Set Cpt Row2 info from forms
-        itemRow2Cpt.insert(0,b['itemRow2CPT'])
-        itemRow2Modifier1.insert(0,b['itemRow2Modifier1'])
-        itemRow2Modifier2.insert(0,b['itemRow2Modifier2'])
-        itemRow2Modifier3.insert(0,b['itemRow2Modifier3'])
-        itemRow2Modifier4.insert(0,b['itemRow2Modifier4'])
-        itemRow2Description.insert(0,b['itemRow2Description'])
-        itemRow2Qty.insert(0,b['itemRow2Qty'])
-        itemRow2Price.insert(0,b['itemRow2Price'])
-
-        #Set Cpt Row3 info from forms
-        itemRow3Cpt.insert(0,b['itemRow3CPT'])
-        itemRow3Modifier1.insert(0,b['itemRow3Modifier1'])
-        itemRow3Modifier2.insert(0,b['itemRow3Modifier2'])
-        itemRow3Modifier3.insert(0,b['itemRow3Modifier3'])
-        itemRow3Modifier4.insert(0,b['itemRow3Modifier4'])
-        itemRow3Description.insert(0,b['itemRow3Description'])
-        itemRow3Qty.insert(0,b['itemRow3Qty'])
-        itemRow3Price.insert(0,b['itemRow3Price'])
-
-        #Set Cpt Row4 info from forms
-        itemRow4Cpt.insert(0,b['itemRow4CPT'])
-        itemRow4Modifier1.insert(0,b['itemRow4Modifier1'])
-        itemRow4Modifier2.insert(0,b['itemRow4Modifier2'])
-        itemRow4Modifier3.insert(0,b['itemRow4Modifier3'])
-        itemRow4Modifier4.insert(0,b['itemRow4Modifier4'])
-        itemRow4Description.insert(0,b['itemRow4Description'])
-        itemRow4Qty.insert(0,b['itemRow4Qty'])
-        itemRow4Price.insert(0,b['itemRow4Price'])
-
-        #Set Cpt Row5 info from forms 
-        itemRow5Cpt.insert(0,b['itemRow5CPT'])
-        itemRow5Modifier1.insert(0,b['itemRow5Modifier1'])
-        itemRow5Modifier2.insert(0,b['itemRow5Modifier2'])
-        itemRow5Modifier3.insert(0,b['itemRow5Modifier3'])
-        itemRow5Modifier4.insert(0,b['itemRow5Modifier4'])
-        itemRow5Description.insert(0,b['itemRow5Description'])
-        itemRow5Qty.insert(0,b['itemRow5Qty'])
-        itemRow5Price.insert(0,b['itemRow5Price'])
-
-        #Set Cpt Row6 info from forms 
-        itemRow6Cpt.insert(0,b['itemRow6CPT'])
-        itemRow6Modifier1.insert(0,b['itemRow6Modifier1'])
-        itemRow6Modifier2.insert(0,b['itemRow6Modifier2'])
-        itemRow6Modifier3.insert(0,b['itemRow6Modifier3'])
-        itemRow6Modifier4.insert(0,b['itemRow6Modifier4'])
-        itemRow6Description.insert(0,b['itemRow6Description'])
-        itemRow6Qty.insert(0,b['itemRow6Qty'])
-        itemRow6Price.insert(0,b['itemRow6Price'])
-
-        #Set diagnosis codes and descriptions from forms
-        diagnosisCodeRow1.insert(0,b['diagnosisCodeRow1'])
-        diagnosisCodeRow2.insert(0,b['diagnosisCodeRow2'])
-        diagnosisCodeRow3.insert(0,b['diagnosisCodeRow3'])
-        diagnosisCodeRow4.insert(0,b['diagnosisCodeRow4'])
-
-        diagnosisCodeRow1Description.insert(0,b['diagnosisCodeRow1Description'])
-        diagnosisCodeRow2Description.insert(0,b['diagnosisCodeRow2Description'])
-        diagnosisCodeRow3Description.insert(0,b['diagnosisCodeRow3Description'])
-        diagnosisCodeRow4Description.insert(0,b['diagnosisCodeRow4Description'])
-
-    except:
-        messagebox.showinfo(title="Canceled", message="The dialog has been canceled")
-
+    except FileNotFoundError:
+        print("File not found or not selected")
+    except Exception as e:
+        messagebox.showinfo(title="Error", message=f"An error occurred: {e}")
 
 
 menubar = Menu(root)
@@ -1514,179 +1512,159 @@ isFemale = Radiobutton(patientFrame, text="Female", variable=genderCheck, value=
 #insuranceTypeMedicare.grid(column=0,row=0)
 #insuranceTypeMedical.grid(column=1,row=0)
 
-insuranceList.grid(column=1,row=0)
+insuranceList.grid(column=1, row=0, padx=5, pady=5, sticky="w")
 
-userNameLabel.grid(column=0,row=1)
-userName.grid(column=1, row=1)
+userNameLabel.grid(column=0, row=1, padx=5, pady=5, sticky="e")
+userName.grid(column=1, row=1, padx=5, pady=5)
 
-patientFirstNameLabel.grid(column=0, row=0)
-patientFirstNameInput.grid(column=1, row=0)
+patientFirstNameLabel.grid(column=0, row=0, padx=5, pady=5, sticky="e")
+patientLastNameLabel.grid(column=0, row=1, padx=5, pady=5, sticky="e")
+patientAddressLabel.grid(column=0, row=2, padx=5, pady=5, sticky="e")
+patientAddressCityLabel.grid(column=0, row=3, padx=5, pady=5, sticky="e")
+patientAddressStateLabel.grid(column=2, row=3, padx=5, pady=5, sticky="w")
+patientAddressZipCodeLabel.grid(column=4, row=3, padx=5, pady=5, sticky="w")
+patientPhoneNumberLabel.grid(column=0, row=4, padx=5, pady=5, sticky="e")
+patientDateOfBirthLabel.grid(column=0, row=5, padx=5, pady=5, sticky="e")
+isMale.grid(column=2, row=5, padx=5, pady=5, sticky="w")
+isFemale.grid(column=3, row=5, padx=5, pady=5, sticky="w")
+orderDateLabel.grid(column=0, row=6, padx=5, pady=5, sticky="e")
+patientInsuranceLabel.grid(column=0, row=7, padx=5, pady=5, sticky="e")
+patientPreauthorizationLabel.grid(column=0, row=8, padx=5, pady=5, sticky="e")
 
-patientLastNameLabel.grid(column=0, row=1)
-patientLastNameInput.grid(column=1, row=1)
+patientFirstNameInput.grid(column=1, row=0, padx=5, pady=5)
+patientLastNameInput.grid(column=1, row=1, padx=5, pady=5)
+patientAddressInput.grid(column=1, row=2, padx=5, pady=5)
+patientAddressCityInput.grid(column=1,row=3, padx=5, pady=5)
+patientAddressStateInput.grid(column=3, row=3, padx=5, pady=5)
+patientAddressZipCodeInput.grid(column=5, row=3, padx=5, pady=5)
+patientPhoneNumberInput.grid(column=1, row=4, padx=5, pady=5)
+patientDateOfBirth.grid(column=1, row=5, padx=5, pady=5)
+orderDateInput.grid(column=1, row=6, padx=5, pady=5)
+patientInsuranceInput.grid(column=1, row=7, padx=5, pady=5)
+patientPreauthorizationInput.grid(column=1, row=8, padx=5, pady=5)
+clearPatientForms.grid(column=0, row=9, pady=5)
 
-patientAddressLabel.grid(column=0, row=2)
-patientAddressInput.grid(column=1, row=2)
+patientPCPFirstNameLabel.grid(column=0, row=0, padx=5, pady=5, sticky="e")
+patientPCPLastNameLabel.grid(column=0, row=1, padx=5, pady=5, sticky="e")
+patientPCPAddressLabel.grid(column=0, row=2, padx=5, pady=5, sticky="e")
+patientPCPAddressCityLabel.grid(column=0, row=3, padx=5, pady=5, sticky="e")
+patientPCPAddressStateLabel.grid(column=2, row=3, padx=5, pady=5, sticky="w")
+patientPCPAddressZipCodeLabel.grid(column=4, row=3, padx=5, pady=5, sticky="w")
+patientPCPPhoneNumberLabel.grid(column=0, row=4, padx=5, pady=5, sticky="e")
+patientPCPNPILabel.grid(column=0, row=5, padx=5, pady=5, sticky="e")
 
-patientAddressCityLabel.grid(column=0, row=3)
-patientAddressCityInput.grid(column=1, row=3)
+patientPCPFirstNameInput.grid(column=1, row=0, padx=5, pady=5)
+patientPCPLastNameInput.grid(column=1, row=1, padx=5, pady=5)
+patientPCPAddressInput.grid(column=1, row=2, padx=5, pady=5)
+patientPCPAddressCityInput.grid(column=1,row=3, padx=5, pady=5)
+patientPCPAddressStateInput.grid(column=3, row=3, padx=5, pady=5)
+patientPCPAddressZipCodeInput.grid(column=5, row=3, padx=5, pady=5)
+patientPCPPhoneNumberInput.grid(column=1, row=4, padx=5, pady=5)
+patientPCPNPIInput.grid(column=1, row=5, padx=5, pady=5)
 
-patientAddressStateLabel.grid(column=2, row=3)
-patientAddressStateInput.grid(column=3, row=3)
+itemsTitle.grid(column=2, row=0, padx=5, pady=5)
+itemsTitleMod1.grid(column=3, row=0, padx=5, pady=5)
+itemsTitleMod2.grid(column=4, row=0, padx=5, pady=5)
+itemsTitleMod3.grid(column=5, row=0, padx=5, pady=5)
+itemsTitleMod4.grid(column=6, row=0, padx=5, pady=5)
+itemsTitleQty.grid(column=7, row=0, padx=5, pady=5)
+itemsTitleDescription.grid(column=8,row=0, padx=5, pady=5)
+itemRowPriceLabel.grid(column=9,row=0, padx=5, pady=5)
 
-patientAddressZipCodeLabel.grid(column=4, row=3)
-patientAddressZipCodeInput.grid(column=5, row=3, padx=10)
+rentalCheckMarkRow1.grid(column=0, row = 1, padx=5, pady=5)
+purchaseCheckMarkRow1.grid(column=1, row = 1, padx=5, pady=5)
+itemRow1Cpt.grid(column=2, row = 1, padx=5, pady=5)
+itemRow1Modifier1.grid(column=3, row = 1, padx=5, pady=5)
+itemRow1Modifier2.grid(column=4, row = 1, padx=5, pady=5)
+itemRow1Modifier3.grid(column=5, row = 1, padx=5, pady=5)
+itemRow1Modifier4.grid(column=6, row = 1, padx=5, pady=5)
+itemRow1Qty.grid(column=7, row = 1, padx=5, pady=5)
+itemRow1Description.grid(column=8,row=1, padx=5, pady=5)
+itemRow1Price.grid(column=9,row=1, padx=5, pady=5)
 
-patientPhoneNumberLabel.grid(column=0, row=4)
-patientPhoneNumberInput.grid(column=1, row=4)
+rentalCheckMarkRow2.grid(column=0, row=2, padx=5, pady=5)
+purchaseCheckMarkRow2.grid(column=1, row=2, padx=5, pady=5)
+itemRow2Cpt.grid(column=2, row = 2, padx=5, pady=5)
+itemRow2Modifier1.grid(column=3, row = 2, padx=5, pady=5)
+itemRow2Modifier2.grid(column=4, row = 2, padx=5, pady=5)
+itemRow2Modifier3.grid(column=5, row = 2, padx=5, pady=5)
+itemRow2Modifier4.grid(column=6, row = 2, padx=5, pady=5)
+itemRow2Qty.grid(column=7, row = 2, padx=5, pady=5)
+itemRow2Description.grid(column=8,row=2, padx=5, pady=5)
+itemRow2Price.grid(column=9,row=2, padx=5, pady=5)
 
-patientDateOfBirthLabel.grid(column=0, row=5)
-patientDateOfBirth.grid(column=1, row=5)
-isMale.grid(column=2, row=5)
-isFemale.grid(column=3, row=5)
+rentalCheckMarkRow3.grid(column=0, row=3, padx=5, pady=5)
+purchaseCheckMarkRow3.grid(column=1,row=3, padx=5, pady=5)
+itemRow3Cpt.grid(column=2, row = 3, padx=5, pady=5)
+itemRow3Modifier1.grid(column=3, row = 3, padx=5, pady=5)
+itemRow3Modifier2.grid(column=4, row = 3, padx=5, pady=5)
+itemRow3Modifier3.grid(column=5, row = 3, padx=5, pady=5)
+itemRow3Modifier4.grid(column=6, row = 3, padx=5, pady=5)
+itemRow3Qty.grid(column=7, row = 3, padx=5, pady=5)
+itemRow3Description.grid(column=8,row=3, padx=5, pady=5)
+itemRow3Price.grid(column=9,row=3, padx=5, pady=5)
 
-orderDateLabel.grid(column=0, row=6)
-orderDateInput.grid(column=1, row=6)
+rentalCheckMarkRow4.grid(column=0, row = 4, padx=5, pady=5)
+purchaseCheckMarkRow4.grid(column=1, row = 4, padx=5, pady=5)
+itemRow4Cpt.grid(column=2, row = 4, padx=5, pady=5)
+itemRow4Modifier1.grid(column=3, row = 4, padx=5, pady=5)
+itemRow4Modifier2.grid(column=4, row = 4, padx=5, pady=5)
+itemRow4Modifier3.grid(column=5, row = 4, padx=5, pady=5)
+itemRow4Modifier4.grid(column=6, row = 4, padx=5, pady=5)
+itemRow4Qty.grid(column=7, row = 4, padx=5, pady=5)
+itemRow4Description.grid(column=8,row=4, padx=5, pady=5)
+itemRow4Price.grid(column=9,row=4, padx=5, pady=5)
 
-patientInsuranceLabel.grid(column=0, row=7)
-patientInsuranceInput.grid(column=1, row=7)
+rentalCheckMarkRow5.grid(column=0, row=5, padx=5, pady=5)
+purchaseCheckMarkRow5.grid(column=1, row = 5, padx=5, pady=5)
+itemRow5Cpt.grid(column=2, row = 5, padx=5, pady=5)
+itemRow5Modifier1.grid(column=3, row = 5, padx=5, pady=5)
+itemRow5Modifier2.grid(column=4, row = 5, padx=5, pady=5)
+itemRow5Modifier3.grid(column=5, row = 5, padx=5, pady=5)
+itemRow5Modifier4.grid(column=6, row = 5, padx=5, pady=5)
+itemRow5Qty.grid(column=7, row = 5, padx=5, pady=5)
+itemRow5Description.grid(column=8,row=5, padx=5, pady=5)
+itemRow5Price.grid(column=9,row=5, padx=5, pady=5)
 
-patientPreauthorizationLabel.grid(column=0, row=8)
-patientPreauthorizationInput.grid(column=1, row=8)
+rentalCheckMarkRow6.grid(column=0, row=6, padx=5, pady=5)
+purchaseCheckMarkRow6.grid(column=1, row=6, padx=5, pady=5)
+itemRow6Cpt.grid(column=2, row = 6, padx=5, pady=5)
+itemRow6Modifier1.grid(column=3, row = 6, padx=5, pady=5)
+itemRow6Modifier2.grid(column=4, row = 6, padx=5, pady=5)
+itemRow6Modifier3.grid(column=5, row = 6, padx=5, pady=5)
+itemRow6Modifier4.grid(column=6, row = 6, padx=5, pady=5)
+itemRow6Qty.grid(column=7, row = 6, padx=5, pady=5)
+itemRow6Description.grid(column=8,row=6, padx=5, pady=5)
+itemRow6Price.grid(column=9,row=6, padx=5, pady=5)
 
-clearPatientForms.grid(column=0, row=9)
+diagnosisCode.grid(column=0,row=0, padx=5, pady=5)
+diagnosisDescription.grid(column=1,row=0, padx=5, pady=5)
 
-patientPCPFirstNameLabel.grid(column=0, row=0)
-patientPCPFirstNameInput.grid(column=1, row=0)
+diagnosisCodeRow1.grid(column=0,row=1, padx=5, pady=5)
+diagnosisCodeRow1Description.grid(column=1,row=1, padx=5, pady=5)
 
-patientPCPLastNameLabel.grid(column=0, row=1)
-patientPCPLastNameInput.grid(column=1, row=1)
+diagnosisCodeRow2.grid(column=0,row=2, padx=5, pady=5)
+diagnosisCodeRow2Description.grid(column=1,row=2, padx=5, pady=5)
 
-patientPCPAddressLabel.grid(column=0, row=2)
-patientPCPAddressInput.grid(column=1, row=2)
+diagnosisCodeRow3.grid(column=0,row=3, padx=5, pady=5)
+diagnosisCodeRow3Description.grid(column=1,row=3, padx=5, pady=5)
 
-patientPCPAddressCityLabel.grid(column=0, row=3)
-patientPCPAddressCityInput.grid(column=1,row=3)
+diagnosisCodeRow4.grid(column=0,row=4, padx=5, pady=5)
+diagnosisCodeRow4Description.grid(column=1,row=4, padx=5, pady=5)
+clearICDForms.grid(column=1,row=5, padx=5, pady=5)
 
-patientPCPAddressStateLabel.grid(column=2, row=3)
-patientPCPAddressStateInput.grid(column=3, row=3)
+searchButton.grid(column=0,row=7, padx=5, pady=5)
+clearCptForms.grid(column=1,row=7, padx=5, pady=5)
 
-patientPCPAddressZipCodeLabel.grid(column=4, row=3)
-patientPCPAddressZipCodeInput.grid(column=5, row=3, padx=10)
+createInvoicePDF.grid(column=0, row=0, padx=5, pady=5)
+createIntakeSheetPDF.grid(column=1, row=0, padx=5, pady=5)
+submitButton.grid(column=2, row=0, padx=5, pady=5)
+fillClaimFormButton.grid(column=3, row=0, padx=5, pady=5)
+searchDrNPI.grid(column=5, row=5, padx=5, pady=5)
+clearDrForms.grid(column=0,row=6, padx=5, pady=5)
+searchICD.grid(column=0,row=5, padx=5, pady=5)
 
-patientPCPPhoneNumberLabel.grid(column=0, row=4)
-patientPCPPhoneNumberInput.grid(column=1, row=4)
-
-patientPCPNPILabel.grid(column=0, row=5)
-patientPCPNPIInput.grid(column=1, row=5)
-
-
-itemsTitle.grid(column=2, row=0)
-itemsTitleMod1.grid(column=3, row=0)
-itemsTitleMod2.grid(column=4, row=0)
-itemsTitleMod3.grid(column=5, row=0)
-itemsTitleMod4.grid(column=6, row=0)
-itemsTitleQty.grid(column=7, row=0)
-itemsTitleDescription.grid(column=8,row=0)
-itemRowPriceLabel.grid(column=9,row=0)
-
-
-rentalCheckMarkRow1.grid(column=0, row = 1)
-purchaseCheckMarkRow1.grid(column=1, row = 1)
-itemRow1Cpt.grid(column=2, row = 1)
-itemRow1Modifier1.grid(column=3, row = 1)
-itemRow1Modifier2.grid(column=4, row = 1)
-itemRow1Modifier3.grid(column=5, row = 1)
-itemRow1Modifier4.grid(column=6, row = 1)
-itemRow1Qty.grid(column=7, row = 1)
-itemRow1Description.grid(column=8,row=1)
-itemRow1Price.grid(column=9,row=1)
-
-rentalCheckMarkRow2.grid(column=0, row=2)
-purchaseCheckMarkRow2.grid(column=1, row=2)
-itemRow2Cpt.grid(column=2, row = 2)
-itemRow2Modifier1.grid(column=3, row = 2)
-itemRow2Modifier2.grid(column=4, row = 2)
-itemRow2Modifier3.grid(column=5, row = 2)
-itemRow2Modifier4.grid(column=6, row = 2)
-itemRow2Qty.grid(column=7, row = 2)
-itemRow2Description.grid(column=8,row=2)
-itemRow2Price.grid(column=9,row=2)
-
-rentalCheckMarkRow3.grid(column=0, row=3)
-purchaseCheckMarkRow3.grid(column=1,row=3)
-itemRow3Cpt.grid(column=2, row = 3)
-itemRow3Modifier1.grid(column=3, row = 3)
-itemRow3Modifier2.grid(column=4, row = 3)
-itemRow3Modifier3.grid(column=5, row = 3)
-itemRow3Modifier4.grid(column=6, row = 3)
-itemRow3Qty.grid(column=7, row = 3)
-itemRow3Description.grid(column=8,row=3)
-itemRow3Price.grid(column=9,row=3)
-
-rentalCheckMarkRow4.grid(column=0, row = 4)
-purchaseCheckMarkRow4.grid(column=1, row = 4)
-itemRow4Cpt.grid(column=2, row = 4)
-itemRow4Modifier1.grid(column=3, row = 4)
-itemRow4Modifier2.grid(column=4, row = 4)
-itemRow4Modifier3.grid(column=5, row = 4)
-itemRow4Modifier4.grid(column=6, row = 4)
-itemRow4Qty.grid(column=7, row = 4)
-itemRow4Description.grid(column=8,row=4)
-itemRow4Price.grid(column=9,row=4)
-
-rentalCheckMarkRow5.grid(column=0, row=5)
-purchaseCheckMarkRow5.grid(column=1, row = 5)
-itemRow5Cpt.grid(column=2, row = 5)
-itemRow5Modifier1.grid(column=3, row = 5)
-itemRow5Modifier2.grid(column=4, row = 5)
-itemRow5Modifier3.grid(column=5, row = 5)
-itemRow5Modifier4.grid(column=6, row = 5)
-itemRow5Qty.grid(column=7, row = 5)
-itemRow5Description.grid(column=8,row=5)
-itemRow5Price.grid(column=9,row=5)
-
-rentalCheckMarkRow6.grid(column=0, row=6)
-purchaseCheckMarkRow6.grid(column=1, row=6)
-itemRow6Cpt.grid(column=2, row = 6)
-itemRow6Modifier1.grid(column=3, row = 6)
-itemRow6Modifier2.grid(column=4, row = 6)
-itemRow6Modifier3.grid(column=5, row = 6)
-itemRow6Modifier4.grid(column=6, row = 6)
-itemRow6Qty.grid(column=7, row = 6)
-itemRow6Description.grid(column=8,row=6)
-itemRow6Price.grid(column=9,row=6)
-
-
-diagnosisCode.grid(column=0,row=0)
-diagnosisDescription.grid(column=1,row=0)
-
-diagnosisCodeRow1.grid(column=0,row=1)
-diagnosisCodeRow1Description.grid(column=1,row=1)
-
-diagnosisCodeRow2.grid(column=0,row=2)
-diagnosisCodeRow2Description.grid(column=1,row=2)
-
-diagnosisCodeRow3.grid(column=0,row=3)
-diagnosisCodeRow3Description.grid(column=1,row=3)
-
-diagnosisCodeRow4.grid(column=0,row=4)
-diagnosisCodeRow4Description.grid(column=1,row=4)
-clearICDForms.grid(column=1,row=5)
-
-searchButton.grid(column=0,row=7)
-clearCptForms.grid(column=1,row=7)
-
-createInvoicePDF.grid(column=0, row=0)
-createIntakeSheetPDF.grid(column=1, row=0)
-submitButton.grid(column=2, row=0)
-fillClaimFormButton.grid(column=3, row=0)
-searchDrNPI.grid(column=5, row=5)
-clearDrForms.grid(column=0,row=6)
-searchICD.grid(column=0,row=5)
-
-
-insuranceFrame.grid(column=0, row=0, padx=0, pady=0)
+insuranceFrame.grid(column=0, row=0, padx=5, pady=5)
 patientFrame.grid(column=0, row=1, padx=10, pady=10)
 itemsFrame.grid(column=1, row=1, padx=10, pady=10)
 doctorFrame.grid(column=0, row=2, padx=10, pady=10)
