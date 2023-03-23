@@ -4,12 +4,18 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 import pickle
 import time
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 import os
 import sys
+import keyring
+import zipfile
+import platform
+from urllib.request import urlretrieve
+from packaging import version
 #from ChromeScrape import DRIVER_PATH
 
 #root = tk.Tk()
@@ -58,60 +64,63 @@ def addPatientToOA():
     #driver.find_element(By.ID, "ctl03_popupBase_txtSearch").send_keys("Espinoza")
     #driver.find_element(By.NAME, "ctl03$popupBase$btnSearch").click()
     
+def get_new_password():
+    root = tk.Tk()
+    root.withdraw()
+    new_password = simpledialog.askstring("Password", "Enter your password:", show="*")
+    return new_password
     
+def login_to_website(driver):
+    # Get the stored username and password
+    username = "romaminc"
+    stored_password = keyring.get_password("Create Patient Profile", username)
+    #stored_password = "1232131"
+    while True:
+        # Navigate to the login page
+        driver.get('https://www.officeally.com/slogin.aspx')
+
+        # Enter the username and password
+        driver.find_element(By.ID, "Login1_UserName").send_keys(username)
+        driver.find_element(By.ID, "Login1_Password").send_keys(stored_password)
+        driver.find_element(By.ID, "Login1_LoginButton").click()
+
+        # Wait for the login process to complete
+        time.sleep(1)
+
+        # Check if the login was successful
+        if driver.current_url != 'https://www.officeally.com/slogin.aspx':
+            break
+        else:
+            # If the login failed, prompt the user for the password and try again
+            print("Login failed. Please enter the correct password for OfficeAlly user romaminc.")
+            stored_password = get_new_password()
+            # Update the stored password
+            keyring.set_password("Create Patient Profile", username, stored_password)
+
 
 
 def fillClaimFormFunction(b):
-    #print(b)
-    #fileOfIds = filedialog.askopenfilename(filetypes=[("Pickle Data Files", ".pickle")])
-    #with open(fileOfIds, 'rb') as handle:
-    #    b = pickle.load(handle)
-    #fileOfIds = open("TestMedicareClaims.txt", "r")
-    #fileOfIds = open("IEHPCLAIMS.txt", "r")
     diagnosisPointers = "A"
     print(b['patientFirstName'])
-    #print("Testing Mode")
 
-
-    #DRIVER_PATH = 'C:\\Users\\ValleyCareGG\\Downloads\\chromedriver_win32\\chromedriver.exe'
-    #DRIVER_PATH = 'C:\\Users\\Eli\\Downloads\\chromedriver_win32\\chromedriver.exe'
-    #DRIVER_PATH = 'C:\\Users\\Bruh\\Downloads\\chromedriver_win32\\chromedriver.exe'
-    #DRIVER_PATH = ".\\src\\chromedriver.exe"
-    
     directory = sys.executable
     baseDir = os.path.dirname(directory)
     chrome_options = Options()
 
     try:
-        DRIVER_PATH = baseDir + "\\src\\chromedriver.exe"
+        DRIVER_PATH = os.path.join(baseDir, "src", "chromedriver.exe")
         chrome_options.add_argument("user-data-dir=C:\\src\\selenium") 
         chrome_options.add_experimental_option("detach", True)
-        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=chrome_options)
         print("Prod Mode")
     except:
-        DRIVER_PATH = "src/chromedriver.exe"
+        DRIVER_PATH = os.path.join("src", "chromedriver.exe")
         chrome_options.add_argument("src/selenium") 
         chrome_options.add_experimental_option("detach", True)
-        driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
+        driver = webdriver.Chrome(executable_path=DRIVER_PATH, options=chrome_options)
         print("Testing Mode")
-    #print(DRIVER_PATH)
 
-    
-    
-    #chrome_options.add_argument("user-data-dir=C:\\Src\\ChinoTools\\selenium") 
-    #chrome_options.add_argument("user-data-dir=C:{}\\selenium".format(baseDir))
-    
-    #chrome_options.add_argument("executable_path={}".format(DRIVER_PATH))
-    #driver = webdriver.Chrome(executable_path=DRIVER_PATH, chrome_options=chrome_options)
-
-    #driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-    driver.get('https://www.officeally.com/slogin.aspx')
-    #driver.switch_to.frame("Iframe9")
-    driver.find_element(By.ID, "Login1_UserName").send_keys('romaminc')
-    driver.find_element(By.ID, "Login1_Password").send_keys('ChinoMedical$2023!^')
-    driver.find_element(By.ID, "Login1_LoginButton").click()
-    #i = 1
-    time.sleep(1)
+    login_to_website(driver)
     driver.get('https://www.officeally.com/secure_oa.asp?GOTO=onlineentry&TaskAction=Edit&Mode=Create&ClaimID=-1&encounter=&CMS=0212&sPatient=-1&sBillProv=1415905&sRndProv=1344022&sFacility=-1&sTemplate=-1&sPayer=1892359')
     time.sleep(1)
     driver.switch_to.frame("Iframe9")
@@ -306,7 +315,72 @@ def fillClaimFormFunction(b):
 
     driver.find_element(By.ID, "lnkPatientCopy").click()
 
+def get_chrome_version():
+    if platform.system() == "Windows":
+        command = "reg query \"HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon\" /v version"
+    elif platform.system() == "Darwin":
+        command = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --version"
+    else:
+        command = "google-chrome --version"
 
+    output = os.popen(command).read().strip()
+    chrome_version = output.split()[-1].decode('utf-8') if platform.system() == "Darwin" else output.split()[-1]
+    return version.parse(chrome_version)
+
+def get_chromedriver_version(chrome_version):
+    major_version = chrome_version.release[0]
+    chromedriver_url = f"https://chromedriver.storage.googleapis.com/LATEST_RELEASE_{major_version}"
+    chromedriver_version = os.popen(f"curl {chromedriver_url}").read().strip()
+    return version.parse(chromedriver_version)
+
+def download_chromedriver(chromedriver_version, driver_directory):
+    url = f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_win32.zip" if platform.system() == "Windows" else f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_mac64.zip"
+    zip_path = os.path.join(driver_directory, "chromedriver.zip")
+    urlretrieve(url, zip_path)
+
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        zip_ref.extractall(driver_directory)
+
+    os.remove(zip_path)
+    os.chmod(os.path.join(driver_directory, "chromedriver"), 0o755)
+
+def check_and_download_chromedriver(driver_directory):
+    chrome_version = get_chrome_version()
+    chromedriver_version = get_chromedriver_version(chrome_version)
+
+    chromedriver_path = driver_directory
+
+    if os.path.exists(chromedriver_path):
+        try:
+            current_chromedriver_version_output = os.popen(f"{chromedriver_path} --version").read().strip()
+            current_chromedriver_version = version.parse(current_chromedriver_version_output.split()[1])
+        except Exception as e:
+            print(f"Error getting current ChromeDriver version: {e}")
+            current_chromedriver_version = None
+
+        if current_chromedriver_version != chromedriver_version:
+            print(f"Updating ChromeDriver from {current_chromedriver_version} to {chromedriver_version}")
+            download_chromedriver(chromedriver_version, driver_directory)
+    else:
+        print(f"Downloading ChromeDriver {chromedriver_version}")
+        download_chromedriver(chromedriver_version, driver_directory)
+
+    return chromedriver_path
+
+directory = sys.executable
+baseDir = os.path.dirname(directory)
+chrome_options = Options()
+
+try:
+    DRIVER_PATH = os.path.join(baseDir, "src", "chromedriver.exe")
+    print("Prod Mode")
+except:
+    DRIVER_PATH = os.path.join("src", "chromedriver.exe")
+    print("Testing Mode")
+driver_directory = DRIVER_PATH
+#os.makedirs(driver_directory, exist_ok=True)
+
+chromedriver_path = check_and_download_chromedriver(driver_directory)
 #fillClaimFormFunction({"patientFirstName":"Bruh"})
 #addPatientToOA()
 

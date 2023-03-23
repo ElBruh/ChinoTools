@@ -7,13 +7,13 @@ baseDir = os.path.dirname(directory)
 
 
 try:
-    medical = sqlite3.connect(baseDir + "/src/" + 'Medi-CalRatesDB1.db')
+    medical = sqlite3.connect(baseDir + "/src/" + 'medi_cal_fee_schedule.sqlite')
 except:
-    medical = sqlite3.connect('./src/Medi-CalRatesDB1.db')
+    medical = sqlite3.connect('./src/medi_cal_fee_schedule.sqlite')
 try:
-    medicare = sqlite3.connect(baseDir + "/src/" + 'MedicareRatesDB1.db')
+    medicare = sqlite3.connect(baseDir + "/src/" + 'medicare_fee_schedule.sqlite')
 except:
-    medicare = sqlite3.connect('./src/MedicareRatesDB1.db')
+    medicare = sqlite3.connect('./src/medicare_fee_schedule.sqlite')
 try:
     patientProfile = sqlite3.connect(baseDir + "/src/" + "patientProfiles.db")
 except:
@@ -25,55 +25,69 @@ def openPatientDB():
 
 
 def searchMedcalCPT2(query, options):
-    found={
-        'ItemValue':'',
-        'itemDescription':'',
-        }
-    if(options == 1):
-        cur.execute("SELECT UnitValue, ProcedureDescription FROM data WHERE ProcCode LIKE ?", (query,))
+    found = {
+        'ItemValue': '',
+        'itemDescription': '',
+    }
+
+    # Using a parameterized query with a tuple for better readability
+    if options == 1:
+        sql_query = "SELECT \"Unit Value\", \"Procedure Description\" FROM medi_cal_fee_schedule WHERE \"Proc Code\" LIKE ?"
     else:
-        cur.execute("SELECT RentalRate, ProcedureDescription FROM data WHERE ProcCode LIKE ?", (query,))
-    r = cur.fetchone()
-    
-    found["ItemValue"] = r[0]
-    found["itemDescription"] = r[1]
+        sql_query = "SELECT \"Rental Rate\", \"Procedure Description\" FROM medi_cal_fee_schedule WHERE \"Proc Code\" LIKE ?"
+
+    try:
+        # Use 'with' to ensure the connection is properly closed
+        
+        #cur = conn.cursor()
+        cur.execute(sql_query, (query,))
+        r = cur.fetchone()
+
+        # Check if a result is found before assigning values
+        if r:
+            found["ItemValue"] = r[0]
+            found["itemDescription"] = r[1]
+        else:
+            print(f"No results found for query: {query}")
+
+    except sqlite3.Error as e:
+        print(f"An error occurred while executing the SQL query: {e}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
     return found
 
 def searchMedicareCPT2(query, options):
-    #print(query)
-    found={
-        'ItemValue':'',
-        'itemDescription':'',
-        }
-    
-    
-    if(options == 1):
-        print("In NU")
-            #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'NU' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
-        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}' AND Mod IS 'NU'".format(query))
-            #cur.execute("SELECT ProcedureDescription FROM data WHERE ProcCode LIKE ?", (item,))
+    found = {
+        'ItemValue': '',
+        'itemDescription': '',
+    }
+
+    try:
+        # Determine the modifier based on the options
+        mod = 'RR' if options != 1 else 'NU'
+        print(f"In {mod}")
+
+        # Execute the query with the specified modifier
+        cur1.execute("SELECT [CA (NR)], Description FROM dme_fee_schedule WHERE HCPCS LIKE ? AND Mod IS ?", (query, mod))
         s = cur1.fetchone()
-        if(s == None):
-            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}'".format(query))
-            s = cur1.fetchone()
-        
-    else:
-        print("In RR")
-            #cur1.execute("SELECT 'CA (NR)', Description FROM data WHERE HCPCS LIKE ? AND (MOD LIKE 'RR' OR MOD LIKE '') AND WHERE JURIS LIKE 'D'", (item,))
-        cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}' AND Mod IS 'RR'".format(query))
-        s = cur1.fetchone()
-        if(s == None):
-            cur1.execute("SELECT [CA (NR)], Description From data WHERE HCPCS LIKE '{}'".format(query))
+
+        # If no results, execute the query without the modifier
+        if s == None:
+            cur1.execute("SELECT [CA (NR)], Description FROM dme_fee_schedule WHERE HCPCS LIKE ?", (query,))
             s = cur1.fetchone()
 
-    
-    
-    found["ItemValue"] = s[0]
-    found["itemDescription"] = s[1]
-    print(s)
-    return found
+        found["ItemValue"] = s[0]
+        found["itemDescription"] = s[1]
+        print(s)
+        return found
 
+    except Exception as e:
+        print(f"An error occurred while executing searchMedicareCPT2: {e}")
+        print(f"Query: {query}")
+        print(f"Options: {options}")
+        return found
+    
 def searchMedicalCPT(query, options):
     found = []
     for i, item in enumerate(query):
