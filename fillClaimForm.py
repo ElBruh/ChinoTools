@@ -315,72 +315,72 @@ def fillClaimFormFunction(b):
 
     driver.find_element(By.ID, "lnkPatientCopy").click()
 
-def get_chrome_version():
-    if platform.system() == "Windows":
-        command = "reg query \"HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon\" /v version"
-    elif platform.system() == "Darwin":
-        command = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --version"
-    else:
-        command = "google-chrome --version"
+#def get_chrome_version():
+#    if platform.system() == "Windows":
+#        command = "reg query \"HKEY_CURRENT_USER\\Software\\Google\\Chrome\\BLBeacon\" /v version"
+#    elif platform.system() == "Darwin":
+#        command = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --version"
+#    else:
+#        command = "google-chrome --version"
 
-    output = os.popen(command).read().strip()
-    chrome_version = output.split()[-1].decode('utf-8') if platform.system() == "Darwin" else output.split()[-1]
-    return version.parse(chrome_version)
+#    output = os.popen(command).read().strip()
+#    chrome_version = output.split()[-1].decode('utf-8') if platform.system() == "Darwin" else output.split()[-1]
+#    return version.parse(chrome_version)
 
-def get_chromedriver_version(chrome_version):
-    major_version = chrome_version.release[0]
-    chromedriver_url = f"https://chromedriver.storage.googleapis.com/LATEST_RELEASE_{major_version}"
-    chromedriver_version = os.popen(f"curl {chromedriver_url}").read().strip()
-    return version.parse(chromedriver_version)
+#def get_chromedriver_version(chrome_version):
+#    major_version = chrome_version.release[0]
+#    chromedriver_url = f"https://chromedriver.storage.googleapis.com/LATEST_RELEASE_{major_version}"
+#    chromedriver_version = os.popen(f"curl {chromedriver_url}").read().strip()
+#   return version.parse(chromedriver_version)
 
-def download_chromedriver(chromedriver_version, driver_directory):
-    url = f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_win32.zip" if platform.system() == "Windows" else f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_mac64.zip"
-    zip_path = os.path.join(driver_directory, "chromedriver.zip")
-    urlretrieve(url, zip_path)
+#def download_chromedriver(chromedriver_version, driver_directory):
+#    url = f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_win32.zip" if platform.system() == "Windows" else f"https://chromedriver.storage.googleapis.com/{chromedriver_version}/chromedriver_mac64.zip"
+#    zip_path = os.path.join(driver_directory, "chromedriver.zip")
+#    urlretrieve(url, zip_path)
 
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall(driver_directory)
+#    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+#        zip_ref.extractall(driver_directory)
 
-    os.remove(zip_path)
-    os.chmod(os.path.join(driver_directory, "chromedriver"), 0o755)
+#    os.remove(zip_path)
+#    os.chmod(os.path.join(driver_directory, "chromedriver"), 0o755)
 
-def check_and_download_chromedriver(driver_directory):
-    chrome_version = get_chrome_version()
-    chromedriver_version = get_chromedriver_version(chrome_version)
+#def check_and_download_chromedriver(driver_directory):
+#    chrome_version = get_chrome_version()
+#    chromedriver_version = get_chromedriver_version(chrome_version)
 
-    chromedriver_path = driver_directory
+ #   chromedriver_path = driver_directory
 
-    if os.path.exists(chromedriver_path):
-        try:
-            current_chromedriver_version_output = os.popen(f"{chromedriver_path} --version").read().strip()
-            current_chromedriver_version = version.parse(current_chromedriver_version_output.split()[1])
-        except Exception as e:
-            print(f"Error getting current ChromeDriver version: {e}")
-            current_chromedriver_version = None
+#    if os.path.exists(chromedriver_path):
+#        try:
+#            current_chromedriver_version_output = os.popen(f"{chromedriver_path} --version").read().strip()
+#            current_chromedriver_version = version.parse(current_chromedriver_version_output.split()[1])
+#        except Exception as e:
+#            print(f"Error getting current ChromeDriver version: {e}")
+#            current_chromedriver_version = None
 
-        if current_chromedriver_version != chromedriver_version:
-            print(f"Updating ChromeDriver from {current_chromedriver_version} to {chromedriver_version}")
-            download_chromedriver(chromedriver_version, driver_directory)
-    else:
-        print(f"Downloading ChromeDriver {chromedriver_version}")
-        download_chromedriver(chromedriver_version, driver_directory)
+#        if current_chromedriver_version != chromedriver_version:
+#            print(f"Updating ChromeDriver from {current_chromedriver_version} to {chromedriver_version}")
+#            download_chromedriver(chromedriver_version, driver_directory)
+#    else:
+#        print(f"Downloading ChromeDriver {chromedriver_version}")
+#        download_chromedriver(chromedriver_version, driver_directory)
 
-    return chromedriver_path
+#    return chromedriver_path
 
-directory = sys.executable
-baseDir = os.path.dirname(directory)
-chrome_options = Options()
+#directory = sys.executable
+#baseDir = os.path.dirname(directory)
+#chrome_options = Options()
 
-try:
-    DRIVER_PATH = os.path.join(baseDir, "src", "chromedriver.exe")
-    print("Prod Mode")
-except:
-    DRIVER_PATH = os.path.join("src", "chromedriver.exe")
-    print("Testing Mode")
-driver_directory = DRIVER_PATH
+#try:
+#    DRIVER_PATH = os.path.join(baseDir, "src", "chromedriver.exe")
+#    print("Prod Mode")
+#except:
+#    DRIVER_PATH = os.path.join("src", "chromedriver.exe")
+#    print("Testing Mode")
+#driver_directory = DRIVER_PATH
 #os.makedirs(driver_directory, exist_ok=True)
 
-chromedriver_path = check_and_download_chromedriver(driver_directory)
+#chromedriver_path = check_and_download_chromedriver(driver_directory)
 #fillClaimFormFunction({"patientFirstName":"Bruh"})
 #addPatientToOA()
 
